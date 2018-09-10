@@ -1,0 +1,38 @@
+969948122
+
+PARA RESOLVER
+* trocar tempos, tipo T3 >> T4 / T1 >> T2
+* multiplos queries num unico pdo
+* usar java na gestao das provas
+* ao importar se ja existem tempos, nao carrega os ultimos tempos na tabela live
+* juntar a importaçao dos federados e a importaçao da startlist no mesmo PHP
+* alterar nome ficheiro athletes / federado.php
+* inserir passwords codificadas
+* arranjar footer na pagina de login
+* erro login com utilizador nao registado
+* creditos na home page
+* atualizar tabela live quando se alteram tempos manualmente
+* nao abre dropdown com tabela results aberta
+* limpar sessao e cookie
+* procurar formula para calculo do tempo no MyLaps com tempos UNIX
+
+RESOLVIDO
+* nos tempos, carregar o array races pelos dados da tabela races
+* passar processamento dos tempos para PDO
+* ver calculo de tempos para provas abertas, esta apenas para provas do campeonato
+* rever onde calcular o tempo total da tabela atletas
+* ver como funciona quando insere tempos numa ordem diferente
+* corrigir inscriçao de ultima hora, nao fecha modal - versao nacional
+* percorrer a tabela com os tempos, antes dos atletas, para ser mais rápido
+* inserir races
+* inserir dados das races
+* em vez de msg de erro, colocar dois botões quando não há provas criadas, 1 para criar prova, outro para importar startlist
+* passar tudo para PDO
+* ver porque token e serial nao estao a codificar
+* corrigir inscriçao de ultima hora, nao fecha modal - versao etu
+* adicinar um gototop da pagina no scroll da tabela / deixa de ser necessario com o scroll
+* colocar bandeiras de paises
+* carregar dados na tabela live
+* mostrar as posiçoes em cada segmento, vai ser necessario colocar o started
+* ir somando o tempo total de prova após cada passagem e ordenar por tempo total
+* adicionar automaticamente equipas ao inserir atletas / startlist

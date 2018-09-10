@@ -1,0 +1,321 @@
+body, html {
+   padding: 0 !important;
+   margin: 0 !important;
+   height: 100vh;
+   background: none;
+ }
+
+/*#footer 
+{
+    width: 1200px;
+    margin: 0 auto;
+}*/
+
+ .navbar-dark
+ {
+     padding:0 !important;
+     margin:0 !important;
+     height: 38px !important;
+     background-color: #073E64 !important;
+ }
+
+#importsAll 
+{
+    display: block;
+    /* margin: 0 auto;*/
+}
+
+#updatesContainer 
+{
+    width: 1400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#loginContainer 
+{
+    width: 400px;
+    text-align: center;
+    color: whitesmoke;
+    position: absolute;
+    margin-top: 300px;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    margin-top: 30px;
+}
+
+#loginTitle
+{
+    color: #00722e;
+}
+
+.loginPage
+{   
+    position:relative;
+    overflow:auto;
+    height:100%;
+    background-color: #073E64;
+}
+
+#athletesBackground
+{
+    min-height: 100%;
+    background: url(/images/background.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #073E64;
+}
+
+#add_button
+{
+    margin-top: 100px;
+}
+
+/*.dataTables_filter input {
+    margin-right: 50px;
+}*/
+
+/*.container-fluid {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 15px;
+    width: 100%;
+}*/
+
+.row 
+{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+}
+
+#liveContainer 
+{
+    position:relative;
+    overflow:auto;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding-bottom: 40px;
+    border-color: #073E64;
+    border-top-style: solid;
+    border-top-width: 6px;
+    border-bottom-style: solid;
+    border-bottom-width: 0.5px;
+    width: 800px;
+    text-align: center;
+}
+
+#resultsContainer 
+{
+    margin-top: 20px;
+    padding-bottom: 40px;
+    /*border-color: #073E64;
+    border-top-style: solid;
+    border-top-width: 6px;*/
+    border-bottom-style: solid;
+    border-bottom-width: 0.5px;
+    /*text-align: center;*/
+}
+
+.modal-content
+{
+    width: 600px;
+    color: black;
+}
+
+/*a 
+{
+    color: #449D44;
+}*/
+
+/*a:link 
+{
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-decoration: none;
+}*/
+
+.navbar-dark .nav-link 
+{
+    color: whitesmoke !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.navbar-dark .nav-link:hover
+{
+    box-shadow: inset 0 -3px 0 red
+}
+
+.nav-login
+{
+    color: #3073ac;
+}
+
+.nav-login:hover
+{
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.container
+{
+    margin-top: 100px;
+}
+
+#importdb
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importdb input[type=file] 
+{
+    display: inline;
+}
+
+#importcheckin
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importcheckin input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistAquatlo
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistAquatlo input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistCREquipas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistCREquipas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistCRIndividual
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistCRIndividual input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistEstafetas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistEstafetas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistEstafetas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistEstafetas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlist
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlist input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistJovens
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistJovens input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistETU
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistETU input[type=file] 
+{
+    display: inline;
+}
+
+#importFTPAthletes
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importFTPAthletes input[type=file] 
+{
+    display: inline;
+}
+
+/* TABLE CONFIGURATION */
+th.dt-center, td.dt-center 
+{ 
+    text-align: center; 
+}
+
+.table
+{
+    background: white;
+    color: black;
+    width: 100% !important;
+}

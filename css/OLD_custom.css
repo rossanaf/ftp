@@ -1,0 +1,298 @@
+﻿/* NEW CSS */
+html 
+{ 
+    background: url(/images/background.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body 
+{
+    background: none;
+    color: #eee;
+}
+
+#footer 
+{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.container 
+{
+    margin-top: 100px;
+}
+
+#importsAll {
+    display: block;
+    /* margin: 0 auto;*/
+}
+
+#updatesContainer {
+    width: 1400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#homePageContainer 
+{
+    width: 400px;
+    text-align: center;
+}
+
+#resultsContainer 
+{
+    margin-top: 140px;
+    max-width: 1200px;
+    /*text-align: center;*/
+}
+
+.modal-content
+{
+    width: 600px;
+    color: black;
+}
+
+a 
+{
+    color: #449D44;
+}
+
+a:link 
+{
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-decoration: none;
+}
+
+a:hover 
+{
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.table 
+{
+    background-color: white;
+    color: black;
+    /* font-size: 90%; */
+}
+
+#importdb
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importdb input[type=file] 
+{
+    display: inline;
+}
+
+#importcheckin
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importcheckin input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistAquatlo
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistAquatlo input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistCREquipas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistCREquipas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistCRIndividual
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistCRIndividual input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistEstafetas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistEstafetas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistEstafetas
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistEstafetas input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlist
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlist input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistJovens
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistJovens input[type=file] 
+{
+    display: inline;
+}
+
+#importStartlistETU
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importStartlistETU input[type=file] 
+{
+    display: inline;
+}
+
+#importFTPAthletes
+{
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#importFTPAthletes input[type=file] 
+{
+    display: inline;
+}
+
+th.dt-center, td.dt-center 
+{ 
+    text-align: center; 
+}
+
+.toolbar {
+    float: left;
+}
+
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+
+/* 
+Generic Styling, for Desktops/Laptops 
+*/
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+/* Zebra striping */
+tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+th { 
+  background: #333; 
+  color: white; 
+  font-weight: bold; 
+}
+td, th { 
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left; 
+}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr { 
+        display: block; 
+    }
+    
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    tr { border: 1px solid #ccc; }
+    
+    td { 
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 50%; 
+    }
+    
+    td:before { 
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%; 
+        padding-right: 10px; 
+        white-space: nowrap;
+    }
+    
+    /*
+    Label the data
+    */
+    td:nth-of-type(1):before { content: "Dorsal"; }
+    td:nth-of-type(2):before { content: "Nome"; }
+    td:nth-of-type(3):before { content: "Local"; }
+    td:nth-of-type(4):before { content: "Tempo"; }
+    td:nth-of-type(5):before { content: "Total"; }
+}
