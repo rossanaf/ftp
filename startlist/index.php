@@ -1,7 +1,5 @@
 <?php 
-	// include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
-	//include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 ?>
 
@@ -72,7 +70,7 @@
           	<td>Estafetas</td>
           	<td><center>
           		<form id="formulario" method="post" enctype="multipart/form-data">
-            		<input type="file" name="file" id="filerelay" />
+            		<input type="file" name="file" id="fileRelay" />
             		<button type="button" name="update" id="relay" class="btn btn-success btn-xs relay">Upload</button>
             	</form>
           	</center></td>
@@ -118,15 +116,25 @@
             </center></td>
           </tr>
         	<tr>
-        		<th scope="row">Provas Internacionais</th>
-          	<td>ETU / ITU</td>
+        		<th scope="row">ITU / ETU</th>
+          	<td>Duatlo / Triatlo</td>
           	<td><center>
           		<form id="formulario" method="post" enctype="multipart/form-data">
             		<input type="file" name="file" id="fileitu" />
-            		<button type="button" name="update" id="itu" class="btn btn-success btn-xs itu">Upload</button>
+            		<button type="button" name="update" id="itu" class="btn btn-success btn-xs ituTri">Upload</button>
             	</form>
           	</center></td>
         	</tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Estafestas Mistas</td>
+            <td><center>
+              <form id="formulario" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileitu" />
+                <button type="button" name="update" id="itu" class="btn btn-success btn-xs ituMxRelay">Upload</button>
+              </form>
+            </center></td>
+          </tr>
         </tbody>
       </table>
   </div>
@@ -144,7 +152,7 @@
 			formData.append('file', $('#fileaquarly')[0].files[0]);
 			formData.append('prova_id', $(this).attr("id"));
 			$.ajax({
-				url : 'importARLY.php',
+				url : 'cn-.php',
 				type : 'POST',
 				data : formData,
 				processData: false,  // tell jQuery not to process the data
@@ -203,86 +211,38 @@
         }
 			});
 		});
-		$(document).on('click', '.relay', function() {
-			var formData = new FormData();
-			formData.append('file', $('#filerelay')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importRLY.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data) {
+    $(document).on('click', '.aquathlon', function() {
+      var formData = new FormData();
+      formData.append('file', $('#fileaquathlon')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'importAqua.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data) {
           alert('Startlist importada com sucesso!');
           location.reload();
         }
-			});
-		});
-		$(document).on('click', '.mxrelay', function() {
-			var formData = new FormData();
-			formData.append('file', $('#filemxrelay')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importMXRLY.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data) {
+      });
+    });
+    $(document).on('click', '.jovem', function() {
+      var formData = new FormData();
+      formData.append('file', $('#filejovem')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'importPJ.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data){
           alert('Startlist importada com sucesso!');
           location.reload();
         }
-			});
-		});
-		$(document).on('click', '.aquathlon', function() {
-			var formData = new FormData();
-			formData.append('file', $('#fileaquathlon')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importAqua.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data) {
-          alert('Startlist importada com sucesso!');
-          location.reload();
-        }
-			});
-		});
-		$(document).on('click', '.triatlo', function() {
-			var formData = new FormData();
-			formData.append('file', $('#filetriatlo')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importTri.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data) {
-          alert('Startlist importada com sucesso!');
-          location.reload();
-        }
-			});
-		});
-		$(document).on('click', '.jovem', function() {
-			var formData = new FormData();
-			formData.append('file', $('#filejovem')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importPJ.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data){
-          alert('Startlist importada com sucesso!');
-          location.reload();
-        }
-			});
-		});
+      });
+    });
     $(document).on('click', '.jEstf', function() {
       var formData = new FormData();
       formData.append('file', $('#filejEstf')[0].files[0]);
@@ -299,21 +259,87 @@
         }
       });
     });
-		$(document).on('click', '.itu', function() {
+    $(document).on('click', '.ituTri', function() {
+      var formData = new FormData();
+      formData.append('file', $('#fileItuTri')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'itu-triathlon.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data){
+          alert('Startlist importada com sucesso!');
+          location.reload();
+        }
+      });
+    });
+    $(document).on('click', '.ituMxRelay', function() {
+      var formData = new FormData();
+      formData.append('file', $('#fileItuMxrelay')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'itu-mxrelay.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data){
+          alert('Startlist importada com sucesso!');
+          location.reload();
+        }
+      });
+    });
+    // OK 
+    $(document).on('click', '.triatlo', function() {
+      var formData = new FormData();
+      formData.append('file', $('#filetriatlo')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'import-file.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data) {
+          alert('Startlist importada com sucesso!');
+          location.reload();
+        }
+      });
+    });
+    $(document).on('click', '.mxrelay', function() {
+      var formData = new FormData();
+      formData.append('file', $('#fileMxRelay')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'import-file.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data) {
+          alert('Startlist importada com sucesso!');
+          location.reload();
+        }
+      });
+    });
+    $(document).on('click', '.relay', function() {
 			var formData = new FormData();
-			formData.append('file', $('#fileitu')[0].files[0]);
+			formData.append('file', $('#fileRelay')[0].files[0]);
 			formData.append('prova_id', $(this).attr("id"));
 			$.ajax({
-				url : 'importITU.php',
+				url : 'import-file.php',
 				type : 'POST',
 				data : formData,
 				processData: false,  // tell jQuery not to process the data
 				contentType: false,  // tell jQuery not to set contentType
-				success:function(data){
+				success:function(data) {
           alert('Startlist importada com sucesso!');
           location.reload();
         }
 			});
 		});
-	});
+    // OK
+  });
 </script>

@@ -1,5 +1,4 @@
 <?php
-
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 	
 	function get_total_all_records(){
@@ -80,5 +79,4 @@
 
 	//print_r($output);
 	echo json_encode($output);
-
 ?>

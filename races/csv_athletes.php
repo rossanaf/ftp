@@ -8,7 +8,7 @@
 
   $output = fopen("php://output", "w");
 
-  fputcsv($output, array('Licença', 'Chip', 'Gen.', 'Dorsal','Nome', 'Escalao', 'Clube', 'T1', 'T3', 'T5', 'Pen.', 'Tempo Final'));
+  fputcsv($output, array('Licença', 'Chip', 'Gen.', 'Dorsal','Nome', 'Escalao', 'Clube', 'T1', 'T2', 'T3', 'T4', 'T5', 'Pen.', 'Tempo Final'));
 
   $stmtRace = $db->prepare('SELECT race_gun_m, race_gun_f FROM races WHERE race_id=?');
   $stmtRace->execute([$race_id]);
@@ -42,9 +42,11 @@
     if(($row['athlete_t5']=="-") || ($row['athlete_t3']=="-")) $t5 = '-';
     else $t5 = utf8_decode(gmdate('H:i:s',strtotime($row['athlete_t5']) - strtotime($row['athlete_t3'])));
 
-    $line = array($row['athlete_license'], $row['athlete_chip'], $row['athlete_sex'], $row['athlete_bib'], $row['athlete_name'], $row['athlete_category'], $row['team_name'], $t1, $t3, $t5, $row['athlete_finishtime'], $row['athlete_totaltime']);
+    // Exportar 3 Tempos
+    // $line = array($row['athlete_license'], $row['athlete_chip'], $row['athlete_sex'], $row['athlete_bib'], $row['athlete_name'], $row['athlete_category'], $row['team_name'], $t1, $t3, $t5, $row['athlete_finishtime'], $row['athlete_totaltime']);
 
-		// $line = array($row['athlete_license'], $row['athlete_chip'], $row['athlete_sex'], $row['athlete_bib'], $row['athlete_name'], $row['athlete_category'], $row['team_name'], $row['athlete_t1'], $row['athlete_t2'], $row['athlete_t3'], $row['athlete_t4'], $row['athlete_t5'], $row['athlete_finishtime'], $row['athlete_totaltime']);
+    // Exportar 5 tempos
+		$line = array($row['athlete_license'], $row['athlete_chip'], $row['athlete_sex'], $row['athlete_bib'], $row['athlete_name'], $row['athlete_category'], $row['team_name'], $row['athlete_t1'], $row['athlete_t2'], $row['athlete_t3'], $row['athlete_t4'], $row['athlete_t5'], $row['athlete_finishtime'], $row['athlete_totaltime']);
 		fputcsv($output, $line);
 	}
 

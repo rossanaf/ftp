@@ -1,11 +1,8 @@
 <?php
-//ADAPTADO COM FUNCAO E A FUNCIONAR
-
-  include_once ($_SERVER['DOCUMENT_ROOT']."/html/header.php");
+  include_once($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/functions/PHPExcel/IOFactory.php");
 	include($_SERVER['DOCUMENT_ROOT'].'/functions/getTeams.php');
 	if(isset($_POST['prova_id'])) {
-		// Use whatever path to an Excel file you need.
 		$inputFileName = $_FILES['file']['tmp_name'];
 		try {
 			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);

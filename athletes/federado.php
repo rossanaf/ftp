@@ -1,5 +1,4 @@
 <?php
-
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 	
 	if(isset($_POST["licenca_id"]))
@@ -22,5 +21,4 @@
 		}
 		echo json_encode($output);
 	}
-
 ?>
