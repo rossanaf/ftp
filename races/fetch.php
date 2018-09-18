@@ -35,13 +35,13 @@
     if ($row["race_live"] == 1) $sub_array[] = '<center><img width="40px" src="../images/check.png"></center>';
     else $sub_array[] =' ';
 		if (($row['race_type'] == "jovem") || ($row['race_type'] == "jovemaq")){
-			$sub_array[] = '<center><button title="Guns PJ" type="button" name="gunsYouth" id="'.$row["race_id"].'" class="gunsYouth"><img width="40px" src="../images/horn.jpg"></button></center>';
+			$sub_array[] = '<center><button title="Guns PJ" type="button" name="gunsYouth" id="'.$row["race_id"].'" class="gunsYouth"><img width="30px" src="../images/horn.jpg"></button></center>';
 			$sub_array[] = '<button title="Editar Prova" type="button" name="youthhupdate" id="'.$row["race_id"].'" class="btn btn-info btn-xs youthupdate"><i class="fa fa-pencil"></i></button>';
 		} elseif (($row['race_type'] === 'relay') && ($row['race_relay'] === 'M')) {
 			$sub_array[] = $row["race_gun_m"];
 			$sub_array[] = '<button title="editar prova" type="button" name="update" id="'.$row["race_id"].'" class="btn btn-info btn-xs update"><i class="fa fa-pencil"></i></button>';
 		} else {
-      $sub_array[] = '<center><button title="Guns" type="button" name="guns" id="'.$row["race_id"].'" class="guns"><img width="40px" src="../images/horn.jpg"></button></center>';
+      $sub_array[] = '<center><button title="Guns" type="button" name="guns" id="'.$row["race_id"].'" class="guns"><img width="30px" src="../images/horn.jpg"></button></center>';
       $sub_array[] = '<button title="Editar Prova" type="button" name="update" id="'.$row["race_id"].'" class="btn btn-info btn-xs update"><i class="fa fa-pencil"></i></button>';
     }
 		$sub_array[] = '<a href="csv_athletes.php?race_id='.$row['race_id'].'">Download Atletas</a>';

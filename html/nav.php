@@ -274,14 +274,14 @@
             </div>
         </div>
     </form>
-    <form action="/imports/importStartlistETU.php" id="importStartlistETU" method="post" enctype="multipart/form-data">
+    <!-- <form action="/imports/importStartlistETU.php" id="importStartlistETU" method="post" enctype="multipart/form-data">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <input type="file" name="file" />
                 <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORTAR STARTLIST">
             </div>
         </div>
-    </form>
+    </form> -->
     <form action="/imports/importcheckin.php" id="importcheckin" method="post" enctype="multipart/form-data">
         <div class="panel panel-default">
             <div class="panel-heading">

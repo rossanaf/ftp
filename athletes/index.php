@@ -305,11 +305,31 @@
           $('#clube').val(data.team);
           $("input[name='clube'][value='" + data.team + "']").prop('selected', true);
           $('#t0').val(data.t0);
-          $('#swim').val(data.t1);
-          $('#t1').val(data.t2);
-          $('#bike').val(data.t3);
-          $('#t2').val(data.t4);
-          $('#run').val(data.t5);
+          if(data.t1 == 0) {
+            $('#swim').attr('disabled', 'disabled');
+          } else {
+            $('#swim').val(data.t1);
+          }
+          if(data.t1 == 0) {
+            $('#t1').attr('disabled', 'disabled');
+          } else {
+            $('#t1').val(data.t2);
+          }
+          if(data.t1 == 0) {
+            $('#bike').attr('disabled', 'disabled');
+          } else {
+            $('#bike').val(data.t1);
+          }
+          if(data.t1 == 0) {
+            $('#t2').attr('disabled', 'disabled');
+          } else {
+            $('#t2').val(data.t1);
+          }
+          if(data.t1 == 0) {
+            $('#run').attr('disabled', 'disabled');
+          } else {
+            $('#run').val(data.t1);
+          }
           $('#totaltime').val(data.totaltime);
           $('#time').val(data.finishtime);
           $("input[name='time'][value='" + data.finishtime + "']").prop('checked', true);
