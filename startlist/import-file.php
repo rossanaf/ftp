@@ -3,7 +3,6 @@
   include_once($_SERVER['DOCUMENT_ROOT']."/html/header.php");
   include($_SERVER['DOCUMENT_ROOT'].'/functions/getTeams.php');
   if (isset($_POST['prova_id'])) {
-    // print_r($_POST['prova_id']);
     $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
     if ($extension === 'xls' || $extension === 'xlsx') {
       $fileName = $_FILES['file']['tmp_name'];
@@ -68,7 +67,11 @@
             $raceName = 'Estafetas';
             $raceType = 'relay';
             $raceRelay = 'Y';
-          } else {
+          } elseif ($_POST['prova_id'] === 'cre') {
+            $raceName = 'CR Equipas';
+            $raceType = 'cre';
+            $raceRelay = '-';
+          }else {
             $raceName = $rowData[0][8];
             $raceType = $_POST['prova_id'];
             $raceRelay = '-';
@@ -98,16 +101,19 @@
           // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
           // ':dob' => $UNIX_DATE
         ));
-        // $stmt = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_sex, live_category, live_team, live_race) VALUES (:chip, :bib, :name, :sex, :category, :team, :race)");
-        // $stmt->execute(array(
-        //   ':chip' => $rowData[0][3], 
-        //   ':bib' => $rowData[0][1],
-        //   ':name' => $rowData[0][4],
-        //   ':sex' => $rowData[0][6],
-        //   ':category' => $rowData[0][2],
-        //   ':team' => $rowData[0][7],
-        //   ':race' => $raceId
-        // ));
+        $stmt = $db->prepare("
+          INSERT INTO live (live_chip, live_bib, live_firstname, live_sex, live_category, live_team_id, live_race) 
+          VALUES (:chip, :bib, :name, :sex, :category, :team, :race)
+        ");
+        $stmt->execute(array(
+          ':chip' => $rowData[0][3], 
+          ':bib' => $rowData[0][1],
+          ':name' => $rowData[0][4],
+          ':sex' => $rowData[0][6],
+          ':category' => $rowData[0][2],
+          ':team' => $teamId,
+          ':race' => $raceId
+        ));
         //-----------------------------------
         // COL |  ID  |     DESCRIPTION     |
         //-----|------|---------------------|
@@ -117,7 +123,7 @@
         //  D  |   3  |  CHIP               |
         //  E  |   4  |  FULL NAME          |
         //  F  |   5  |  BIRTHDATE          |
-        //  G  |   6  |  relay             |
+        //  G  |   6  |  GENDER             |
         //  H  |   7  |  TEAM, COUNTRY      |
         //  I  |   8  |  RACE DESIGNATION   |
         //     |      |  FIRST NAME         |

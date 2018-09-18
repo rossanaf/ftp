@@ -40,7 +40,7 @@
           	<td>Contrarrelógio Equipas</td>
           	<td><center>
           		<form id="formulario" method="post" enctype="multipart/form-data">
-            		<input type="file" name="file" id="filecre" />
+            		<input type="file" name="file" id="fileCRE" />
             		<button type="button" name="update" id="cre" class="btn btn-success btn-xs cre">Upload</button>
             	</form>
           	</center></td>
@@ -179,12 +179,12 @@
         }
 			});
 		});
-    $(document).on('click', '.cre', function() {
+    $(document).on('click', '.crind', function() {
       var formData = new FormData();
-      formData.append('file', $('#filecre')[0].files[0]);
+      formData.append('file', $('#filecrind')[0].files[0]);
       formData.append('prova_id', $(this).attr("id"));
       $.ajax({
-        url : 'importCRE.php',
+        url : 'importCRI.php',
         type : 'POST',
         data : formData,
         processData: false,  // tell jQuery not to process the data
@@ -195,22 +195,6 @@
         }
       });
     });
-		$(document).on('click', '.crind', function() {
-			var formData = new FormData();
-			formData.append('file', $('#filecrind')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'importCRI.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data){
-          alert('Startlist importada com sucesso!');
-          location.reload();
-        }
-			});
-		});
     $(document).on('click', '.aquathlon', function() {
       var formData = new FormData();
       formData.append('file', $('#fileaquathlon')[0].files[0]);
@@ -292,6 +276,22 @@
       });
     });
     // OK 
+    $(document).on('click', '.cre', function() {
+      var formData = new FormData();
+      formData.append('file', $('#fileCRE')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'importCRE.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data){
+          // alert('Startlist importada com sucesso!');
+          // location.reload();
+        }
+      });
+    });
     $(document).on('click', '.triatlo', function() {
       var formData = new FormData();
       formData.append('file', $('#filetriatlo')[0].files[0]);
@@ -325,21 +325,21 @@
       });
     });
     $(document).on('click', '.relay', function() {
-			var formData = new FormData();
-			formData.append('file', $('#fileRelay')[0].files[0]);
-			formData.append('prova_id', $(this).attr("id"));
-			$.ajax({
-				url : 'import-file.php',
-				type : 'POST',
-				data : formData,
-				processData: false,  // tell jQuery not to process the data
-				contentType: false,  // tell jQuery not to set contentType
-				success:function(data) {
+      var formData = new FormData();
+      formData.append('file', $('#fileRelay')[0].files[0]);
+      formData.append('prova_id', $(this).attr("id"));
+      $.ajax({
+        url : 'import-file.php',
+        type : 'POST',
+        data : formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success:function(data) {
           alert('Startlist importada com sucesso!');
           location.reload();
         }
-			});
-		});
+      });
+    });
     // OK
   });
 </script>

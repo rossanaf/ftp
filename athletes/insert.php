@@ -8,15 +8,15 @@
 	$started = 0;
 	$has_times = 0;
 
-	$stmt_race = $db->prepare("SELECT race_type, race_gun_m, race_gun_f, race_relay FROM races WHERE race_id = ?  LIMIT 1");
+	$stmt_race = $db->prepare("SELECT race_type, race_gun_m, race_gun_f, race_relay, race_live FROM races WHERE race_id = ?  LIMIT 1");
 	$stmt_race->execute([$_POST["race"]]);
 	$race = $stmt_race->fetch();
 
-	$stmt_team = $db->prepare("SELECT team_name FROM teams WHERE team_id = ? LIMIT 1");
-	$stmt_team->execute([$_POST["clube"]]);
-	$team = $stmt_team->fetch();
+	// $stmt_team = $db->prepare("SELECT team_name FROM teams WHERE team_id = ? LIMIT 1");
+	// $stmt_team->execute([$_POST["clube"]]);
+	// $team = $stmt_team->fetch();
 
-  print_r($race['race_gun_f']);
+  // print_r($race['race_gun_f']);
 	
 	if(isset($_POST["operation"])) {
 		if($_POST["operation"] === "Add") {
@@ -36,16 +36,16 @@
 			PROCURAR O NOME DA EQUIPA E VER SE É CONTRARRELOGIO
 			SE FOR CONTRARRELOGIO TEM DE COLOCAR STARTED = -1
 			****************************** */
-			$stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_team, live_sex, live_category) VALUES (:chip, :bib, :firstname, :team, :sex, :category)
-			");
-			$stmt_live->execute(array(
-				':chip'	=>	$_POST["chip"],
-				':bib'	=>	$_POST["dorsal"],
-				':firstname'		=>	$_POST["name"],
-				':team'		=>	$team['team_name'],
-				':sex' => $_POST["sexo"],
-				':category'		=>	$_POST["escalao"]
-			));
+			// $stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_team, live_sex, live_category) VALUES (:chip, :bib, :firstname, :team, :sex, :category)
+			// ");
+			// $stmt_live->execute(array(
+			// 	':chip'	=>	$_POST["chip"],
+			// 	':bib'	=>	$_POST["dorsal"],
+			// 	':firstname'		=>	$_POST["name"],
+			// 	':team'		=>	$team['team_name'],
+			// 	':sex' => $_POST["sexo"],
+			// 	':category'		=>	$_POST["escalao"]
+			// ));
 		}
 		if($_POST["operation"] === "Edit") {
 			if (($race['race_type'] === 'relay') || ($race['race_type'] === 'jEstf')) {
@@ -434,7 +434,7 @@
           ));
           if ($race['race_type'] === 'triatlo') {
             // O ID SERÁ SEMPRE O MESMO PORQUE É FEITO O TRUNCATE ANTES DE IMPORTAR TABELAS, A PRIMEIRA VEZ, FORCAR NO IMPORT
-            $stmt_live = $db->prepare("UPDATE live SET live_pos = :pos, live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started WHERE live_id = :id"
+            $stmt_live = $db->prepare("UPDATE live SET live_pos = :pos, live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex WHERE live_id = :id"
             );
 		        $stmt_live->execute(array(
 							':pos'	=>	$pos,
@@ -442,14 +442,15 @@
               ':chip' => $_POST["chip"],
 							':dorsal'	=>	$_POST["dorsal"],
 							':firstname'		=>	$_POST["name"],
-              ':clube'		=>	$team['team_name'],
+              ':clube'		=>	$_POST["clube"],
               ':swim'		=>	$live_swim,
 							':t1'		=>	$live_t1,
 							':bike'		=>	$live_bike,
 							':t2'		=>	$live_t2,
 							':run'		=>	$live_run,
 							':finishtime'		=>	$finishtime,
-							':started' => $started
+							':started' => $started,
+              ':sex' => $_POST["sexo"]
 						));
 			    }
 				  // if(!empty($result)) echo 'Dados do atleta atualizados!';
@@ -457,39 +458,24 @@
 			}
 		}
   }
-
   if ($run !== '-') {
 		//**** atualizar coluna 'pos' conforme tempo total, para validar com registo de meta
 	  $pos = 1;
     $queryathletes = $db->query("SELECT athlete_chip FROM athletes WHERE athlete_started = 5 ORDER BY athlete_t5");
-    $athletes = $queryathletes->fetchAll();
+    $athletes = $queryathletes->fetchAll(); 
     foreach ($athletes as $athlete) {
       $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos = ? WHERE athlete_chip = ?");
       $updateathletes->execute([$pos, $athlete['athlete_chip']]);
       $pos++;
     }
-		 //    if ($race['race_type'] == 'triatlo')
-			// {
-			//     // POSICAO DA TABELA LIVE ATULIZADA POR GENERO - M
-			//     $pos = 1;
-			//     $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'M' ORDER BY live_finishtime");
-			//     $athletes = $queryathletes->fetchAll();
-			//     foreach ($athletes as $athlete) 
-			//     {
-			//         $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-			//         $updatelive->execute([$pos, $athlete['live_id']]);
-			//         $pos ++; 
-			//     }
-			//     // POSICAO DA TABELA LIVE ATULIZADA POR GENERO  F
-			//     $pos = 1;
-			//     $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'F' ORDER BY live_finishtime");
-			//     $athletes = $queryathletes->fetchAll();
-			//     foreach ($athletes as $athlete) 
-			//     {
-			//         $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-			//         $updatelive->execute([$pos, $athlete['live_id']]);
-			//         $pos ++; 
-			//     }
-			// }
+    $pos = 1;
+    $stmtLive = $db->prepare('SELECT live_chip FROM live WHERE live_started=5 AND live_race=?');
+    $stmtLive->execute([$race['race_live']]);
+    $athletesLive = $stmtLive->fetchAll();
+    foreach ($athletesLive as $athleteLive) {
+      $stmtUpdateLive = $db->prepare('UPDATE live SET live_pos=? WHERE live_chip=?');
+      $updateathletes->execute([$pos, $athlete['athlete_chip']]);
+      $pos++;
+    }
 	}
 ?>

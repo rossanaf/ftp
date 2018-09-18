@@ -11,6 +11,7 @@
 			$output["name"] = $row["race_name"];
 			$output["namepdf"] = $row["race_namepdf"];
 			$output["ranking"] = $row["race_ranking"];
+      $output['live'] = $row['race_live'];
 			$output["segment1"] = $row["race_segment1"];
 			$output["distsegment1"] = $row["race_distsegment1"];
 			$output["segment2"] = $row["race_segment2"];

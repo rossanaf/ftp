@@ -5,8 +5,7 @@
     $times = $stmt->fetchAll();
     $data = array();
 	$filtered_rows = 0;
-    foreach ($times as $time) 
-    {
+    foreach ($times as $time) {
     	$stmt_live = $db->prepare("SELECT live_firstname, live_bib, live_race, live_team FROM live WHERE live_chip = ?");
     	$stmt_live->execute([$time['Chip']]);
     	$live = $stmt_live->fetch();

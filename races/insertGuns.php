@@ -12,7 +12,7 @@
       ':wmn' => $raceGunWmn,
       ':men' => $raceGunMen,
       ':id' =>  $_POST["gun_id"]
-    ));
+    )); 
     if(!empty($result)){
       echo 'Dados do atleta atualizados!';
     }

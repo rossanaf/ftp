@@ -21,6 +21,7 @@
           <th>Dist. Segm. 3</th>
           <th>Data</th>
           <th>Local</th>
+          <th>Live</th>
           <th width="1%"></th>
           <th width="1%"></th>
           <th width="1%"></th>
@@ -42,6 +43,7 @@
           <th>Dist. Segm. 3</th>
           <th>Data</th>
           <th>Local</th>
+          <th>Live</th>
           <th width="1%"></th>
           <th width="1%"></th>
           <th width="1%"></th>
@@ -81,18 +83,18 @@
             </div>
           </div>
           <div class="form-group row">
-              <div class="col-sm-3">
-                <input type="text" name="date" id="date" class="form-control" placeholder="data" />
-              </div>
-              <div class="col-sm-9">
-                <input type="text" name="location" id="location" class="form-control" placeholder="Local da Prova" />
-              </div>
+            <div class="col-sm-3">
+              <input type="text" name="date" id="date" class="form-control" placeholder="data" />
+            </div>
+            <div class="col-sm-9">
+              <input type="text" name="location" id="location" class="form-control" placeholder="Local da Prova" />
+            </div>
           </div>
           <div class="form-group row">
-              <label for="namepdf" class="col-sm-2 col-form-label">Prova:</label>
-              <div class="col-sm-10">
-                <input type="text" name="namepdf" id="namepdf" class="form-control" placeholder="Prova"/>
-              </div>
+            <label for="namepdf" class="col-sm-2 col-form-label">Prova:</label>
+            <div class="col-sm-10">
+              <input type="text" name="namepdf" id="namepdf" class="form-control" placeholder="Prova"/>
+            </div>
           </div>
           <div class="form-group row">
             <label for="ranking" class="col-sm-2 col-form-label">Ranking:</label>
@@ -100,16 +102,28 @@
               <input type="text" name="ranking" id="ranking" class="form-control" placeholder="Ranking"/>
             </div>
           </div>
+          <div class="form-group row">
+            <div class="custom-control custom-checkbox">
+              <div class="col-sm-12">
+                <input type="checkbox" class="custom-control-input" name='live' id="live" />
+                <label class="custom-control-label" for="live">Resultados Live</label>
+              </div>
+            </div>
+          </div>
           <hr>
-          <h3><center>Distâncias</center></h3>
+          <h5><center>Distâncias</center></h5>
 					<div class="form-group row">
           	<label class="col-sm-2 col-form-label">Segm. 1:</label>
             <div class="col-sm-3" id="segment1">
-              <label class="radio-inline"><input type="radio" name="segment1" value="Natação"> <img src="../images/swim.jpg" width="30%"></label>
-              <label class="radio-inline"><input type="radio" name="segment1" value="Corrida"> <img src="../images/run.jpg" width="30%"></label>
+              <label class="radio-inline"><input type="radio" name="segment1" value="Natação">
+                <img src="../images/swim.jpg" width="30%">
+              </label>
+              <label class="radio-inline"><input type="radio" name="segment1" value="Corrida">
+                <img src="../images/run.jpg" width="30%">
+              </label>
            	</div>
            	<div class="col-sm-7">
-              <input type="text" name="distsegment1" id="distsegment1" class="form-control" placeholder="distância segmento 1"/>
+              <input type="text" name="distsegment1" id="distsegment1" class="form-control" placeholder="distância segmento 1" />
             </div>
           </div>
           <div class="form-group row">
@@ -121,16 +135,15 @@
               <input type="text" name="distsegment2" id="distsegment2" class="form-control" placeholder="distância segmento 2"/>
             </div>
           </div>
-            <div class="form-group row">
-            	<label class="col-sm-2 col-form-label">Segm. 3:</label>
-            	<div class="col-sm-3">
-              	<input type="text" name="segment3" id="segment3" class="form-control" disabled />
-              </div>
-              <div class="col-sm-7">
-                <input type="text" name="distsegment3" id="distsegment3" class="form-control" placeholder="distância segmento 3"/>
-              </div>
-        	  </div>
-          </div>
+          <div class="form-group row">
+          	<label class="col-sm-2 col-form-label">Segm. 3:</label>
+          	<div class="col-sm-3">
+            	<input type="text" name="segment3" id="segment3" class="form-control" disabled />
+            </div>
+            <div class="col-sm-7">
+              <input type="text" name="distsegment3" id="distsegment3" class="form-control" placeholder="distância segmento 3"/>
+            </div>
+      	  </div>
         </div>
         <div class="modal-footer">
 					<input type="hidden" name="user_id" id="user_id" />
@@ -438,7 +451,7 @@
 				type:"POST"
 			},
       "columnDefs":[{
-    		"targets":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    		"targets":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
     		"orderable":false,
 			}],
 		});
@@ -471,11 +484,14 @@
         data:{user_id:user_id},
         dataType:"json",
         success:function(data){
+          // alert(data.live);
           $('#userModal').modal('show');
           $('#id').val(data.id);
           $('#name').val(data.name);
           $('#namepdf').val(data.namepdf);
           $('#ranking').val(data.ranking);
+          if (data.live == 0) $('#live').prop('checked', false)
+          else $('#live').prop('checked', true);
           $('#segment1').val(data.segment1);
           $("input[name='segment1'][value='" + data.segment1 + "']").prop('checked', true);
           $('#distsegment1').val(data.distsegment1);

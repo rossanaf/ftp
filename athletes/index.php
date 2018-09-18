@@ -11,7 +11,6 @@
 	$stmtraces = $db->query("SELECT race_id, race_name FROM races ORDER BY race_id");
 	$races = $stmtraces->fetchAll();
 ?>
-
 <div class='table-responsive' id="athletesBackground">
 	<div align="right">
     <button type="button" id="add_button" data-toggle="modal" data-target="#userModal" class="btn btn-info btn-lg">Inscrição de Ultima Hora</button>
@@ -279,7 +278,7 @@
           // alert(data);
           $('#user_form')[0].reset();
           $('#userModal').modal('hide');
-          dataTable.ajax.reload();
+          // dataTable.ajax.reload();
         }
 	    });
   	});

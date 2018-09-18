@@ -1,4 +1,4 @@
-<?php
+<?php 
   include($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   $queryraces = $db->query("SELECT race_id, race_gun_m, race_gun_f, race_type FROM races");
   $races = $queryraces->fetchAll();

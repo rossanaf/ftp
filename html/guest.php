@@ -8,6 +8,10 @@
 	$stmt = $db->prepare("SELECT race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3 FROM races LIMIT 1");
 	$stmt->execute();
 	$race = $stmt->fetch();
+  $live_stmt = $db->prepare('SELECT race_name, race_id FROM races WHERE race_live = "1"');
+  $live_stmt->execute();
+  $live_races = $live_stmt->fetchAll();
+  $isLive = 0;
 ?>
 
 
@@ -49,18 +53,24 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
         <ul class="navbar-nav mr-auto">
-		    <!-- <li class="nav-item">
-		        <h1>RESULTADOS LIVE!</h1>
-		    </li> -->
-		    <!-- <li class="nav-item">
-		        <a class="nav-link" href="/live">LIVE</a>
-		    </li>
-		     <li class="nav-item">
-		        <a class="nav-link" href="/resultsm/">Tabela Provisória Masc</a>
-		    </li>
-		    <li class="nav-item">
-		        <a class="nav-link" href="/resultsf/">Tabela Provisória Fem</a>
-		    </li> -->
+        <?php 
+          foreach ($live_races as $live): 
+            $isLive = 1;
+        ?>          
+          <li class="nav-item">
+              <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Masc' ?></a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
+          </li>
+        <?php 
+          endforeach; 
+          if ($isLive === 1) {
+        ?>
+  		    <li class="nav-item">
+  		        <a class="nav-link" href="/live">Tempos LIVE</a>
+  		    </li>
+        <?php } ?>
 		</ul>
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
 		<!-- <ul class="navbar-nav justify-content-end">

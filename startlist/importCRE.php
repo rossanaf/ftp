@@ -1,8 +1,6 @@
 <?php
 //ADAPTADO COM FUNCAO E A FUNCIONAR
 
-  //load the database configuration file
-  //header('Content-Type: text/html; charset=UTF-8');
   include_once ($_SERVER['DOCUMENT_ROOT']."/html/header.php");
   include($_SERVER['DOCUMENT_ROOT']."/functions/PHPExcel/IOFactory.php");
   include($_SERVER['DOCUMENT_ROOT'].'/functions/getTeams.php');
@@ -68,8 +66,8 @@
       $stmt = $db->prepare($query);
       $stmt->execute(array(
         ':chip' => $rowData[0][3], 
-        ':license' => $rowData[0][1],
-        ':bib' => $rowData[0][2].$creTeam,
+        ':license' => $rowData[0][0],
+        ':bib' => $rowData[0][1].$creTeam,
         ':name' => $rowData[0][4],
         ':sex' => $rowData[0][6],
         ':category' => $rowData[0][7],
