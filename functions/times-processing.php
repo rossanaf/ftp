@@ -1,20 +1,51 @@
 <?php 
-  function processLiveTimes() {
+  function processLiveTimes($chip, $t1, $t2, $t3, $t4, $t5, $chipTime, $db) {
+    // MELHORAR CODIGO PARA NAO VIR SEMPRE AQUI
+    // SO PODE CORRER SE TABELA TIME NAO TIVER TEMPOS
+    $stmtLive = $db->prepare('SELECT live_t2, live_t3, live_t4, live_t5 FROM live WHERE live_chip=? LIMIT 1');
+    $stmtLive->execute([$chip]);
+    $liveAthlete = $stmtLive->fetch();
+    if($liveAthlete['live_t2'] == 'time') {
+      if ($t1 !== '-' && $t2 !== '-') {
+        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t1));
+        $stmt = $db->prepare("UPDATE live SET live_t2=? WHERE live_chip=?");
+        $stmt->execute([$segmentTime, $chip]);
+      } 
+    }
+    if($liveAthlete['live_t3'] === 'time') {
+      if ($t2 !== '-' && $t3 !== '-') {
+        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t2));
+        $stmt = $db->prepare("UPDATE live SET live_t3=? WHERE live_chip=?");
+        $stmt->execute([$segmentTime, $chip]);
+      }
+    }
+    if($liveAthlete['live_t4'] === 'time') {
+      if ($t3 !== '-' && $t4 !== '-') {
+        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t3));
+        $stmt = $db->prepare("UPDATE live SET live_t4=? WHERE live_chip=?");
+        $stmt->execute([$segmentTime, $chip]);
+      }
+    }
+    if($liveAthlete['live_t5'] === 'time') {
+      if ($t4 !== '-' && $t5 !== '-') {
+        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t4));
+        $stmt = $db->prepare("UPDATE live SET live_t5=? WHERE live_chip=?");
+        $stmt->execute([$segmentTime, $chip]);
+      }
+    }
   }
 
   function processTriathlonTimes($gun, $gender, $raceId, $raceType, $live, $db) {
-    $t1 = '-';
-    $t2 = '-';
-    $t3 = '-';
-    $t4 = '-';
-    $t5 = '-';    
-    $thisAthlete = 'A0';
+    $thisAthlete = 'A1';
     $queryathletes = $db->prepare("SELECT athlete_t0, athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip = times.Chip where athlete_race_id = ? AND athlete_sex = ? ORDER BY Chip, ChipTime ASC");
     $queryathletes->execute([$raceId, $gender]);
     $athletes = $queryathletes->fetchAll();
     foreach ($athletes as $athlete) {
       if (($athlete['athlete_finishtime'] !== 'LAP') && ($athlete['athlete_finishtime'] !== 'DNS') && ($athlete['athlete_finishtime'] !== 'DSQ') && ($athlete['athlete_finishtime'] !== 'DNF')) {
         if($athlete['Chip'] !== $thisAthlete) {
+          if($thisAthlete !== 'A1' && $live == 1) {
+            processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+          }
           $t1 = $athlete['athlete_t1'];
           $t2 = $athlete['athlete_t2'];
           $t3 = $athlete['athlete_t3'];
@@ -22,9 +53,7 @@
           $t5 = $athlete['athlete_t5'];
         }
         $started = $athlete['athlete_started'];
-        print_r($athlete['ChipTime']. ' - '.$athlete['Location'].'<br>');
         list($date, $chipTime) = explode (" ", $athlete['ChipTime']);
-        print_r(' t1='.$t1.'<br> t2='.$t2.'<br> t3='.$t3.'<br> t4='.$t4.'<br> t5='.$t5.'<br> ChipTime='.$chipTime.'<br>');
         // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
         // $chipTime = gmdate('H:i:s', strtotime($chipTime)+strtotime('01:00:00'));
         if ($raceType === 'crind') {
@@ -104,12 +133,6 @@
               ':emProva' => '-'
             ));
           }
-          if ($t1 !== '-') {
-            print_r('entra calculo segmento t2 '.$chipTime.' - '.$t1.'<br>');
-            $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t1));
-            $stmt = $db->prepare("UPDATE live SET live_t2=? WHERE live_chip=?");
-            $stmt->execute([$segmentTime, $athlete['Chip']]);
-          } 
         }
         // **** Tempo T3 ****//
         if($location === 'TimeT3' && $t3 === '-') {
@@ -130,16 +153,9 @@
               ':emProva' => '-'
             ));
           }
-          if ($t2 !== '-') {
-            print_r('entra calculo segmento t3 '.$chipTime.' - '.$t2.'<br>');
-            $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t2));
-            $stmt = $db->prepare("UPDATE live SET live_t3=? WHERE live_chip=?");
-            $stmt->execute([$segmentTime, $athlete['Chip']]);
-          } 
         }
         // **** Tempo T4 ****//
         if($location === 'TimeT4' && $t4 === '-') {
-          print_r('t4 <br>');
           $stmtTimes = $db->prepare("UPDATE athletes SET athlete_t4=? WHERE athlete_chip=?");
           $stmtTimes->execute([$chipTime, $athlete['Chip']]);
           $t4 = $chipTime;
@@ -157,16 +173,9 @@
               ':emProva' => '-'
             ));
           }
-          if ($t3 !== '-') {
-            print_r('entra calculo segmento t4 '.$chipTime.' - '.$t3.'<br>');
-            $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t3));
-            $stmt = $db->prepare("UPDATE live SET live_t4=? WHERE live_chip=?");
-            $stmt->execute([$segmentTime, $athlete['Chip']]);
-          } 
         }
         //**** Tempo T5 / Meta ****//
         if($location === "TimeT5" && $t5 === "-") {
-          print_r('t5 <br>');
           $stmtTimes = $db->prepare("
             UPDATE athletes, live
             SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total, live_started=:started, live_finishtime=:total 
@@ -178,14 +187,9 @@
             ':chip' => $athlete['Chip'],
             ':total' => $total
           ));
-          $t5 = $chipTime;
-          if ($t4 !== '-') {
-            print_r('entra calculo segmento t5 '.$chipTime.' - '.$t4.'<br>');
-            $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t4));
-            $stmt = $db->prepare("UPDATE live SET live_t5=? WHERE live_chip=?");
-            $stmt->execute([$segmentTime, $athlete['Chip']]);
-          }             
+          $t5 = $chipTime;            
         }
+        // ELIMINAR TEMPO DA TABELA TIMES, MOVER PARA UMA TABELA PARALELA
     //     // if ($raceType !== 'crind')
     //     // {
     //     //     $queryathletes = $db->prepare("SELECT athlete_id, athlete_finishtime FROM athletes WHERE athlete_started = 5 AND athlete_race_id = ?");
@@ -202,22 +206,8 @@
       }
       $thisAthlete = $athlete['Chip']; 
     }
-  // POSICAO DA TABELA LIVE ATUALIZADA POR GENERO - M
-  // $pos = 1;
-  // $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'M' ORDER BY live_finishtime");
-  // $athletes = $queryathletes->fetchAll();
-  // foreach ($athletes as $athlete) {
-  //   $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-  //   $updatelive->execute([$pos, $athlete['live_id']]);
-  //   $pos ++; 
-  // }
-  // // POSICAO DA TABELA LIVE ATULIZADA POR GENERO  F
-  // $pos = 1;
-  // $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'F' ORDER BY live_finishtime");
-  // $athletes = $queryathletes->fetchAll();
-  // foreach ($athletes as $athlete) {
-  //   $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-  //   $updatelive->execute([$pos, $athlete['live_id']]);
-  //   $pos ++; 
+    if ($thisAthlete !== 'A1') {
+      processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+    }
   }
 ?>
