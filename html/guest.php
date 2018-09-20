@@ -72,12 +72,12 @@
   		    </li>
         <?php } ?>
 		</ul>
-		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
-		<!-- <ul class="navbar-nav justify-content-end">
+		<ul class="collapse navbar-collapse navbar-nav justify-content-end">
+		<ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
 				<a class="nav-login" href="/html/login.php">Login</a>
 			</li>
-		</ul> -->
+		</ul>
 	</div>
   </nav>
 

@@ -2,10 +2,10 @@
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
 	include($_SERVER['DOCUMENT_ROOT']."/functions/times-tri.php");
-	include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
-	include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
-	include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
-	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
+	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
+	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
+	// include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 	$stmtteams = $db->query("SELECT team_id, team_name FROM teams ORDER BY team_name");
 	$teams = $stmtteams->fetchAll();
 	$stmtraces = $db->query("SELECT race_id, race_name FROM races ORDER BY race_id");
@@ -278,7 +278,7 @@
           // alert(data);
           $('#user_form')[0].reset();
           $('#userModal').modal('hide');
-          // dataTable.ajax.reload();
+          dataTable.ajax.reload();
         }
 	    });
   	});
@@ -318,17 +318,17 @@
           if(data.t1 == 0) {
             $('#bike').attr('disabled', 'disabled');
           } else {
-            $('#bike').val(data.t1);
+            $('#bike').val(data.t3);
           }
           if(data.t1 == 0) {
             $('#t2').attr('disabled', 'disabled');
           } else {
-            $('#t2').val(data.t1);
+            $('#t2').val(data.t4);
           }
           if(data.t1 == 0) {
             $('#run').attr('disabled', 'disabled');
           } else {
-            $('#run').val(data.t1);
+            $('#run').val(data.t5);
           }
           $('#totaltime').val(data.totaltime);
           $('#time').val(data.finishtime);

@@ -6,10 +6,10 @@
   foreach ($races as $race) {
     // LEITURA E CALCULO DOS TEMPOS PARA DUATLO E TRIATLOS E AQUATLOS
     if (($race['race_type']==='triatlo') || ($race['race_type']==='crind') || ($race['race_type']==='itu')  || ($race['race_type']==='aquathlon') || ($race['race_type']==='cre')) {
-      $gun = $race['race_gun_f'];
-      $gender = 'F';
+      // $gun = $race['race_gun_f'];
+      // $gender = 'F';
       print_r('chama funcao para processar tempos femininos <br>');
-      processTriathlonTimes($gun, $gender);
+      processTriathlonTimes($race['race_gun_f'], 'F', $race['race_id'], $race['race_type'], $race['race_live'], $db);
     } 
   }
   $queryraces = $db->query("SELECT race_id, race_gun_m, race_type FROM races WHERE race_gun_m != '-'");
@@ -18,9 +18,9 @@
     // LEITURA E CALCULO DOS TEMPOS PARA DUATLO E TRIATLOS E AQUATLOS
     if (($race['race_type']==='triatlo') || ($race['race_type']==='crind') || ($race['race_type']==='itu')  || ($race['race_type']==='aquathlon') || ($race['race_type']==='cre')) {
       $gun = $race['race_gun_m'];
-      $genders = 'M';
+      $gender = 'M';
       print_r('chama funcao para processar tempos masculinos <br>');
-      processTriathlonTimes($gun, $gender);
+      processTriathlonTimes($race['race_gun_m'], 'M', $race['race_id'], $race['race_type'], $race['race_live'], $db);
     } 
   }
   // POSICAO DA TABELA LIVE ATUALIZADA POR GENERO - M
