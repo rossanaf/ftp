@@ -1,23 +1,18 @@
 <?php
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   include ($_SERVER['DOCUMENT_ROOT']."/functions/isTime.php");
-
 	// INICIALIZAR VARIÁVEIS
 	$time = $_POST["time"] ?? '';
 	$pos = $_POST["pos"] ?? '';
 	$started = 0;
 	$has_times = 0;
-
-	$stmt_race = $db->prepare("SELECT race_type, race_gun_m, race_gun_f, race_relay, race_live FROM races WHERE race_id = ?  LIMIT 1");
+	$stmt_race = $db->prepare("SELECT race_type, race_gun_m, race_gun_f, race_relay, race_live, race_id FROM races WHERE race_id = ?  LIMIT 1");
 	$stmt_race->execute([$_POST["race"]]);
 	$race = $stmt_race->fetch();
-
 	// $stmt_team = $db->prepare("SELECT team_name FROM teams WHERE team_id = ? LIMIT 1");
 	// $stmt_team->execute([$_POST["clube"]]);
 	// $team = $stmt_team->fetch();
-
   // print_r($race['race_gun_f']);
-	
 	if(isset($_POST["operation"])) {
 		if($_POST["operation"] === "Add") {
 			$stmt = $db->prepare("INSERT INTO athletes (athlete_chip, athlete_license, athlete_bib, athlete_name, athlete_sex, athlete_category, athlete_team_id,  athlete_race_id) VALUES (:chip, :license, :bib, :name, :sex, :category, :team, :race)
@@ -320,9 +315,12 @@
 			} else {
 		    // EDITAR TEMPO E ATUALIZAR A TABELA LIVE
 				// LER GUN PARA CALCULAR OS TEMPOS
-				if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre')) $gun = $_POST['t0'];
-        elseif ($_POST['sexo'] === 'F') $gun = $race['race_gun_f'];
-        elseif ($_POST['sexo'] === 'M') $gun = $race['race_gun_m'];
+				if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre')) 
+          $gun = $_POST['t0'];
+        elseif ($_POST['sexo'] === 'F') 
+          $gun = $race['race_gun_f'];
+        elseif ($_POST['sexo'] === 'M') 
+          $gun = $race['race_gun_m'];
 				$live_swim = "time";
 				$live_t1 = "time";
 				$live_bike = "time";
@@ -432,12 +430,17 @@
             ':started'    =>  $started,
             ':id' =>  $_POST["user_id"]
           ));
-          if ($race['race_type'] === 'triatlo') {
+          if ($race['race_type'] === 'triatlo' && $race['race_live'] == 1) {
+            // .
+            // .
+            // .
+            // .
+            // include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
+            // processLiveTimes($_POST["chip"], $swim, $t1, $bike, $t2, $run, $chipTime, $db);
             // O ID SERÁ SEMPRE O MESMO PORQUE É FEITO O TRUNCATE ANTES DE IMPORTAR TABELAS, A PRIMEIRA VEZ, FORCAR NO IMPORT
-            $stmt_live = $db->prepare("UPDATE live SET live_pos = :pos, live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex WHERE live_id = :id"
+            $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
             );
 		        $stmt_live->execute(array(
-							':pos'	=>	$pos,
 							':id'	=>	$_POST["user_id"],
               ':chip' => $_POST["chip"],
 							':dorsal'	=>	$_POST["dorsal"],
@@ -450,7 +453,8 @@
 							':run'		=>	$live_run,
 							':finishtime'		=>	$finishtime,
 							':started' => $started,
-              ':sex' => $_POST["sexo"]
+              ':sex' => $_POST["sexo"],
+              ':pos' => $pos
 						));
 			    }
 				  // if(!empty($result)) echo 'Dados do atleta atualizados!';
@@ -468,14 +472,7 @@
       $updateathletes->execute([$pos, $athlete['athlete_chip']]);
       $pos++;
     }
-    $pos = 1;
-    $stmtLive = $db->prepare('SELECT live_chip FROM live WHERE live_started=5 AND live_race=?');
-    $stmtLive->execute([$race['race_live']]);
-    $athletesLive = $stmtLive->fetchAll();
-    foreach ($athletesLive as $athleteLive) {
-      $stmtUpdateLive = $db->prepare('UPDATE live SET live_pos=? WHERE live_chip=?');
-      $updateathletes->execute([$pos, $athlete['athlete_chip']]);
-      $pos++;
-    }
+    include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
+    processLivePositions($_POST["sexo"], $race['race_id'], $db);
 	}
 ?>

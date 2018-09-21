@@ -1,6 +1,9 @@
 <?php 
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
+  $stmtMarkers = $db->prepare('SELECT MarkerTime FROM markers ORDER BY MilliSecs ASC');
+  $stmtMarkers->execute();
+  $guns = $stmtMarkers->fetchAll();
 ?>
 
 <div class="container-fluid">
@@ -409,10 +412,26 @@
             <label for="gunwmn" class="col-sm-3 col-form-label">Femininos:</label>
             <div class="col-sm-3">
               <input type="text" name="gunwmn" id="gunwmn" class="form-control" placeholder="00:00:00"/>
+              <select class="form-control" id="gunwmns" name="gunwmns">
+                <option selected disabled value=""> StartTime </option>
+                <?php foreach ($guns as $gun): 
+                  list($date, $gunShot) = explode (" ", $gun['MarkerTime']);
+                ?>
+                  <option value="<?=$gunShot?>"><?=$gunShot?></option>
+                <?php endforeach ?>
+              </select>
             </div>
             <label for="gunmen" class="col-sm-3 col-form-label">Masculinos:</label>
             <div class="col-sm-3">
               <input type="text" name="gunmen" id="gunmen" class="form-control" placeholder="00:00:00"/>
+              <select class="form-control" id="gunmens" name="gunmens">
+                <option selected disabled value=""> StartTime </option>
+                <?php foreach ($guns as $gun): 
+                  list($date, $gunShot) = explode (" ", $gun['MarkerTime']);
+                ?>
+                  <option value="<?=$gunShot?>"><?=$gunShot?></option>
+                <?php endforeach ?>
+              </select>
             </div>
           </div>
         </div>  
@@ -435,6 +454,12 @@
 		// 	$('#action').val("Criar");
 		// 	$('#operation').val("Add");
 		// });
+    $('#gunwmns').change(function() {
+      $('#gunwmn').val($('#gunwmns').val());
+    });
+    $('#gunmens').change(function() {
+      $('#gunmen').val($('#gunmens').val());
+    });
 		
 		var dataTable = $('#user_data').DataTable({
       "language": {
@@ -484,7 +509,6 @@
         data:{user_id:user_id},
         dataType:"json",
         success:function(data){
-          // alert(data.live);
           $('#userModal').modal('show');
           $('#id').val(data.id);
           $('#name').val(data.name);
@@ -651,8 +675,21 @@
         dataType:"json",
         success:function(data){
           $('#gunModal').modal('show');
-          $('#gunwmn').val(data.gunwmn);
-          $('#gunmen').val(data.gunmen);
+          $('#teste').val(data.teste);
+          if(data.gunwmn === '-') {
+            $('#gunwmn').val(data.gunwmn);
+          } else {
+            $('#gunwmn').val(data.gunwmn);
+            $('#gunwmn').attr('readonly', true);
+            $('#gunwmns').attr('disabled', true);
+          }
+          if(data.gunmen === '-') {
+            $('#gunmen').val(data.gunmen);
+          } else {
+            $('#gunmen').val(data.gunmen);
+            $('#gunmen').attr('readonly', true);
+            $('#gunmens').attr('disabled', true);
+          }
           $('.modal-title').text("Inserir Horas dos GUNs");
           $('#guns_id').val(gun_id);
           $('#action').val("Guardar Alterações");
@@ -672,7 +709,7 @@
             success:function(data){
                 //alert(data);
                 location.reload();
-                // dataTable.ajax.reload();
+                dataTable.ajax.reload();
             }
         });
       } else {
@@ -699,7 +736,6 @@
 	//         return false; 
 	//     }   
 	// });
-
 });
     
 </script>

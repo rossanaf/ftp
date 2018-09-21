@@ -5,9 +5,13 @@
   } else {
     include_once ($_SERVER['DOCUMENT_ROOT']."/html/guest.php");
   }
+  include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   $raceId = $_GET['raceId'];
+  $stmt = $db->prepare('SELECT race_live FROM races WHERE race_id=?');
+  $stmt->execute([$raceId]);
+  $stmtLive = $stmt->fetch();
+  if ($stmtLive['race_live'] == 1) {
 ?>
-
 <div class="container-fluid" id="resultsContainer">
   <div class="col-md-12">
     <table class="table table-responsive table-bordered table-hover table-sm responsive" id="user_data">
@@ -51,4 +55,5 @@
     });
   });    
 </script>
+<?php } ?>
 <?php include($_SERVER['DOCUMENT_ROOT']."/html/info.php"); ?>

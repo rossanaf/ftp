@@ -35,8 +35,22 @@
     }
   }
 
+  function processLivePositions($gender, $raceId, $db) {
+    $pos = 1;
+    $stmt = $db->prepare('SELECT live_id FROM live WHERE live_started=5 AND live_sex=? AND live_race=? ORDER BY live_finishtime ASC');
+    $stmt->execute([$gender, $raceId]);
+    $athletes = $stmt->fetchAll();
+    foreach ($athletes as $athlete) {
+      $stmtUpdate = $db->prepare('UPDATE live SET live_pos=? WHERE live_id=?');
+      $stmtUpdate->execute([$pos, $athlete['live_id']]);
+      $pos++;
+    }
+  }
+
   function processTriathlonTimes($gun, $gender, $raceId, $raceType, $live, $db) {
     $thisAthlete = 'A1';
+    $livePositionsF = 0;
+    $livePositionsM = 0;
     $queryathletes = $db->prepare("SELECT athlete_t0, athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip = times.Chip where athlete_race_id = ? AND athlete_sex = ? ORDER BY Chip, ChipTime ASC");
     $queryathletes->execute([$raceId, $gender]);
     $athletes = $queryathletes->fetchAll();
@@ -62,6 +76,14 @@
           $total = gmdate('H:i:s', strtotime($chipTime)-strtotime($gun));
         }
         $location = $athlete['Location']; 
+        if ($location === 'TimeT5')  {
+          if ($livePositionsF === 0 && $gender === 'F') {
+            $livePositionsF = 1;
+          }
+          if ($livePositionsM === 0 & $gender === 'M') {
+            $livePositionsM = 1;
+          }
+        }
     //           /*
     //           $started = $athlete['athlete_started'];
     //           PODE NAO SER NECESSÁRIA ESTA VALIDAÇAO; SÓ CRIND TEM T0 E STARTED = -1
@@ -206,8 +228,16 @@
       }
       $thisAthlete = $athlete['Chip']; 
     }
-    if ($thisAthlete !== 'A1') {
-      processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+    if ($live == 1) {
+      if ($thisAthlete !== 'A1') {
+        processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+      }
+      if ($livePositionsF === 1) {
+        processLivePositions('F', $raceId, $db);
+      } 
+      if ($livePositionsM === 1) {
+        processLivePositions('M', $raceId, $db);
+      } 
     }
   }
 ?>

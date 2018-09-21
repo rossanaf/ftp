@@ -50,8 +50,8 @@
     $query->execute([$athlete_totaltime, $row['athlete_chip']]);
   }
 
-  $athlete_category = array("JUV", "CAD", "JUN", "ELITE","20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "S23", "SEN", "V1", "V2", "V3", "V4", "V5", "PTVI");
-  $athlete_category_extenso = array("Juvenis", "Cadetes", "Juniores", "ELITE", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "Sub-23", "Seniores", "Veteranos 1", "Veterenos 2", "Veterenos 3", "Veterenos 4", "Veterenos 5", "PTVI");
+  $athlete_category = array("JUV", "CAD", "JUN", "JUNIOR", "ELITE","20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "S23", "SEN", "V1", "V2", "V3", "V4", "V5", "PTVI");
+  $athlete_category_extenso = array("Juvenis", "Cadetes", "Juniores", "JUNIOR", "ELITE", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "Sub-23", "Seniores", "Veteranos 1", "Veterenos 2", "Veterenos 3", "Veterenos 4", "Veterenos 5", "PTVI");
   for($i=0;$i<count($athlete_category);$i++) {
     $query = $db->prepare("SELECT athlete_id FROM athletes WHERE athletes.athlete_race_id = ? AND athletes.athlete_sex = 'F' AND athlete_category = ? LIMIT 1");
     $query->execute([$race_id, $athlete_category[$i]]);

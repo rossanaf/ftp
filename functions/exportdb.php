@@ -32,7 +32,7 @@
 	$stmt->execute();
 	$result = $stmt->fetchAll();
 	foreach ($result as $row) {
-		$line = array(2, $row['race_id'], $row['race_name'], $row['race_namepdf'], $row['race_ranking'], $row['race_segment1'], $row['race_distsegment1'], $row['race_segment2'], $row['race_distsegment2'], $row['race_segment3'], $row['race_distsegment3'], $row['race_date'], $row['race_location'], $row['race_gun_f'], $row['race_gun_m'], $row['race_type'], $row['race_relay']);
+		$line = array(2, $row['race_id'], $row['race_name'], $row['race_namepdf'], $row['race_ranking'], $row['race_segment1'], $row['race_distsegment1'], $row['race_segment2'], $row['race_distsegment2'], $row['race_segment3'], $row['race_distsegment3'], $row['race_date'], $row['race_location'], $row['race_gun_f'], $row['race_gun_m'], $row['race_type'], $row['race_relay'], $row['race_live']);
 		fputcsv($output, $line);
 	}
 	//BACKUP TABELA TEAMS
@@ -56,7 +56,7 @@
 	$stmt->execute();
 	$result = $stmt->fetchAll();
 	foreach ($result as $row) {
-		$line = array(5, $row['live_pos'], $row['live_chip'], $row['live_license'], $row['live_bib'], $row['live_firstname'], $row['live_lastname'], $row['live_sex'], $row['live_category'], $row['live_team'], $row['live_t1'], $row['live_t2'], $row['live_t3'], $row['live_t4'], $row['live_t5'], $row['live_finishtime'], $row['live_race'], $row['live_started']);
+		$line = array(5, $row['live_pos'], $row['live_chip'], $row['live_license'], $row['live_bib'], $row['live_firstname'], $row['live_lastname'], $row['live_sex'], $row['live_category'], $row['live_team_id'], $row['live_t1'], $row['live_t2'], $row['live_t3'], $row['live_t4'], $row['live_t5'], $row['live_finishtime'], $row['live_race'], $row['live_started']);
 		fputcsv($output, $line);
 	}
 	//BACKUP TABELA TIMES

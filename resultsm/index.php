@@ -6,6 +6,10 @@
 		include_once ($_SERVER['DOCUMENT_ROOT']."/html/guest.php");
 	}
   $raceId = $_GET['raceId'];
+  $stmt = $db->prepare('SELECT race_live FROM races WHERE race_id=?');
+  $stmt->execute([$raceId]);
+  $stmtLive = $stmt->fetch();
+  if ($stmtLive['race_live'] == 1) {
 ?>
 
 <div class="container-fluid" id="resultsContainer">
@@ -51,4 +55,5 @@
 		});
 	});    
 </script>
+<?php } ?>
 <?php include($_SERVER['DOCUMENT_ROOT']."/html/info.php"); ?>

@@ -7,7 +7,7 @@
 	    // set the PDO error mode to exception
 	    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	    $db->query("SET NAMES 'utf8'");
-	    $db->query("SET time_zone='+00:00';");
+	    $db->query("SET time_zone='+01:00';");
 	} catch(PDOException $e) {
 	    die($e->getMessage());
 	}

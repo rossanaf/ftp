@@ -13,31 +13,29 @@
   $live_races = $live_stmt->fetchAll();
   $isLive = 0;
 ?>
-
-
   <div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
       <a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
         <ul class="navbar-nav mr-auto">
-		    <!-- <li class="nav-item">
-		        <h1>RESULTADOS LIVE!</h1>
-		    </li> -->
-		    <!-- <li class="nav-item">
-		        <a class="nav-link" href="/live">LIVE</a>
-		    </li>
-		    <li class="nav-item">
-		        <a class="nav-link" href="/resultsm/">Tabela Provisória Masc</a>
-		    </li>
-		    <li class="nav-item">
-		        <a class="nav-link" href="/resultsf/">Tabela Provisória Fem</a>
-		    </li> -->
-		    <!-- <li class="nav-item">
-		        <a class="nav-link" href="/resultsm/">Classificações Provisórias MASC</a>
-		    </li>
-		    <li class="nav-item">
-		        <a class="nav-link" href="/resultsf/">Classificações Provisórias FEM</a>
-		    </li> -->
-		</ul>
+		      <?php 
+            foreach ($live_races as $live): 
+              $isLive = 1;
+          ?>          
+            <li class="nav-item">
+                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Masc' ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
+            </li>
+          <?php 
+            endforeach; 
+            if ($isLive === 1) {
+          ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/live">Tempos LIVE</a>
+            </li>
+          <?php } ?>
+		    </ul>
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
 		<!-- <ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
@@ -53,35 +51,33 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
         <ul class="navbar-nav mr-auto">
-        <?php 
-          foreach ($live_races as $live): 
-            $isLive = 1;
-        ?>          
-          <li class="nav-item">
-              <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Masc' ?></a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
-          </li>
-        <?php 
-          endforeach; 
-          if ($isLive === 1) {
-        ?>
-  		    <li class="nav-item">
-  		        <a class="nav-link" href="/live">Tempos LIVE</a>
-  		    </li>
-        <?php } ?>
-		</ul>
-		<ul class="collapse navbar-collapse navbar-nav justify-content-end">
+          <?php 
+            foreach ($live_races as $live): 
+              $isLive = 1;
+          ?>          
+            <li class="nav-item">
+                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Masc' ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
+            </li>
+          <?php 
+            endforeach; 
+            if ($isLive === 1) {
+          ?>
+    		    <li class="nav-item">
+    		        <a class="nav-link" href="/live">Tempos LIVE</a>
+    		    </li>
+          <?php } ?>
+  		</ul>
+		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end">
 		<ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
 				<a class="nav-login" href="/html/login.php">Login</a>
 			</li>
-		</ul>
+		</ul> -->
 	</div>
   </nav>
-
-
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">

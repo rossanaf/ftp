@@ -5,7 +5,6 @@
 	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
 	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
 	include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
-	// include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 	$stmtteams = $db->query("SELECT team_id, team_name FROM teams ORDER BY team_name");
 	$teams = $stmtteams->fetchAll();
 	$stmtraces = $db->query("SELECT race_id, race_name FROM races ORDER BY race_id");
@@ -100,6 +99,7 @@
               <select class="form-control" id="escalao" name="escalao" required>
                 <option selected disabled value=""> -- Escalões -- </option>
                 <option value="ELITE">ELITE</option>
+                <option value="JUNIOR">JUNIOR</option>
                 <option value="BEN">Benjamins</option>
                 <option value="INF">Infantis</option>
                 <option value="INI">Iniciados</option>
@@ -211,7 +211,7 @@
             </div>
             <label for="totaltime" class="col-sm-1 control-label">Meta:</label>
             <div class="col-sm-5">
-              <input type="text" name="totaltime" id="totaltime" class="form-control" placeholder="Hora Relógio Meta"/>
+              <input type="text" name="totaltime" id="totaltime" class="form-control" placeholder="Hora Relógio Meta" disabled />
             </div>
           </div>
           <div class="form-group row">
@@ -306,27 +306,27 @@
           $("input[name='clube'][value='" + data.team + "']").prop('selected', true);
           $('#t0').val(data.t0);
           if(data.t1 == 0) {
-            $('#swim').attr('disabled', 'disabled');
+            $('#swim').attr('readonly', true);
           } else {
             $('#swim').val(data.t1);
           }
           if(data.t1 == 0) {
-            $('#t1').attr('disabled', 'disabled');
+            $('#t1').attr('readonly', true);
           } else {
             $('#t1').val(data.t2);
           }
           if(data.t1 == 0) {
-            $('#bike').attr('disabled', 'disabled');
+            $('#bike').attr('readonly', true);
           } else {
             $('#bike').val(data.t3);
           }
           if(data.t1 == 0) {
-            $('#t2').attr('disabled', 'disabled');
+            $('#t2').attr('readonly', true);
           } else {
             $('#t2').val(data.t4);
           }
           if(data.t1 == 0) {
-            $('#run').attr('disabled', 'disabled');
+            $('#run').attr('readonly', true);
           } else {
             $('#run').val(data.t5);
           }

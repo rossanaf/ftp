@@ -14,8 +14,8 @@
           $stmt = $db->prepare("INSERT INTO gunshots(gunshot_benf, gunshot_benm, gunshot_inff, gunshot_infm, gunshot_inif, gunshot_inim, gunshot_juvf, gunshot_juvm, gunshot_race_id) VALUES (?,?,?,?,?,?,?,?,?)");
           $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9]]);
         } elseif ($line[0] == 2) {
-          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3, race_date, race_location, race_gun_f, race_gun_m, race_type, race_relay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-          $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16]]);
+          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3, race_date, race_location, race_gun_f, race_gun_m, race_type, race_relay, race_live) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+          $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16], $line[17]]);
         } elseif ($line[0] == 3) {
           $stmt = $db->prepare("INSERT INTO teams(team_id,team_name) VALUES (?,?)");
           $stmt->execute([$line[1], $line[2]]);
@@ -23,7 +23,7 @@
           $stmt = $db->prepare("INSERT INTO youthraces(youthrace_race_id, youthrace_name, youthrace_namepdf, youthrace_ranking, youthrace_s1_ben, youthrace_d1_ben, youthrace_s2_ben, youthrace_d2_ben, youthrace_s3_ben, youthrace_d3_ben, youthrace_s1_inf, youthrace_d1_inf, youthrace_s2_inf, youthrace_d2_inf, youthrace_s3_inf, youthrace_d3_inf, youthrace_s1_ini, youthrace_d1_ini, youthrace_s2_ini, youthrace_d2_ini, youthrace_s3_ini, youthrace_d3_ini, youthrace_s1_juv, youthrace_d1_juv, youthrace_s2_juv, youthrace_d2_juv, youthrace_s3_juv, youthrace_d3_juv, youthrace_date, youthrace_location) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
           $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16], $line[17], $line[18], $line[19], $line[20], $line[21], $line[22], $line[23], $line[24], $line[25], $line[26], $line[27], $line[28], $line[29], $line[30]]);
         } elseif ($line[0] == 5) {
-          $stmt = $db->prepare("INSERT INTO live(live_pos, live_chip, live_license, live_bib, live_firstname, live_lastname, live_sex, live_category, live_team, live_t1, live_t2, live_t3, live_t4, live_t5, live_finishtime, live_race, live_started) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+          $stmt = $db->prepare("INSERT INTO live(live_pos, live_chip, live_license, live_bib, live_firstname, live_lastname, live_sex, live_category, live_team_id, live_t1, live_t2, live_t3, live_t4, live_t5, live_finishtime, live_race, live_started) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
           $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16], $line[17]]);
         } elseif ($line[0] == 6) {
           $stmt = $db->prepare("INSERT INTO times(Chip, ChipTime, Location) VALUES (?,?,?)");
