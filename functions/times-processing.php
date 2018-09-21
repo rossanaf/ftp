@@ -1,5 +1,5 @@
 <?php 
-  function processLiveTimes($chip, $t1, $t2, $t3, $t4, $t5, $chipTime, $db) {
+  function processLiveTimes($chip, $t1, $t2, $t3, $t4, $t5, $db) {
     // MELHORAR CODIGO PARA NAO VIR SEMPRE AQUI
     // SO PODE CORRER SE TABELA TIME NAO TIVER TEMPOS
     $stmtLive = $db->prepare('SELECT live_t2, live_t3, live_t4, live_t5 FROM live WHERE live_chip=? LIMIT 1');
@@ -7,28 +7,28 @@
     $liveAthlete = $stmtLive->fetch();
     if($liveAthlete['live_t2'] == 'time') {
       if ($t1 !== '-' && $t2 !== '-') {
-        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t1));
+        $segmentTime = gmdate('H:i:s', strtotime($t2)-strtotime($t1));
         $stmt = $db->prepare("UPDATE live SET live_t2=? WHERE live_chip=?");
         $stmt->execute([$segmentTime, $chip]);
       } 
     }
     if($liveAthlete['live_t3'] === 'time') {
       if ($t2 !== '-' && $t3 !== '-') {
-        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t2));
+        $segmentTime = gmdate('H:i:s', strtotime($t3)-strtotime($t2));
         $stmt = $db->prepare("UPDATE live SET live_t3=? WHERE live_chip=?");
         $stmt->execute([$segmentTime, $chip]);
       }
     }
     if($liveAthlete['live_t4'] === 'time') {
       if ($t3 !== '-' && $t4 !== '-') {
-        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t3));
+        $segmentTime = gmdate('H:i:s', strtotime($t4)-strtotime($t3));
         $stmt = $db->prepare("UPDATE live SET live_t4=? WHERE live_chip=?");
         $stmt->execute([$segmentTime, $chip]);
       }
     }
     if($liveAthlete['live_t5'] === 'time') {
       if ($t4 !== '-' && $t5 !== '-') {
-        $segmentTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($t4));
+        $segmentTime = gmdate('H:i:s', strtotime($t5)-strtotime($t4));
         $stmt = $db->prepare("UPDATE live SET live_t5=? WHERE live_chip=?");
         $stmt->execute([$segmentTime, $chip]);
       }
@@ -58,7 +58,7 @@
       if (($athlete['athlete_finishtime'] !== 'LAP') && ($athlete['athlete_finishtime'] !== 'DNS') && ($athlete['athlete_finishtime'] !== 'DSQ') && ($athlete['athlete_finishtime'] !== 'DNF')) {
         if($athlete['Chip'] !== $thisAthlete) {
           if($thisAthlete !== 'A1' && $live == 1) {
-            processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+            processLiveTimes($thisAthlete, $t1, $t2, $t3, $t4, $t5, $db);
           }
           $t1 = $athlete['athlete_t1'];
           $t2 = $athlete['athlete_t2'];
@@ -230,7 +230,7 @@
     }
     if ($live == 1) {
       if ($thisAthlete !== 'A1') {
-        processLiveTimes($athlete['Chip'], $t1, $t2, $t3, $t4, $t5, $chipTime, $db);
+        processLiveTimes($thisAthlete, $t1, $t2, $t3, $t4, $t5, $db);
       }
       if ($livePositionsF === 1) {
         processLivePositions('F', $raceId, $db);
