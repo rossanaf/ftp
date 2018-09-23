@@ -308,26 +308,31 @@
           if(data.t1 == 0) {
             $('#swim').attr('readonly', true);
           } else {
+            $('#swim').attr('readonly', false);
             $('#swim').val(data.t1);
           }
           if(data.t1 == 0) {
             $('#t1').attr('readonly', true);
           } else {
+            $('#t1').attr('readonly', false);
             $('#t1').val(data.t2);
           }
           if(data.t1 == 0) {
             $('#bike').attr('readonly', true);
           } else {
+            $('#bike').attr('readonly', false);
             $('#bike').val(data.t3);
           }
           if(data.t1 == 0) {
             $('#t2').attr('readonly', true);
           } else {
+            $('#t2').attr('readonly', false);
             $('#t2').val(data.t4);
           }
           if(data.t1 == 0) {
             $('#run').attr('readonly', true);
           } else {
+            $('#run').attr('readonly', false);
             $('#run').val(data.t5);
           }
           $('#totaltime').val(data.totaltime);
