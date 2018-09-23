@@ -3,26 +3,24 @@
   require('fpdf.php');
 
   class PDF extends FPDF {
-    // Page header
     function Header() {
       include_once($_SERVER['DOCUMENT_ROOT']."/functions/PDFs/pdfHeader.php");
       pdfHeader_V($this, $_GET['race_id'], 'F', 'Classificações Equipas Femininas');
-    }
-    // Page footer
+    }// Page footer
     function Footer() {
-      $this->SetDrawColor(255,214,0);
-      $this->Line(0,285,80,285);
-      $this->SetDrawColor(0,110,38);
-      $this->Line(80,285,150,285);
-      $this->SetDrawColor(166,16,8);
-      $this->Line(150,285,210,285);
-      // Position at 1.0 cm from bottom
-      $this->SetXY(10,-15);
-      // Arial italic 8
-      $this->SetFont('Times','',7);
-      // Page number
-      $this->Cell(0,10,utf8_decode("© Federação de Triatlo de Portugal"),0,0,'L');
-      $this->Cell(0,10,utf8_decode("Página ").$this->PageNo().'/{nb}',0,0,'R');
+        $this->SetDrawColor(255,214,0);
+        $this->Line(0,285,80,285);
+        $this->SetDrawColor(0,110,38);
+        $this->Line(80,285,150,285);
+        $this->SetDrawColor(166,16,8);
+        $this->Line(150,285,210,285);
+        // Position at 1.0 cm from bottom
+        $this->SetXY(10,-15);
+        // Arial italic 8
+        $this->SetFont('Times','',7);
+        // Page number
+        $this->Cell(0,10,utf8_decode("© Federação de Triatlo de Portugal"),0,0,'L');
+        $this->Cell(0,10,utf8_decode("Página ").$this->PageNo().'/{nb}',0,0,'R');
     }
   }
 
@@ -30,7 +28,7 @@
   $db->query("TRUNCATE teamresults");
   //TEMPOS DOS GUNS
   $race_id = $_GET['race_id'];
-  $querygun = $db->prepare("SELECT race_type, race_gun_f FROM races WHERE race_id = ? LIMIT 1");
+  $querygun = $db->prepare("SELECT race_type, race_gun_m FROM races WHERE race_id = ? LIMIT 1");
   $querygun->execute([$race_id]);
   $rowrace = $querygun->fetch();
   //**** TEMPOS DE QUEM TERMINOU ****//
@@ -39,7 +37,7 @@
   $rows = $query->fetchAll();
   foreach ($rows as $row) {
     if ($rowrace['race_type'] == 'crind') $racegun = $row['athlete_t0'];
-    else $racegun = $rowrace['race_gun_f'];
+    else $racegun = $rowrace['race_gun_m'];
     $athlete_totaltime = gmdate('H:i:s', strtotime($row['athlete_finishtime'])-strtotime($racegun));
     $query = $db->prepare("UPDATE athletes SET athlete_totaltime = ? WHERE athlete_chip = ?");
     $query->execute([$athlete_totaltime, $row['athlete_chip']]);
@@ -59,7 +57,7 @@
       $i=1;
       foreach ($timestable as $row_tempos) {
         if ($rowrace['race_type'] == 'crind') $racegun = $row_tempos['athlete_t0'];
-        else $racegun = $rowrace['race_gun_f']; 
+        else $racegun = $rowrace['race_gun_m']; 
         $tempo_individual = strtotime($row_tempos['athlete_finishtime'])-strtotime($racegun);
         if($i==1) $teamresult_teamtime = $tempo_individual;
         else $teamresult_teamtime = $tempo_individual + $teamresult_teamtime;
@@ -70,7 +68,6 @@
     }
   }
   // **** ORDENAR DO PRIMEIRO PARA O SEGUNDO E MANDAR PARA PDF **** //
-  // Instanciation of inherited class
   $pdf = new PDF();
   $pdf->AliasNbPages();
   $pdf->AddPage('P','A4');
@@ -80,7 +77,6 @@
   $pdf->SetFillColor(244,244,244);
   $pos = 1;
   $fill = false;
-  $linha = 1;
   $query_tempos = $db->query("SELECT teamresult_team FROM teamresults WHERE teamresult_validate = '3' ORDER BY teamresult_teamtime");
   $tempos = $query_tempos->execute();
   foreach ($query_tempos as $row_tempos) {
@@ -89,9 +85,14 @@
     $query_clubes->execute([$row_tempos['teamresult_team']]);
     // Percorre toda a tabela
     foreach ($query_clubes as $row_clubes) {
-      $pdf->Cell(6,5,$pos,1,0,'C',$fill);
+      if ($row_clubes['teamresult_validate'] == 2) {
+        $pdf->Cell(6,5,$pos,'L,R',0,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 3) {
+        $pdf->Cell(6,5,'','L,R,B',0,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 1) {
+        $pdf->Cell(6,5,'','L,T,R',0,'C',$fill);
+      } 
       if($row_clubes['teamresult_validate'] == 3) {
-        $linha = 0;
         if($pos == 1) $first_time = $row_clubes['teamresult_teamtime'];
         $diff = strtotime($row_clubes['teamresult_teamtime'])-strtotime($first_time);
         $teamresult_teamtime = $row_clubes['teamresult_teamtime'];
@@ -101,13 +102,21 @@
       $pdf->Cell(40,5,utf8_decode($row_clubes['teamresult_name']),1,0,'L',$fill);
       $pdf->Cell(10,5,$row_clubes['teamresult_category'],1,0,'C',$fill);
       $pdf->Cell(52,5,utf8_decode($row_clubes['teamresult_team']),1,0,'L',$fill);
-      $pdf->Cell(19,5,utf8_decode($row_clubes['teamresult_finishtime']),1,$linha,'C',$fill);
+      $pdf->Cell(19,5,utf8_decode($row_clubes['teamresult_finishtime']),1,0,'C',$fill);
+      if ($row_clubes['teamresult_validate'] == 2) {
+        $pdf->Cell(19,5,'','L,R',0,'C',$fill);
+        $pdf->Cell(18,5,'','L,R',1,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 3) {
+        $pdf->Cell(19,5,$teamresult_teamtime,'L,R,B',0,'C',$fill);
+        $pdf->Cell(18,5,gmdate('H:i:s', $diff),'L,R,B',1,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 1) {
+        $pdf->Cell(19,5,'','L,T,R',0,'C',$fill);
+        $pdf->Cell(18,5,'','L,T,R',1,'C',$fill);
+      }
     }
-    $pdf->Cell(19,5,$teamresult_teamtime,1,0,'C',$fill);
-    $pdf->Cell(18,5,gmdate('H:i:s', $diff),1,1,'C',$fill);
     $fill=!$fill;
-    $linha = 1;
     $pos++;
+    $pdf->Ln(0.4);
   }
   $pdf->Output();
 ?>

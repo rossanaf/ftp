@@ -21,40 +21,42 @@
     $page->SetDrawColor(166,16,8);
     $page->Line(150,34,210,34);
     $page->SetLineWidth(.4);
-    $page->SetFont('Times','',10);
-    $page->SetFillColor(255);
-    $page->Cell(24,5,utf8_decode("Local da Prova: "),0,0,'L',true);
-    $page->SetX(100);
-    $page->Cell(16,5,utf8_decode("Data: "),0,0,'L',true);
-    $page->SetX(176);
-    $page->Cell(8,5,utf8_decode("Hora da Partida: "),0,0,'R',true);
-    $page->SetFont('Times','B',10);
-    $page->SetX(34);
-    $page->Cell(52,5,utf8_decode(ucwords($rowRace['race_location'])),0,0,'L',true);
-    $page->SetX(110);
-    $page->Cell(12,5,utf8_decode($rowRace['race_date']),0,0,'L',true);
-    $page->SetX(190);
-    if ($gender === 'F') $page->Cell(10,5,utf8_decode($rowRace['race_gun_f']),0,0,'R',true);
-    elseif ($gender === 'M') $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
-    $segment1 = ucwords($rowRace['race_segment1'])." - ".$rowRace['race_distsegment1'];
-    if ($rowRace['race_segment2'] !== 'n.a.') {
-      $segment2 = ucwords($rowRace['race_segment2'])." - ".$rowRace['race_distsegment2'];
+    if ($page->PageNo() == 1) {
+      $page->SetFont('Times','',10);
+      $page->SetFillColor(255);
+      $page->Cell(24,5,utf8_decode("Local da Prova: "),0,0,'L',true);
+      $page->SetX(100);
+      $page->Cell(16,5,utf8_decode("Data: "),0,0,'L',true);
+      $page->SetX(176);
+      $page->Cell(8,5,utf8_decode("Hora da Partida: "),0,0,'R',true);
+      $page->SetFont('Times','B',10);
+      $page->SetX(34);
+      $page->Cell(52,5,utf8_decode(ucwords($rowRace['race_location'])),0,0,'L',true);
+      $page->SetX(110);
+      $page->Cell(12,5,utf8_decode($rowRace['race_date']),0,0,'L',true);
+      $page->SetX(190);
+      if ($gender === 'F') $page->Cell(10,5,utf8_decode($rowRace['race_gun_f']),0,0,'R',true);
+      elseif ($gender === 'M') $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
+      $segment1 = ucwords($rowRace['race_segment1'])." - ".$rowRace['race_distsegment1'];
+      if ($rowRace['race_segment2'] !== 'n.a.') {
+        $segment2 = ucwords($rowRace['race_segment2'])." - ".$rowRace['race_distsegment2'];
+      }
+      $segment3 = ucwords($rowRace['race_segment3'])." - ".$rowRace['race_distsegment3'];
+      $page->SetFont('Times','',10);
+      $page->Ln(10);
+      $page->Cell(20,5,utf8_decode("Distancias: "),0,0,'L',true);
+      $page->SetDrawColor(255,214,0);
+      $page->Cell(50,5,utf8_decode($segment1),1,0,'C',true);
+      if ($rowRace['race_segment2'] !== 'n.a.') {
+        $page->SetDrawColor(166,16,8);
+        $page->SetX(90);
+        $page->Cell(50,5,utf8_decode($segment2),1,0,'C',true);
+      }
+      $page->SetX(150);
+      $page->SetDrawColor(0,110,38);
+      $page->Cell(50,5,utf8_decode($segment3),1,0,'C',true);
+      $page->Ln(10);
     }
-    $segment3 = ucwords($rowRace['race_segment3'])." - ".$rowRace['race_distsegment3'];
-    $page->SetFont('Times','',10);
-    $page->Ln(10);
-    $page->Cell(20,5,utf8_decode("Distancias: "),0,0,'L',true);
-    $page->SetDrawColor(255,214,0);
-    $page->Cell(50,5,utf8_decode($segment1),1,0,'C',true);
-    if ($rowRace['race_segment2'] !== 'n.a.') {
-      $page->SetDrawColor(166,16,8);
-      $page->SetX(90);
-      $page->Cell(50,5,utf8_decode($segment2),1,0,'C',true);
-    }
-    $page->SetX(150);
-    $page->SetDrawColor(0,110,38);
-    $page->Cell(50,5,utf8_decode($segment3),1,0,'C',true);
-    $page->Ln(10);
     $page->SetFont('Times','',14);
     if (stripos($rowRace['race_name'],'estafeta') === false) $page->Cell(190,8,utf8_decode($scoreDescription),0,0,'C');
     else $page->Cell(190,8,utf8_decode("Classificações Estafetas"),0,0,'C');
@@ -103,42 +105,44 @@
     $page->SetDrawColor(166,16,8);
     $page->Line(198,34,297,34);
     $page->SetLineWidth(.4);
-    $page->SetFont('Times','',10);
-    $page->SetFillColor(255);
-    $page->SetX(12);
-    $page->Cell(16,4,utf8_decode("Local da Prova: "),0,0,'L',true);
-    $page->SetX(138);
-    $page->Cell(16,4,utf8_decode("Data: "),0,0,'L',true);
-    $page->SetX(235);
-    $page->Cell(16,4,utf8_decode("Hora da Partida: "),0,0,'R',true);
-    $page->SetFont('Times','B',10);
-    $page->SetX(36);
-    $page->Cell(52,4,utf8_decode(ucwords($rowRace['race_location'])),0,0,'L',true);
-    $page->SetX(147);
-    $page->Cell(12,4,utf8_decode($rowRace['race_date']),0,0,'L',true);
-    $page->SetX(256);
-    if ($gender === 'F') $page->Cell(10,5,utf8_decode($rowRace['race_gun_f']),0,0,'R',true);
-    elseif ($gender === 'M') $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
-    $segment1 = ucwords($rowRace['race_segment1'])." - ".$rowRace['race_distsegment1'];
-    if ($rowRace['race_segment2'] !== 'n.a.') {
-        $segment2 = ucwords($rowRace['race_segment2'])." - ".$rowRace['race_distsegment2'];
+    if ($page->PageNo() == 1) {
+      $page->SetFont('Times','',10);
+      $page->SetFillColor(255);
+      $page->SetX(12);
+      $page->Cell(16,4,utf8_decode("Local da Prova: "),0,0,'L',true);
+      $page->SetX(138);
+      $page->Cell(16,4,utf8_decode("Data: "),0,0,'L',true);
+      $page->SetX(235);
+      $page->Cell(16,4,utf8_decode("Hora da Partida: "),0,0,'R',true);
+      $page->SetFont('Times','B',10);
+      $page->SetX(36);
+      $page->Cell(52,4,utf8_decode(ucwords($rowRace['race_location'])),0,0,'L',true);
+      $page->SetX(147);
+      $page->Cell(12,4,utf8_decode($rowRace['race_date']),0,0,'L',true);
+      $page->SetX(256);
+      if ($gender === 'F') $page->Cell(10,5,utf8_decode($rowRace['race_gun_f']),0,0,'R',true);
+      elseif ($gender === 'M') $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
+      $segment1 = ucwords($rowRace['race_segment1'])." - ".$rowRace['race_distsegment1'];
+      if ($rowRace['race_segment2'] !== 'n.a.') {
+          $segment2 = ucwords($rowRace['race_segment2'])." - ".$rowRace['race_distsegment2'];
+      }
+      $segment3 = ucwords($rowRace['race_segment3'])." - ".$rowRace['race_distsegment3'];
+      $page->SetFont('Times','',10);
+      $page->Ln(10);
+      $page->SetX(12);
+      $page->Cell(20,5,utf8_decode("Distancias: "),0,0,'L',true);
+      $page->SetDrawColor(255,214,0);
+      $page->Cell(50,5,utf8_decode($segment1),1,0,'C',true);
+      if ($rowRace['race_segment2'] !== 'n.a.') {
+        $page->SetDrawColor(166,16,8);
+        $page->SetX(126);
+        $page->Cell(50,5,utf8_decode($segment2),1,0,'C',true);
+      }
+      $page->SetX(220);
+      $page->SetDrawColor(0,110,38);
+      $page->Cell(50,5,utf8_decode($segment3),1,0,'C',true);
+      $page->Ln(10);
     }
-    $segment3 = ucwords($rowRace['race_segment3'])." - ".$rowRace['race_distsegment3'];
-    $page->SetFont('Times','',10);
-    $page->Ln(10);
-    $page->SetX(12);
-    $page->Cell(20,5,utf8_decode("Distancias: "),0,0,'L',true);
-    $page->SetDrawColor(255,214,0);
-    $page->Cell(50,5,utf8_decode($segment1),1,0,'C',true);
-    if ($rowRace['race_segment2'] !== 'n.a.') {
-      $page->SetDrawColor(166,16,8);
-      $page->SetX(126);
-      $page->Cell(50,5,utf8_decode($segment2),1,0,'C',true);
-    }
-    $page->SetX(220);
-    $page->SetDrawColor(0,110,38);
-    $page->Cell(50,5,utf8_decode($segment3),1,0,'C',true);
-    $page->Ln(10);
     $page->SetFont('Times','',14);
     if (stripos($rowRace['race_name'],'estafeta') === false) $page->Cell(280,8,utf8_decode($scoreDescription),0,0,'C');
     else $page->Cell(280,8,utf8_decode("Classificações Estafetas"),0,0,'C');

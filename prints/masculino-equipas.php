@@ -68,7 +68,6 @@
     }
   }
   // **** ORDENAR DO PRIMEIRO PARA O SEGUNDO E MANDAR PARA PDF **** //
-  // Instanciation of inherited class
   $pdf = new PDF();
   $pdf->AliasNbPages();
   $pdf->AddPage('P','A4');
@@ -78,7 +77,6 @@
   $pdf->SetFillColor(244,244,244);
   $pos = 1;
   $fill = false;
-  $linha = 1;
   $query_tempos = $db->query("SELECT teamresult_team FROM teamresults WHERE teamresult_validate = '3' ORDER BY teamresult_teamtime");
   $tempos = $query_tempos->execute();
   foreach ($query_tempos as $row_tempos) {
@@ -87,9 +85,14 @@
     $query_clubes->execute([$row_tempos['teamresult_team']]);
     // Percorre toda a tabela
     foreach ($query_clubes as $row_clubes) {
-      $pdf->Cell(6,5,$pos,1,0,'C',$fill);
+      if ($row_clubes['teamresult_validate'] == 2) {
+        $pdf->Cell(6,5,$pos,'L,R',0,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 3) {
+        $pdf->Cell(6,5,'','L,R,B',0,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 1) {
+        $pdf->Cell(6,5,'','L,T,R',0,'C',$fill);
+      } 
       if($row_clubes['teamresult_validate'] == 3) {
-        $linha = 0;
         if($pos == 1) $first_time = $row_clubes['teamresult_teamtime'];
         $diff = strtotime($row_clubes['teamresult_teamtime'])-strtotime($first_time);
         $teamresult_teamtime = $row_clubes['teamresult_teamtime'];
@@ -99,13 +102,21 @@
       $pdf->Cell(40,5,utf8_decode($row_clubes['teamresult_name']),1,0,'L',$fill);
       $pdf->Cell(10,5,$row_clubes['teamresult_category'],1,0,'C',$fill);
       $pdf->Cell(52,5,utf8_decode($row_clubes['teamresult_team']),1,0,'L',$fill);
-      $pdf->Cell(19,5,utf8_decode($row_clubes['teamresult_finishtime']),1,$linha,'C',$fill);
+      $pdf->Cell(19,5,utf8_decode($row_clubes['teamresult_finishtime']),1,0,'C',$fill);
+      if ($row_clubes['teamresult_validate'] == 2) {
+        $pdf->Cell(19,5,'','L,R',0,'C',$fill);
+        $pdf->Cell(18,5,'','L,R',1,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 3) {
+        $pdf->Cell(19,5,$teamresult_teamtime,'L,R,B',0,'C',$fill);
+        $pdf->Cell(18,5,gmdate('H:i:s', $diff),'L,R,B',1,'C',$fill);
+      } elseif ($row_clubes['teamresult_validate'] == 1) {
+        $pdf->Cell(19,5,'','L,T,R',0,'C',$fill);
+        $pdf->Cell(18,5,'','L,T,R',1,'C',$fill);
+      }
     }
-    $pdf->Cell(19,5,$teamresult_teamtime,1,0,'C',$fill);
-    $pdf->Cell(18,5,gmdate('H:i:s', $diff),1,1,'C',$fill);
     $fill=!$fill;
-    $linha = 1;
     $pos++;
+    $pdf->Ln(0.4);
   }
   $pdf->Output();
 ?>
