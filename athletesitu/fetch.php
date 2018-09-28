@@ -53,6 +53,7 @@
 		$sub_array[] = $row["athlete_name"];
 		$sub_array[] = $row["athlete_sex"];
 		$sub_array[] = $row["team_name"];
+		$sub_array[] = $row["athlete_t0"];
 		$sub_array[] = $row["athlete_t1"];
 		$sub_array[] = $row["athlete_t2"];
 		$sub_array[] = $row["athlete_t3"];

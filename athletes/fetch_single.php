@@ -1,8 +1,7 @@
 <?php
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 
-	if(isset($_POST["user_id"]))
-	{
+	if(isset($_POST["user_id"])) {
 		$output = array();
 		$stmt = $db->prepare(
 			"SELECT *, teams.team_name FROM athletes LEFT JOIN teams ON athlete_team_id=teams.team_id WHERE athlete_id = ".$_POST['user_id']." LIMIT 1"
