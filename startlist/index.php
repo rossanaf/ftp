@@ -130,8 +130,8 @@
             <td>Estafestas Mistas</td>
             <td><center>
               <form id="formulario" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" id="fileitu" />
-                <button type="button" name="update" id="itu" class="btn btn-success btn-xs ituMxRelay">Upload</button>
+                <input type="file" name="file" id="fileItuMxrelay" />
+                <button type="button" name="update" id="iturelay" class="btn btn-success btn-xs ituMxRelay">Upload</button>
               </form>
             </center></td>
           </tr>
@@ -287,8 +287,8 @@
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
         success:function(data){
-          // alert('Startlist importada com sucesso!');
-          // location.reload();
+          alert('Startlist importada com sucesso!');
+          location.reload();
         }
       });
     });

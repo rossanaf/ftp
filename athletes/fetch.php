@@ -34,13 +34,11 @@
 	if($_POST["length"] != -1){
 		$query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
 	}
-
 	$stmt = $db->prepare($query);
 	$stmt->execute();
 	$result = $stmt->fetchAll();
 	$data = array();
 	$filtered_rows = $stmt->rowCount();
-
 	foreach($result as $row){              
 		$sub_array = array();
 	    if($row["athlete_pos"]=="9999")
@@ -60,10 +58,10 @@
 		$sub_array[] = $row["athlete_t4"];
 		$sub_array[] = $row["athlete_t5"];
 		$sub_array[] = '<a href="/races">'."Prova ".$row["athlete_race_id"].'</a>';
-	    if(($row["athlete_finishtime"]=="DNF") || ($row["athlete_finishtime"]=="DNS") || ($row["athlete_finishtime"]=="DSQ") || ($row["athlete_finishtime"]=="LAP") || ($row["athlete_finishtime"]=="chkin") || ($row["athlete_finishtime"]=="validar"))
-	        $sub_array[] = $row["athlete_finishtime"];    
-	    else
-	        $sub_array[] = "";
+    if(($row["athlete_finishtime"]=="DNF") || ($row["athlete_finishtime"]=="DNS") || ($row["athlete_finishtime"]=="DSQ") || ($row["athlete_finishtime"]=="LAP") || ($row["athlete_finishtime"]=="chkin") || ($row["athlete_finishtime"]=="validar"))
+        $sub_array[] = $row["athlete_finishtime"];    
+    else
+        $sub_array[] = "";
 		$sub_array[] = '<button type="button" name="update" id="'.$row["athlete_id"].'" class="btn btn-success btn-xs update"><i class="fa fa-pencil-square-o"></button>';
 		$sub_array[] = '<button type="button" name="delete" id="'.$row["athlete_id"].'" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></button>';
 

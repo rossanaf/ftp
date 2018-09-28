@@ -1,9 +1,10 @@
 <?php 
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
-	include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
-	$stmtraces = $db->query("SELECT race_id, race_name FROM races ORDER BY race_id");
+	// include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
+	$stmtraces = $db->prepare("SELECT race_id, race_name FROM races ORDER BY race_id");
 	$races = $stmtraces->fetchAll();
+  // $stmtTeams = $db->prepare();
 ?>
 
 <div class="container-fluid">
@@ -19,15 +20,15 @@
                     <th width="1%">#</th>
                     <th width="2%">Chip</th>
                     <th width="1%">Dorsal</th>
-                    <th width="10%">Nome</th>
+                    <th width="12%">Nome</th>
                     <th width="1%">Sexo</th>
-                    <th width="10%">Nac.</th>
-                    <th width="4%">Natação</th>
+                    <th width="4%">Nac.</th>
                     <th width="4%">T1</th>
-                    <th width="4%">Ciclismo</th>
                     <th width="4%">T2</th>
-                    <th width="4%">Corrida</th>
-                    <th width="4%">Prova</th>
+                    <th width="4%">T3</th>
+                    <th width="4%">T4</th>
+                    <th width="4%">T5</th>
+                    <th width="2%">Prova</th>
                     <th width="2%">Pen.</th>
                     <th width="1%"></th>
                     <th width="1%"></th>
@@ -38,15 +39,15 @@
                     <th width="1%">#</th>
                     <th width="2%">Chip</th>
                     <th width="1%">Dorsal</th>
-                    <th width="10%">Nome</th>
+                    <th width="12%">Nome</th>
                     <th width="1%">Sexo</th>
-                    <th width="10%">Nac.</th>
-                    <th width="4%">Natação</th>
+                    <th width="4%">Nac.</th>
                     <th width="4%">T1</th>
-                    <th width="4%">Ciclismo</th>
                     <th width="4%">T2</th>
-                    <th width="4%">Corrida</th>
-                    <th width="4%">Prova</th>
+                    <th width="4%">T3</th>
+                    <th width="4%">T4</th>
+                    <th width="4%">T5</th>
+                    <th width="2%">Prova</th>
                     <th width="2%">Pen.</th>
                     <th width="1%"></th>
                     <th width="1%"></th>
@@ -91,7 +92,7 @@
 	                    <label for="clube" class="col-sm-2 control-label">Nac.:</label>
 	                    <div class="col-sm-10">
 	                        <select class="form-control" id="clube" name="clube">
-	                            <option value="ADICIONAR"> -- Nacionalidade -- </option>
+	                            <option value="ADICIONAR"> -- Pais -- </option>
 	                            <option value="AUT">Austria</option>
 	                            <option value="AZE">Azerbeijão</option>
 	                            <option value="BEL">Bélgica</option>
