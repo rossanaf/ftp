@@ -2,7 +2,7 @@
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   include ($_SERVER['DOCUMENT_ROOT']."/functions/isTime.php");
 	// INICIALIZAR VARIÁVEIS
-  $time = $_POST["time"] ?? '';
+  $time = $_POST['time'] ?? '';
   $pos = $_POST["pos"] ?? '';
 	$started = 0;
 	$has_times = 0;
@@ -312,11 +312,11 @@
 		    // EDITAR TEMPO E ATUALIZAR A TABELA LIVE
 				// LER GUN PARA CALCULAR OS TEMPOS
         if ($time === "DNS") {
-        	$swim="-"; $live_swim = "time";
-          $t1="-"; $live_t1 = "time";
-          $bike="-"; $live_bike = "time";
-          $t2="-"; $live_t2 = "time";
-          $run="-"; $live_run = "time";
+        	$swim="-"; $live_swim = 'time';
+          $t1="-"; $live_t1 = 'time';
+          $bike="-"; $live_bike = 'time';
+          $t2="-"; $live_t2 = 'time';
+          $run="-"; $live_run = 'time';
           $finishtime = $time;
           $t0 = '-';
           $started=0;
@@ -365,17 +365,17 @@
           }
         } else {
           if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre')) 
-          $gun = $_POST['t0'];
+          	$gun = $_POST['t0'];
           elseif ($_POST['sexo'] === 'F') 
             $gun = $race['race_gun_f'];
           elseif ($_POST['sexo'] === 'M') 
             $gun = $race['race_gun_m'];
-          $live_swim = "time";
-          $live_t1 = "time";
-          $live_bike = "time";
-          $live_t2 = "time";
-          $live_run = "time";
-          $finishtime = "time";
+          $live_swim = 'time';
+          $live_t1 = 'time';
+          $live_bike = 'time';
+          $live_t2 = 'time';
+          $live_run = 'time';
+          $finishtime = 'time';
           $t0 = $gun;
         	// $t0 = isTime($_POST['t0']);
           $swim = isTime($_POST['swim']);

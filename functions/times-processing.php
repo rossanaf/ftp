@@ -47,6 +47,10 @@
     }
   }
 
+  function processLivePositionsMxRelay($raceId, $db) {
+    
+  }
+
   function processTriathlonTimes($gun, $gender, $raceId, $raceType, $live, $db) {
     $thisAthlete = 'A1';
     $livePositionsF = 0;

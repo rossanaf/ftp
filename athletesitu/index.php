@@ -222,8 +222,8 @@
 	        success:function(data){
 	            // alert('Atleta inserido com sucesso.');
 	            $('#user_form')[0].reset();
-	            // $('#userModal').modal('hide');
-	            // dataTable.ajax.reload();
+	            $('#userModal').modal('hide');
+	            dataTable.ajax.reload();
 	        }
 	    });
 	});
