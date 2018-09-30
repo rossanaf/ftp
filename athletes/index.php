@@ -2,8 +2,10 @@
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
 	include($_SERVER['DOCUMENT_ROOT']."/functions/times-tri.php");
-	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
-	// include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
+  ////////////////////////////////////////////////////////////////
+	include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
+	include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
+  ////////////////////////////////////////////////////////////////
 	include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
 	$stmtteams = $db->query("SELECT team_id, team_name FROM teams ORDER BY team_name");
 	$teams = $stmtteams->fetchAll();

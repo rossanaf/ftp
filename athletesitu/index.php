@@ -1,7 +1,8 @@
 <?php 
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
-	// include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
+	include($_SERVER['DOCUMENT_ROOT']."/functions/times-itumxrelay.php");
+  include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
 	$stmtraces = $db->query('SELECT race_id, race_name FROM races ORDER BY race_id');
 	$races = $stmtraces->fetchAll();
   $stmtTeams = $db->query('SELECT team_id, team_country FROM teams ORDER BY team_name');

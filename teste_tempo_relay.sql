@@ -1,8 +1,8 @@
 A
 INSERT INTO `times` (`Chip`, `ChipTime`, `ChipType`, `PC`, `Reader`, `Antenna`, `MilliSecs`, `Location`, `LapRaw`) VALUES
-('DG2RM97', '2017-05-20 10:29:01', 'ChampionChip', 6, 1, 'd', 1, 'TimeT5', 1),
-('HD75G8V', '2017-05-20 10:30:22', 'ChampionChip', 6, 1, 'd', 8, 'TimeT5', 1),
-('CE43157', '2017-05-20 10:30:29', 'ChampionChip', 6, 1, 'd', 8, 'TimeT5', 1);
+('AA2', '2017-05-20 11:19:59', 'ChampionChip', 6, 1, 'd', 1, 'TimeT1', 1),
+('AA6', '2017-05-20 11:18:38', 'ChampionChip', 6, 1, 'd', 8, 'TimeT1', 1),
+('AA10', '2017-05-20 11:19:34', 'ChampionChip', 6, 1, 'd', 8, 'TimeT1', 1);
 
 B
 INSERT INTO `times` (`Chip`, `ChipTime`, `ChipType`, `PC`, `Reader`, `Antenna`, `MilliSecs`, `Location`, `LapRaw`) VALUES

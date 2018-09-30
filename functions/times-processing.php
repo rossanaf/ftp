@@ -47,10 +47,6 @@
     }
   }
 
-  function processLivePositionsMxRelay($raceId, $db) {
-    
-  }
-
   function processTriathlonTimes($gun, $gender, $raceId, $raceType, $live, $db) {
     $thisAthlete = 'A1';
     $livePositionsF = 0;
@@ -241,6 +237,225 @@
       } 
       if ($livePositionsM === 1) {
         processLivePositions('M', $raceId, $db);
+      } 
+    }
+  }
+
+  function processLivePositionsMxRelay($raceId, $db) {
+    $stmt = $db->query('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5 ORDER BY live_t0');
+    $finishers = $stmt->fetchAll();
+    $pos=1;
+    foreach ($finishers as $finisher) {
+      $stmtUpdate = $db->prepare('UPDATE live SET live_pos=? WHERE live_bib=?');
+      $stmtUpdate->execute([$pos, $finisher['live_bib']]);
+      $pos++;
+    }
+  }
+
+  function processLiveTimesMxRelay($db) {
+    // MELHORAR CODIGO PARA NAO VIR SEMPRE AQUI
+    // SO PODE CORRER SE TABELA TIME NAO TIVER TEMPOS
+    $stmt = $db->query('SELECT athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_chip FROM athletes WHERE athlete_started>0');
+    $athletes = $stmt->fetchAll();
+    foreach ($athletes as $athlete) {
+      $t1 = $athlete['athlete_t1'];
+      $t2 = $athlete['athlete_t2'];
+      $t3 = $athlete['athlete_t3'];
+      $t4 = $athlete['athlete_t4'];
+      $t5 = $athlete['athlete_t5'];
+      $chip = $athlete['athlete_chip'];
+      $stmtLive = $db->prepare('SELECT live_t2, live_t3, live_t4, live_t5 FROM live WHERE live_chip=? LIMIT 1');
+      $stmtLive->execute([$chip]);
+      $liveAthlete = $stmtLive->fetch();
+      if($liveAthlete['live_t2'] == 'time') {
+        if ($t1 !== '-' && $t2 !== '-') {
+          $segmentTime = gmdate('H:i:s', strtotime($t2)-strtotime($t1));
+          $stmt = $db->prepare("UPDATE live SET live_t2=? WHERE live_chip=?");
+          $stmt->execute([$segmentTime, $chip]);
+        } 
+      }
+      if($liveAthlete['live_t3'] === 'time') {
+        if ($t2 !== '-' && $t3 !== '-') {
+          $segmentTime = gmdate('H:i:s', strtotime($t3)-strtotime($t2));
+          $stmt = $db->prepare("UPDATE live SET live_t3=? WHERE live_chip=?");
+          $stmt->execute([$segmentTime, $chip]);
+        }
+      }
+      if($liveAthlete['live_t4'] === 'time') {
+        if ($t3 !== '-' && $t4 !== '-') {
+          $segmentTime = gmdate('H:i:s', strtotime($t4)-strtotime($t3));
+          $stmt = $db->prepare("UPDATE live SET live_t4=? WHERE live_chip=?");
+          $stmt->execute([$segmentTime, $chip]);
+        }
+      }
+      if($liveAthlete['live_t5'] === 'time') {
+        if ($t4 !== '-' && $t5 !== '-') {
+          $segmentTime = gmdate('H:i:s', strtotime($t5)-strtotime($t4));
+          $stmt = $db->prepare("UPDATE live SET live_t5=? WHERE live_chip=?");
+          $stmt->execute([$segmentTime, $chip]);
+        }
+      }
+    }
+  }
+
+  function processTriathlonTimesMxRelay($gun, $raceId, $raceType, $live, $db) {
+    $thisAthlete = 'A1';
+    $livePositions = 0;
+    $queryathletes = $db->prepare("SELECT athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, athlete_bib, athlete_arrive_order, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip = times.Chip where athlete_race_id = ? ORDER BY ChipTime ASC");
+    $queryathletes->execute([$raceId]);
+    $athletes = $queryathletes->fetchAll();
+    foreach ($athletes as $athlete) {
+      if (($athlete['athlete_finishtime'] !== 'LAP') && ($athlete['athlete_finishtime'] !== 'DNS') && ($athlete['athlete_finishtime'] !== 'DSQ') && ($athlete['athlete_finishtime'] !== 'DNF')) {
+        $t1 = $athlete['athlete_t1'];
+        $t2 = $athlete['athlete_t2'];
+        $t3 = $athlete['athlete_t3'];
+        $t4 = $athlete['athlete_t4'];
+        $t5 = $athlete['athlete_t5'];
+        $bib = $athlete['athlete_bib'];
+        $curAthleteOrder = $athlete['athlete_arrive_order'];
+        $nextOrder = $curAthleteOrder + 1;
+        $started = $athlete['athlete_started'];
+        list($date, $chipTime) = explode (" ", $athlete['ChipTime']);
+        // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
+        // $chipTime = gmdate('H:i:s', strtotime($chipTime)+strtotime('01:00:00'));
+        $stmtT0 = $db->prepare('SELECT athlete_t0 FROM athletes WHERE athlete_chip=? LIMIT 1');
+        $stmtT0->execute([$athlete['Chip']]);
+        $t0 = $stmtT0->fetch();
+        if ($t0['athlete_t0'] === '-') {
+          $total = 'time';
+        } else {
+          $total = gmdate('H:i:s', strtotime($chipTime)-strtotime($t0['athlete_t0']));
+        }
+        $location = $athlete['Location']; 
+        if ($location === 'TimeT5' && $livePositions == 0)  {
+          $livePositions = 1;
+        }
+        // **** Tempo T1 ****//  
+        if($location === 'TimeT1' && $t1 === '-') {
+          $stmtTimes = $db->prepare('
+            UPDATE athletes, live 
+            SET athlete_t1=:chipTime, live_t1=:total
+            WHERE athlete_chip=:chip AND live_chip=:chip
+          ');
+          $stmtTimes->execute(array(
+            ':chipTime' => $chipTime, 
+            ':total' => $total,
+            ':chip' => $athlete['Chip']
+          ));
+          $t1 = $chipTime;
+          if($athlete['athlete_started'] == 0) {
+            $started = 1;
+            $stmtTimes = $db->prepare('
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
+          }
+        }
+        // **** Tempo T2 ****//
+        if($location === 'TimeT2' && $t2 === '-') {
+          $stmtTimes = $db->prepare("UPDATE athletes SET athlete_t2=? WHERE athlete_chip=?");
+          $stmtTimes->execute([$chipTime, $athlete['Chip']]);
+          $t2 = $chipTime;
+          if($started <= 1) {
+            $started = 2;
+            $stmtTimes = $db->prepare('
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
+          }
+        }
+        // **** Tempo T3 ****//
+        if($location === 'TimeT3' && $t3 === '-') {
+          $stmtTimes = $db->prepare("UPDATE athletes SET athlete_t3=? WHERE athlete_chip=?");
+          $stmtTimes->execute([$chipTime, $athlete['Chip']]);
+          $t3 = $chipTime;
+          if($started <= 2) {
+            $started = 3;
+            $stmtTimes = $db->prepare('
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
+          }
+        }
+        // **** Tempo T4 ****//
+        if($location === 'TimeT4' && $t4 === '-') {
+          $stmtTimes = $db->prepare("UPDATE athletes SET athlete_t4=? WHERE athlete_chip=?");
+          $stmtTimes->execute([$chipTime, $athlete['Chip']]);
+          $t4 = $chipTime;
+          if($started <= 3) {
+            $started = 4;
+            $stmtTimes = $db->prepare('
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
+          }
+        }
+        //**** Tempo T5 / Meta ****//
+        if($location === "TimeT5" && $t5 === "-") {
+          $stmtTimes = $db->prepare("
+            UPDATE athletes, live
+            SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total, live_started=:started, live_finishtime=:total 
+            WHERE athlete_chip = :chip AND live_chip=:chip
+          ");
+          $stmtTimes->execute(array(
+            ':chipTime' => $chipTime,
+            ':started' => 5, 
+            ':chip' => $athlete['Chip'],
+            ':total' => $total
+          ));
+          $t5 = $chipTime;
+          if($raceType === 'iturelay') {
+            $stmtUpdatePreviousT0 = $db->prepare("UPDATE athletes SET athlete_t0=? WHERE athlete_bib=? AND athlete_arrive_order=?");
+            $stmtUpdatePreviousT0->execute([$t5, $bib, $nextOrder]);
+          }
+        }
+      }
+      $thisAthlete = $athlete['Chip']; 
+    }
+    if ($live == 1) {
+      processLiveTimesMxRelay($db);
+      // CODIGO REPETIDO
+      $stmtFinisher = $db->query('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5');
+      $finishers = $stmtFinisher->fetchAll();
+      foreach ($finishers as $finisher) {
+        $bib = $finisher['live_bib'];
+        $stmt = $db->prepare('SELECT sec_to_time(SUM(time_to_sec(live_finishtime))) AS teamTime FROM live WHERE live_bib=?');
+        $stmt->execute([$bib]);
+        $teamTime = $stmt->fetch();  
+        $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=?');
+        $stmtUpdate->execute([$teamTime['teamTime'], $bib]);
+      }
+      // FIM CODIGO REPETIDO
+      if ($livePositions == 1) {
+        processLivePositionsMxRelay($raceId, $db);
       } 
     }
   }

@@ -41,14 +41,6 @@
             }
           }
         }
-        // $queryathletes = $db->prepare("SELECT athlete_id, athlete_finishtime FROM athletes WHERE athlete_started = 5 AND athlete_race_id = ? AND athlete_sex = ? AND athlete_category = ?");
-        // $queryathletes->execute([$race['race_id'], $sex[$i], $cat[$i]]);
-        // $athletes = $queryathletes->fetchAll();
-        // foreach ($athletes as $athlete) {
-        //   $ttotal = gmdate('H:i:s', strtotime($athlete['athlete_finishtime'])-strtotime($gun));
-        //   $updateathletes = $db->prepare("UPDATE athletes SET athlete_totaltime = ? WHERE athlete_id = ?");
-        //   $updateathletes->execute([$ttotal, $athlete['athlete_id']]);
-        // }
       }
     }
   }

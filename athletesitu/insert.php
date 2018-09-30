@@ -29,7 +29,7 @@
 		if($_POST["operation"] === "Edit") {
 			$curAthleteOrder = $_POST['ordem'];
       $nextAthleteOrder = $curAthleteOrder + 1;
-      $beforeAthleteOrder = $curAthleteOrder - 1;
+      $previousAthleteOrder = $curAthleteOrder - 1;
 			$bib = $_POST['dorsal'];
   	  // IGUAL TRIATLO
   		// LE O GUN DO ATLETA = T0
@@ -48,9 +48,7 @@
       $live_t2 = 'time';
       $live_run = 'time';
       $finishtime = 'time';
-      print_r($gun);
       $t0 = $gun;
-      print_r($t0);
       $swim = isTime($_POST['swim']);
       if ($swim !== '-') {
         // SO CALCULA LIVE SE HOUVER T0, NO CASO DO RELAY
@@ -94,21 +92,22 @@
         if($gun === '-') {
           $finishtime = 'time';
         } else {
-				  $finishtime = gmdate('H:i:s', strtotime($run) - strtotime($gun));            
+				  $finishtime = gmdate('H:i:s', strtotime($run) - strtotime($gun));    
         }
         if ($t2 !== '-') $live_run = gmdate('H:i:s', strtotime($_POST['run']) - strtotime($_POST['t2']));
         if ($race['race_type'] === 'iturelay') {
-          $stmt = $db->prepare('SELECT athlete_t1 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? LIMIT 1');
+          $stmt = $db->prepare('SELECT athlete_t1, athlete_t5 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? LIMIT 1');
           $stmt->execute([$bib, $nextAthleteOrder]);
           $nextAthleteT1 = $stmt->fetch();
           // se tiver t1 do atlete seguinte da equipa, calcula live_t1 e atualiza tabela
           if($nextAthleteT1['athlete_t1'] !== '-') {
             $nextLiveT1 = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t1']) - strtotime($run));
+            $nextTotal = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t5']) - strtotime($run));
           } else {
             $nextLiveT1 = 'time';
           }
-          $stmt = $db->prepare('UPDATE live SET live_t1=? WHERE live_bib=? AND live_license=?');
-          $stmt->execute([$nextLiveT1, $bib, $nextAthleteOrder]);
+          $stmt = $db->prepare('UPDATE live SET live_t1=?, live_finishtime=? WHERE live_bib=? AND live_license=?');
+          $stmt->execute([$nextLiveT1, $nextTotal, $bib, $nextAthleteOrder]);
           $stmtNext = $db->prepare('UPDATE athletes SET athlete_t0=? WHERE athlete_bib=? AND athlete_arrive_order=?');
           $stmtNext->execute([$run, $bib, $nextAthleteOrder]);
         }
@@ -145,7 +144,7 @@
         ':order' => $curAthleteOrder
       ));
       if ($race['race_live'] == 1) {
-        $stmtLive = $db->prepare("UPDATE live SET live_chip=:chip, live_bib=:dorsal, live_team_id=:clube, live_t1=:swim, live_t2=:t1, live_t3=:bike, live_t4=:t2, live_t5=:run, live_finishtime=:finishtime, live_started=:started, live_sex=:sex, live_license=:order, live_t0=:finishtime WHERE live_id=:id"
+        $stmtLive = $db->prepare("UPDATE live SET live_chip=:chip, live_bib=:dorsal, live_team_id=:clube, live_t1=:swim, live_t2=:t1, live_t3=:bike, live_t4=:t2, live_t5=:run, live_finishtime=:finishtime, live_started=:started, live_sex=:sex, live_license=:order WHERE live_id=:id"
         );
         $stmtLive->execute(array(
 					':id'	=>	$_POST["user_id"],
@@ -163,10 +162,21 @@
           ':order' => $curAthleteOrder
 				));
 	    }
-				// FALTA QUANDO ESTIVER PREENCHIDO O TEMPO DE META EM VEZ DA HORA DO DIA
-		}
+			// FALTA QUANDO ESTIVER PREENCHIDO O TEMPO DE META EM VEZ DA HORA DO DIA
+    }
   }
-  
+  // CODIGO REPETIDO
+  $stmtFinisher = $db->query('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5');
+  $finishers = $stmtFinisher->fetchAll();
+  foreach ($finishers as $finisher) {
+    $bib = $finisher['live_bib'];
+    $stmt = $db->prepare('SELECT sec_to_time(SUM(time_to_sec(live_finishtime))) AS teamTime FROM live WHERE live_bib=?');
+    $stmt->execute([$bib]);
+    $teamTime = $stmt->fetch();  
+    $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=?');
+    $stmtUpdate->execute([$teamTime['teamTime'], $bib]);
+  }
+  // FIM CODIGO REPETIDO
   if ($run !== '-') {
 		//**** atualizar coluna 'pos' conforme tempo total, para validar com registo de meta
 	  $pos = 1;

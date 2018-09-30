@@ -17,22 +17,4 @@
       processTriathlonTimes($race['race_gun_m'], 'M', $race['race_id'], $race['race_type'], $race['race_live'], $db);
     } 
   }
-  // POSICAO DA TABELA LIVE ATUALIZADA POR GENERO - M
-  // $pos = 1;
-  // $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'M' ORDER BY live_finishtime");
-  // $athletes = $queryathletes->fetchAll();
-  // foreach ($athletes as $athlete) {
-  //   $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-  //   $updatelive->execute([$pos, $athlete['live_id']]);
-  //   $pos ++; 
-  // }
-  // POSICAO DA TABELA LIVE ATULIZADA POR GENERO  F
-  // $pos = 1;
-  // $queryathletes = $db->query("SELECT live_id FROM live WHERE live_started = 5 AND live_sex = 'F' ORDER BY live_finishtime");
-  // $athletes = $queryathletes->fetchAll();
-  // foreach ($athletes as $athlete) {
-  //   $updatelive = $db->prepare("UPDATE live SET live_pos = ? WHERE live_id = ?");
-  //   $updatelive->execute([$pos, $athlete['live_id']]);
-  //   $pos ++; 
-  // }
 ?>
