@@ -38,15 +38,15 @@
   $fill = false;
   //TEMPOS DOS GUNS
   $race_id = $_GET['race_id'];
-  $querygun = $db->prepare("SELECT race_type, race_gun_f FROM races WHERE race_id = ? LIMIT 1");
+  $querygun = $db->prepare("SELECT race_type, race_gun_f, race_relay FROM races WHERE race_id = ? LIMIT 1");
   $querygun->execute([$race_id]);
   $rowrace = $querygun->fetch();
   //**** TEMPOS DE QUEM TERMINOU ****//
-  $query = $db->prepare("SELECT athletes.*, teams.team_name FROM athletes INNER JOIN teams ON athletes.athlete_team_id=teams.team_id WHERE athletes.athlete_started >= '5' AND athletes.athlete_race_id = ? AND athletes.athlete_sex = 'F'");
+  $query = $db->prepare("SELECT athlete_totaltime, athlete_finishtime, athlete_chip, athlete_t0 FROM athletes WHERE athletes.athlete_started >= 5 AND athletes.athlete_race_id = ? AND athletes.athlete_sex = 'F'");
   $query->execute([$race_id]);
   $rows = $query->fetchAll();
   foreach ($rows as $row) {
-    if ($rowrace['race_type'] == 'crind') $racegun = $row['athlete_t0'];
+    if ($rowrace['race_type'] === 'crind' || $rowrace['race_relay'] === 'X') $racegun = $row['athlete_t0'];
     else $racegun = $rowrace['race_gun_f'];
     $athlete_totaltime = gmdate('H:i:s', strtotime($row['athlete_finishtime'])-strtotime($racegun));
     $query = $db->prepare("UPDATE athletes SET athlete_totaltime = ? WHERE athlete_chip = ?");

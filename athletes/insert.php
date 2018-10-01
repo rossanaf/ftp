@@ -364,8 +364,9 @@
             ));
           }
         } else {
-          if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre')) 
-          	$gun = $_POST['t0'];
+          // RACE_RELAY = X => PROVA COM PARTIDAS POR VAGAS
+          if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre') || ($race['race_relay'] === 'X')) 
+          	$gun = isTime($_POST['t0']);
           elseif ($_POST['sexo'] === 'F') 
             $gun = $race['race_gun_f'];
           elseif ($_POST['sexo'] === 'M') 
@@ -403,7 +404,7 @@
             if ($bike !== "-") $live_t2 = gmdate('H:i:s', strtotime($_POST['t2']) - strtotime($_POST['bike']));
           }
           $run = isTime($_POST['run']);
-          $total = isTime($_POST['totaltime']);
+          // $total = isTime($_POST['totaltime']);
           // if (($run !== "-") && ($time !== "DNF") && ($time !== "DSQ"))
           if (($time==="DNF") || ($time==="DNS") || ($time==="chkin") || ($time==="DSQ") || ($time==="LAP")) {
           	// $time = $time;
@@ -417,25 +418,26 @@
 						$started=5; $has_times = 0; $time = $run;
 						$finishtime = gmdate('H:i:s', strtotime($_POST['run']) - strtotime($gun));
             if ($t2 !== "-") $live_run = gmdate('H:i:s', strtotime($_POST['run']) - strtotime($_POST['t2']));
-					} else {
-          	if ($total !== "-") {
-          		# Calcula a hora de passagem em T5, pelo tempo total de meta
-            	if ($race['race_type'] === "jovem") {
-								$stmt = $db->prepare("SELECT gunshot_".strtolower($_POST["escalao"]).strtolower($_POST["sexo"])." FROM gunshots WHERE gunshot_race_id = ?");
-                $stmt->execute([$race_id]);
-                $rowrace = $stmt->fetch();
-						    $gun = $rowrace["gunshot_".strtolower($_POST["escalao"]).strtolower($_POST["sexo"])];
-							}
-							$epoch = strtotime($gun)+strtotime($total);
-							$dt = new DateTime("@$epoch");
-					    $run = $dt->format('H:i:s');
-					    // $run = gmdate('H:i:s', $epoch);
-					    $time = $run;
-					    if ($t2 !== "-") $live_run = gmdate('H:i:s', strtotime($run) - strtotime($t2));
-					    $finishtime = $total;
-					    $started = 5;
-          	}
-          }
+					} 
+       //    else {
+       //    	if ($total !== "-") {
+       //    		# Calcula a hora de passagem em T5, pelo tempo total de meta
+       //      	if ($race['race_type'] === "jovem") {
+							// 	$stmt = $db->prepare("SELECT gunshot_".strtolower($_POST["escalao"]).strtolower($_POST["sexo"])." FROM gunshots WHERE gunshot_race_id = ?");
+       //          $stmt->execute([$race_id]);
+       //          $rowrace = $stmt->fetch();
+						 //    $gun = $rowrace["gunshot_".strtolower($_POST["escalao"]).strtolower($_POST["sexo"])];
+							// }
+							// $epoch = strtotime($gun)+strtotime($total);
+							// $dt = new DateTime("@$epoch");
+					  //   $run = $dt->format('H:i:s');
+					  //   $run = gmdate('H:i:s', $epoch);
+					  //   $time = $run;
+					  //   if ($t2 !== "-") $live_run = gmdate('H:i:s', strtotime($run) - strtotime($t2));
+					  //   $finishtime = $total;
+					  //   $started = 5;
+       //    	}
+          // }
           if (($time==="DNF") || ($time==="DSQ") || ($time==="LAP")) {
         		$has_times = 0;
         		$finishtime = $time;
@@ -446,7 +448,7 @@
           if($started!==5) $pos = 9999;
           if ($has_times == 1) $time = '-';
           // if ($run !== '-') $time = $run;    
-          if ($race['race_type'] === 'triatlo') {
+          if ($race['race_type'] === 'triatlo' && $race['race_relay'] === '-') {
             $t0 = '-';
           }      
           $stmt = $db->prepare("UPDATE athletes SET athlete_chip = :chip, athlete_pos = :pos, athlete_bib = :dorsal, athlete_name = :name, athlete_license = :licenca, athlete_sex = :sexo, athlete_category = :escalao, athlete_team_id = :clube, athlete_t0 = :t0, athlete_t1 = :swim, athlete_t2 = :t1, athlete_t3 = :bike, athlete_t4 = :t2, athlete_t5 = :run, athlete_race_id = :race, athlete_finishtime = :time, athlete_started = :started, athlete_totaltime = '-' WHERE athlete_id = :id"

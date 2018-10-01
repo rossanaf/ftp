@@ -1,9 +1,9 @@
-INSERT INTO `times` (`Chip`, `ChipTime`, `ChipType`, `PC`, `Reader`, `Antenna`, `MilliSecs`, `Location`, `LapRaw`) VALUES
-('AA1', '2017-05-20 10:13:15', 'ChampionChip', 6, 1, 'd', 1, 'TimeT1', 1),
-('AA1', '2017-05-20 10:14:05', 'ChampionChip', 6, 1, 'd', 1, 'TimeT2', 1),
-('AA1', '2017-05-20 10:14:35', 'ChampionChip', 6, 1, 'd', 1, 'TimeT3', 1),
-('AA1', '2017-05-20 10:15:05', 'ChampionChip', 6, 1, 'd', 1, 'TimeT4', 1),
-('AA1', '2017-05-20 10:24:05', 'ChampionChip', 6, 1, 'd', 1, 'TimeT5', 1),
+INSERT INTO `times` (`Chip`, `ChipTime`, `MilliSecs`, `Location`, `LapRaw`) VALUES
+('DZ3X675', '2017-05-20 10:13:15', 1, 'TimeT1', 1),
+('DZ3X675', '2017-05-20 10:14:05', 1, 'TimeT2', 1),
+('DZ3X675', '2017-05-20 10:14:35', 1, 'TimeT3', 1),
+('DZ3X675', '2017-05-20 10:15:05', 1, 'TimeT4', 1),
+('DZ3X675', '2017-05-20 10:24:05', 1, 'TimeT5', 1),
 ('AA2', '2017-05-20 10:33:15', 'ChampionChip', 6, 1, 'd', 1, 'TimeT1', 1),
 ('AA2', '2017-05-20 10:34:05', 'ChampionChip', 6, 1, 'd', 1, 'TimeT2', 1),
 ('AA2', '2017-05-20 10:43:35', 'ChampionChip', 6, 1, 'd', 1, 'TimeT3', 1),
