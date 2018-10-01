@@ -56,7 +56,7 @@
       $timestable = $querytimes->fetchAll();
       $i=1;
       foreach ($timestable as $row_tempos) {
-        if ($rowrace['race_type'] == 'crind') $racegun = $row_tempos['athlete_t0'];
+        if ($rowrace['race_type'] === 'crind' || $rowrace['race_relay'] === 'X') $racegun = $row_tempos['athlete_t0'];
         else $racegun = $rowrace['race_gun_m']; 
         $tempo_individual = strtotime($row_tempos['athlete_finishtime'])-strtotime($racegun);
         if($i==1) $teamresult_teamtime = $tempo_individual;
