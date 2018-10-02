@@ -18,16 +18,16 @@
       <thead>
         <tr>
           <th class="dt-center" width="1%">POS</th>
-          <th class="dt-center" width="3%">Num</th>
-          <th width="20%">Nome</th>
-          <th class="dt-center" width="6%">Esc.</th>
-          <th width="20%">Clube</th>
-          <th class="dt-center" width="6%">Natação</th>
+          <th class="dt-center" width="3%">No</th>
+          <th width="20%">Name</th>
+          <th width="20%">Team</th>
+          <th class="dt-center" width="6%">Country</th>
+          <th class="dt-center" width="6%">Swim</th>
           <th class="dt-center" width="6%">T1</th>
-          <th class="dt-center" width="6%">Ciclismo</th>
+          <th class="dt-center" width="6%">Bike</th>
           <th class="dt-center" width="6%">T2</th>
-          <th class="dt-center" width="6%">Corrida</th>
-          <th class="dt-center" width="6%">Total</th>
+          <th class="dt-center" width="6%">Run</th>
+          <th class="dt-center" width="6%">Time</th>
         </tr>
       </thead>
     </table>

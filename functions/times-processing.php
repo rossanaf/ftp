@@ -301,7 +301,7 @@
     }
   }
 
-  function processTriathlonTimesMxRelay($raceId, $raceType, $live, $db) {
+  function processTriathlonTimesMxRelay($raceId, $raceType, $live, $gun, $db) {
     $thisAthlete = 'A1';
     $livePositions = 0;
     $queryathletes = $db->prepare("SELECT athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, athlete_bib, athlete_arrive_order, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip=times.Chip where athlete_race_id=? ORDER BY ChipTime ASC");
@@ -447,11 +447,11 @@
       processLiveTimesMxRelay($db);
       // CODIGO REPETIDO
       $stmtFinisher = $db->prepare('SELECT live_bib, athlete_t5 FROM live JOIN athletes ON live_chip=athlete_chip WHERE live_license=4 AND live_started=5 AND live_race=?');
-      $stmtFinisher->execute([$race['race_id']]);
+      $stmtFinisher->execute([$raceId]);
       $finishers = $stmtFinisher->fetchAll();
       foreach ($finishers as $finisher) {
         $bib = $finisher['live_bib'];
-        $teamTotalTime = gmdate('H:i:s', strtotime($finisher['athlete_t5']) - strtotime($race['race_gun_m']));   
+        $teamTotalTime = gmdate('H:i:s', strtotime($finisher['athlete_t5']) - strtotime($gun));   
         $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=?');
         $stmtUpdate->execute([$teamTotalTime, $bib]);
       }

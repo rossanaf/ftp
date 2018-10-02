@@ -2,14 +2,14 @@
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 	function get_total_all_records() {
 		include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
-		$stmt = $db->prepare("SELECT * FROM live WHERE live_sex = 'M'");
-		$stmt->execute();
+		$stmt = $db->prepare('SELECT * FROM live WHERE live_race=?');
+		$stmt->execute([$raceId]);
 		$result = $stmt->fetchAll();
 		return $stmt->rowCount();
 	}
-  $order_column = array("live_pos","live_bib","live_firstname","live_category","live_team","live_t1","live_t2","live_t3","live_t4","live_t5","live_finishtime");
+  $order_column = array("live_pos","live_bib","live_firstname","live_lastname","live_category","live_team","live_t1","live_t2","live_t3","live_t4","live_t5","live_finishtime");
   $output = array();
-  $query = 'SELECT *, teams.team_name FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_sex="M" AND live_race='.$_POST['raceId'].' ';
+  $query = 'SELECT * FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_sex="M" AND live_race='.$_POST['raceId'].' ';
   if (strlen($_POST["search"]["value"]) > 0) {
     $query .= 'AND (';
     $query .= 'LOWER (live_firstname) LIKE "%'.$_POST["search"]["value"].'%" ';
@@ -47,9 +47,9 @@
     else
       $sub_array[] = $row["live_pos"];
     $sub_array[] = $row["live_bib"];
-    $sub_array[] = $row["live_firstname"];
-    $sub_array[] = $row["live_category"];
+    $sub_array[] = $row["live_firstname"].' '.$row["live_lastname"]
     $sub_array[] = $row["team_name"];
+    $sub_array[] = $row["team_country"];
     $sub_array[] = $live_t1;
     $sub_array[] = $live_t2;
     $sub_array[] = $live_t3;
@@ -64,7 +64,7 @@
   $output = array(
     "draw"              =>  intval($_POST["draw"]),
     "recordsTotal"      =>  $filtered_rows,
-    "recordsFiltered"   =>  get_total_all_records(),
+    "recordsFiltered"   =>  get_total_all_records(($_POST["raceId"]),
     "data"              =>  $data
   );
   echo json_encode($output);
