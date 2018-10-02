@@ -27,13 +27,6 @@
         $stmt = $db->prepare("TRUNCATE chips; TRUNCATE times; TRUNCATE results; TRUNCATE markers;");
         $stmt->execute();
       }
-      $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_relay) VALUES (:id, :name, :type, :relay)");
-      $stmt->execute(array(
-        ':id' => $raceIndex, 
-        ':name' => 'Mixed Relay',
-        ':type' => $_POST['prova_id'],
-        ':relay' => 'X'
-      ));
       $sheet = $objPHPExcel->getSheet(0);
       $highestRow = $sheet->getHighestRow();
       $highestColumn = $sheet->getHighestColumn();
@@ -55,6 +48,26 @@
         } else {
           $teamId = array_search(strtolower($rowData[0][6]), $teams);
         }
+        // GET RACE
+        if (!in_array($rowData[0][8], $races)) {
+          $races[$raceIndex] = $rowData[0][8];
+          $raceId = $raceIndex;
+          if ($_POST['prova_id'] === 'iturelay') {
+            $raceName = $rowData[0][8];
+            $raceType = 'iturelay';
+            $raceRelay = 'X';
+          }
+          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_relay, race_live) VALUES (:id, :name, :type, :relay, 1)");
+          $stmt->execute(array(
+            ':id' => $raceId, 
+            ':name' => $raceName,
+            ':type' => $raceType,
+            ':relay' => $raceRelay
+          ));
+          $raceIndex++;
+        } else {
+          $raceId = array_search($rowData[0][8], $races);
+        }
         // USAR CAMPO ATHLETE_ARRIVE_ORDER PARA COLOCAR A ORDEM DE CADA ATLETA NA EQUIPA
         $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_arrive_order, athlete_name, athlete_sex, athlete_team_id, athlete_race_id) VALUES (:chip, :bib, :teamOrder, :name, :sex, :team, :race)";
         $stmt = $db->prepare($query);
@@ -65,14 +78,14 @@
           ':name' => $rowData[0][3].' '.$rowData[0][4],
           ':sex' => $rowData[0][5],
           ':team' => $teamId,
-          ':race' => $raceIndex
+          ':race' => $raceId
           // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
           // ':dob' => $UNIX_DATE
         ));
         // USE FIELD LIVE_LICENSE FOR ATHLETE TEAM ORDER
         $stmt = $db->prepare("
-          INSERT INTO live (live_chip, live_bib, live_license, live_firstname, live_lastname, live_sex, live_team_id, live_race) 
-          VALUES (:chip, :bib, :teamOrder, :firstname, :lastname, :sex, :team, :race)
+          INSERT INTO live (live_chip, live_bib, live_license, live_firstname, live_lastname, live_sex, live_team_id, live_race, live_category) 
+          VALUES (:chip, :bib, :teamOrder, :firstname, :lastname, :sex, :team, :race, :category)
         ");
         $stmt->execute(array(
           ':chip' => $rowData[0][0], 
@@ -82,24 +95,9 @@
           ':lastname' => $rowData[0][4],
           ':sex' => $rowData[0][5],
           ':team' => $teamId,
-          ':race' => $raceIndex
+          ':race' => $raceId,
+          ':category' => $rowData[0][8]
         ));
-        //-----------------------------------
-        // COL |  ID  |     DESCRIPTION     |
-        //-----|------|---------------------|
-        //  A  |   0  |  LICENSE FTP        |
-        //  B  |   1  |  BIB                |
-        //  C  |   2  |  CATEGORY, ESCALAO  |
-        //  D  |   0  |  CHIP               |
-        //  E  |   4  |  FULL NAME          |
-        //  F  |   5  |  BIRTHDATE          |
-        //  G  |   6  |  GENDER             |
-        //  H  |   7  |  TEAM, COUNTRY      |
-        //  I  |   8  |  RACE DESIGNATION   |
-        //     |      |  FIRST NAME         |
-        //  J  |   9  |  GUN TIME           |
-        //     |      |  LAST NAME          |
-        // ----------------------------------
       }
       print_r('continuar leitura do ficheiro excel, race = '.$raceIndex); 
     } else {

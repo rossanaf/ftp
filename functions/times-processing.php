@@ -304,7 +304,7 @@
   function processTriathlonTimesMxRelay($raceId, $raceType, $live, $db) {
     $thisAthlete = 'A1';
     $livePositions = 0;
-    $queryathletes = $db->prepare("SELECT athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, athlete_bib, athlete_arrive_order, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip = times.Chip where athlete_race_id = ? ORDER BY ChipTime ASC");
+    $queryathletes = $db->prepare("SELECT athlete_t1, athlete_t2, athlete_t3, athlete_t4, athlete_t5, athlete_finishtime, athlete_started, athlete_bib, athlete_arrive_order, ChipTime, Location, Chip FROM athletes INNER JOIN times ON athletes.athlete_chip=times.Chip where athlete_race_id=? ORDER BY ChipTime ASC");
     $queryathletes->execute([$raceId]);
     $athletes = $queryathletes->fetchAll();
     foreach ($athletes as $athlete) {

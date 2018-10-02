@@ -17,8 +17,8 @@
     $stmt->execute([$_POST["gun_id"]]);
     $raceType = $stmt->fetch();
     if($raceType['race_type'] === 'iturelay') {
-      $stmt = $db->prepare('UPDATE athletes SET athlete_t0=? WHERE athlete_arrive_order=1');
-      $stmt->execute([$raceGunMen]);
+      $stmt = $db->prepare('UPDATE athletes SET athlete_t0=? WHERE athlete_arrive_order=1 AND athlete_race_id=?');
+      $stmt->execute([$raceGunMen, $_POST["gun_id"]]);
     }
     if(!empty($result)){
       echo 'Dados do atleta atualizados!';
