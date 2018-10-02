@@ -166,15 +166,14 @@
     }
   }
   // CODIGO REPETIDO
-  $stmtFinisher = $db->query('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5');
+  $stmtFinisher = $db->prepare('SELECT live_bib, athlete_t5 FROM live JOIN athletes ON live_chip=athlete_chip WHERE live_license=4 AND live_started=5 AND live_race=?');
+  $stmtFinisher->execute([$race['race_id']]);
   $finishers = $stmtFinisher->fetchAll();
   foreach ($finishers as $finisher) {
     $bib = $finisher['live_bib'];
-    $stmt = $db->prepare('SELECT sec_to_time(SUM(time_to_sec(live_finishtime))) AS teamTime FROM live WHERE live_bib=?');
-    $stmt->execute([$bib]);
-    $teamTime = $stmt->fetch();  
+    $teamTotalTime = gmdate('H:i:s', strtotime($finisher['athlete_t5']) - strtotime($race['race_gun_m']));   
     $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=?');
-    $stmtUpdate->execute([$teamTime['teamTime'], $bib]);
+    $stmtUpdate->execute([$teamTotalTime, $bib]);
   }
   // FIM CODIGO REPETIDO
   if ($run !== '-') {

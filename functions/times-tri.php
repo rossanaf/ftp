@@ -1,7 +1,7 @@
 <?php 
   include_once($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
-  $queryraces = $db->query("SELECT race_id, race_gun_f, race_type, race_live, race_relay FROM races WHERE race_gun_f != '-'");
+  $queryraces = $db->query("SELECT race_id, race_gun_f, race_type, race_live, race_relay FROM races WHERE race_gun_f!='-'");
   $races = $queryraces->fetchAll();
   foreach ($races as $race) {
     // LEITURA E CALCULO DOS TEMPOS PARA DUATLO E TRIATLOS E AQUATLOS
