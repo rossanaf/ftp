@@ -34,8 +34,8 @@
   	  // IGUAL TRIATLO
   		// LE O GUN DO ATLETA = T0
       if ($race['race_type'] === 'iturelay') {
-    		$stmt = $db->prepare('SELECT athlete_t0 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? LIMIT 1');
-    		$stmt->execute([$bib, $curAthleteOrder]);
+    		$stmt = $db->prepare('SELECT athlete_t0 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? AND athlete_race_id=? LIMIT 1 ');
+    		$stmt->execute([$bib, $curAthleteOrder, $_POST["race"]]);
     		$stmtResult = $stmt->fetch();
     		$gun = $stmtResult['athlete_t0'];
       } elseif ($_POST['sexo'] === 'F') 
@@ -96,34 +96,35 @@
         }
         if ($t2 !== '-') $live_run = gmdate('H:i:s', strtotime($_POST['run']) - strtotime($_POST['t2']));
         if ($race['race_type'] === 'iturelay') {
-          $stmt = $db->prepare('SELECT athlete_t1, athlete_t5 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? LIMIT 1');
-          $stmt->execute([$bib, $nextAthleteOrder]);
+          $stmt = $db->prepare('SELECT athlete_t1, athlete_t5 FROM athletes WHERE athlete_bib=? AND athlete_arrive_order=? AND athlete_race_id=? LIMIT 1');
+          $stmt->execute([$bib, $nextAthleteOrder, $_POST["race"]]);
           $nextAthleteT1 = $stmt->fetch();
           // se tiver t1 do atlete seguinte da equipa, calcula live_t1 e atualiza tabela
-          if($nextAthleteT1['athlete_t1'] !== '-') {
-            $nextLiveT1 = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t1']) - strtotime($run));
-            $nextTotal = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t5']) - strtotime($run));
-          } else {
+          if ($nextAthleteT1['athlete_t1'] === '-') {
             $nextLiveT1 = 'time';
+          } else {
+            $nextLiveT1 = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t1']) - strtotime($run));
           }
-          $stmt = $db->prepare('UPDATE live SET live_t1=?, live_finishtime=? WHERE live_bib=? AND live_license=?');
-          $stmt->execute([$nextLiveT1, $nextTotal, $bib, $nextAthleteOrder]);
-          $stmtNext = $db->prepare('UPDATE athletes SET athlete_t0=? WHERE athlete_bib=? AND athlete_arrive_order=?');
-          $stmtNext->execute([$run, $bib, $nextAthleteOrder]);
+          if ($nextAthleteT1['athlete_t5'] === '-') $nextTotal = 'time';
+          else $nextTotal = gmdate('H:i:s', strtotime($nextAthleteT1['athlete_t5']) - strtotime($run));
+          $stmt = $db->prepare('UPDATE live SET live_t1=?, live_finishtime=? WHERE live_bib=? AND live_license=? AND live_race=?');
+          $stmt->execute([$nextLiveT1, $nextTotal, $bib, $nextAthleteOrder, $_POST["race"]]);
+          $stmtNext = $db->prepare('UPDATE athletes SET athlete_t0=? WHERE athlete_bib=? AND athlete_arrive_order=? AND athlete_race_id=?');
+          $stmtNext->execute([$run, $bib, $nextAthleteOrder, $_POST["race"]]);
         }
 			}
       if (($time==="DNF") || ($time==="DSQ") || ($time==="LAP") || ($time==="DNS")) {
     		$has_times = 0;
     		$finishtime = $time;
         if ($time === 'DNS') $started=0;
-        $stmt = $db->prepare('UPDATE athletes SET athlete_finishtime=?, athlete_pos=9999 WHERE athlete_bib=?');
-        $stmt->execute([$time, $bib]);
-        $stmtLive = $db->prepare('UPDATE live SET live_finishtime=?, live_pos=9999, live_started=? WHERE live_bib=?');
-        $stmtLive->execute([$time, $started, $bib]);
+        $stmt = $db->prepare('UPDATE athletes SET athlete_finishtime=?, athlete_pos=9999 WHERE athlete_bib=? AND athlete_race_id=?');
+        $stmt->execute([$time, $bib, $_POST["race"]]);
+        $stmtLive = $db->prepare('UPDATE live SET live_finishtime=?, live_pos=9999, live_started=? WHERE live_bib=? AND live_race=?');
+        $stmtLive->execute([$time, $started, $bib, $_POST["race"]]);
     	} 
       if ($started !== 5) $pos = 9999;
       if ($has_times == 1) $time = '-';      
-      $stmt = $db->prepare("UPDATE athletes SET athlete_chip=:chip, athlete_bib=:dorsal, athlete_name=:name, athlete_sex=:sexo, athlete_team_id=:clube, athlete_t0=:t0, athlete_t1=:swim, athlete_t2=:t1, athlete_t3=:bike, athlete_t4=:t2, athlete_t5=:run, athlete_race_id=:race, athlete_finishtime=:time, athlete_started=:started, athlete_totaltime='-', athlete_arrive_order=:order WHERE athlete_id=:id"
+      $stmt = $db->prepare("UPDATE athletes SET athlete_chip=:chip, athlete_bib=:dorsal, athlete_name=:name, athlete_sex=:sexo, athlete_team_id=:clube, athlete_t0=:t0, athlete_t1=:swim, athlete_t2=:t1, athlete_t3=:bike, athlete_t4=:t2, athlete_t5=:run, athlete_race_id=:race, athlete_finishtime=:time, athlete_started=:started, athlete_totaltime='-', athlete_arrive_order=:order WHERE athlete_id=:id AND athlete_race_id=:raceId"
       );
       $result = $stmt->execute(array(
         ':chip' => $_POST["chip"],
@@ -141,10 +142,11 @@
         ':time'   =>  $time,
         ':started'    =>  $started,
         ':id' =>  $_POST["user_id"],
-        ':order' => $curAthleteOrder
+        ':order' => $curAthleteOrder,
+        ':raceId' => $_POST["race"]
       ));
       if ($race['race_live'] == 1) {
-        $stmtLive = $db->prepare("UPDATE live SET live_chip=:chip, live_bib=:dorsal, live_team_id=:clube, live_t1=:swim, live_t2=:t1, live_t3=:bike, live_t4=:t2, live_t5=:run, live_finishtime=:finishtime, live_started=:started, live_sex=:sex, live_license=:order WHERE live_id=:id"
+        $stmtLive = $db->prepare("UPDATE live SET live_chip=:chip, live_bib=:dorsal, live_team_id=:clube, live_t1=:swim, live_t2=:t1, live_t3=:bike, live_t4=:t2, live_t5=:run, live_finishtime=:finishtime, live_started=:started, live_sex=:sex, live_license=:order WHERE live_id=:id AND live_race=:raceId"
         );
         $stmtLive->execute(array(
 					':id'	=>	$_POST["user_id"],
@@ -159,7 +161,8 @@
 					':finishtime'		=>	$finishtime,
 					':started' => $started,
           ':sex' => $_POST["sexo"],
-          ':order' => $curAthleteOrder
+          ':order' => $curAthleteOrder,
+          ':raceId' => $_POST["race"]
 				));
 	    }
 			// FALTA QUANDO ESTIVER PREENCHIDO O TEMPO DE META EM VEZ DA HORA DO DIA
@@ -172,8 +175,8 @@
   foreach ($finishers as $finisher) {
     $bib = $finisher['live_bib'];
     $teamTotalTime = gmdate('H:i:s', strtotime($finisher['athlete_t5']) - strtotime($race['race_gun_m']));   
-    $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=?');
-    $stmtUpdate->execute([$teamTotalTime, $bib]);
+    $stmtUpdate = $db->prepare('UPDATE live SET live_t0=? WHERE live_bib=? AND live_race=?');
+    $stmtUpdate->execute([$teamTotalTime, $bib, $race['race_id']]);
   }
   // FIM CODIGO REPETIDO
   if ($run !== '-') {
@@ -182,7 +185,7 @@
     $queryathletes = $db->query("SELECT athlete_chip FROM athletes WHERE athlete_started = 5 ORDER BY athlete_t5");
     $athletes = $queryathletes->fetchAll(); 
     foreach ($athletes as $athlete) {
-      $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos = ? WHERE athlete_chip = ?");
+      $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos=? WHERE athlete_chip=?");
       $updateathletes->execute([$pos, $athlete['athlete_chip']]);
       $pos++;
     }

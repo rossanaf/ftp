@@ -57,7 +57,9 @@
     $query->execute([$bib, $race_id]);
     $rows = $query->fetchAll();
     foreach ($rows as $row) {
-      $pdf->Cell(20,5,date('H:i:s',strtotime($row['live_finishtime'])),1,0,'C',$fill);
+      if($row['live_finishtime'] === 'time') $finishTime = '00:00:00';
+      else $finishTime = $row['live_finishtime'];
+      $pdf->Cell(20,5,$finishTime,1,0,'C',$fill);
     }
     $pdf->Cell(20,5,date('H:i:s',strtotime($finisher['live_t0'])),1,0,'C',$fill);
     $timeDiff=strtotime($finisher['live_t0'])-strtotime($timeFirst);
@@ -79,12 +81,30 @@
       $pdf->SetX(16);
       $pdf->Cell(48,5,utf8_decode($athlete['live_firstname'].' '.$athlete['live_lastname']),1,0,'L',$fill);
       $pdf->Cell(4,5,$athlete['live_license'],1,0,'L',$fill);
-      $pdf->Cell(16,5,$athlete['live_t1'],1,0,'C',$fill);
-      $pdf->Cell(16,5,$athlete['live_t2'],1,0,'C',$fill);
-      $pdf->Cell(16,5,$athlete['live_t3'],1,0,'C',$fill);
-      $pdf->Cell(16,5,$athlete['live_t4'],1,0,'C',$fill);
-      $pdf->Cell(16,5,$athlete['live_t5'],1,0,'C',$fill);
-      $pdf->Cell(16,5,$athlete['live_finishtime'],1,0,'C',$fill);
+      if($athlete['live_t1'] === 'time') 
+        $t1 = '00:00:00';
+      else $t1 = $athlete['live_t1'];
+      $pdf->Cell(16,5,$t1,1,0,'C',$fill);
+      if($athlete['live_t2'] === 'time') 
+        $t2 = '00:00:00';
+      else $t2 = $athlete['live_t2'];
+      $pdf->Cell(16,5,$t2,1,0,'C',$fill);
+      if($athlete['live_t3'] === 'time') 
+        $t3 = '00:00:00';
+      else $t3 = $athlete['live_t3'];
+      $pdf->Cell(16,5,$t3,1,0,'C',$fill);
+      if($athlete['live_t4'] === 'time') 
+        $t4 = '00:00:00';
+      else $t4 = $athlete['live_t4'];
+      $pdf->Cell(16,5,$t4,1,0,'C',$fill);
+      if($athlete['live_t5'] === 'time') 
+        $t5 = '00:00:00';
+      else $t5 = $athlete['live_t5'];
+      $pdf->Cell(16,5,$t5,1,0,'C',$fill);
+      if($athlete['live_finishtime'] === 'time') 
+        $finishTime = '00:00:00';
+      else $finishTime = $athlete['live_finishtime'];
+      $pdf->Cell(16,5,$finishTime,1,0,'C',$fill);
       $pdf->Ln();
     }
     // $pdf->Ln();

@@ -245,12 +245,13 @@
   }
 
   function processLivePositionsMxRelay($raceId, $db) {
-    $stmt = $db->query('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5 ORDER BY live_t0');
+    $stmt = $db->prepare('SELECT live_bib FROM live WHERE live_license=4 AND live_started=5 AND live_race=? ORDER BY live_t0');
+    $stmt->execute([$raceId]);
     $finishers = $stmt->fetchAll();
     $pos=1;
     foreach ($finishers as $finisher) {
-      $stmtUpdate = $db->prepare('UPDATE live SET live_pos=? WHERE live_bib=?');
-      $stmtUpdate->execute([$pos, $finisher['live_bib']]);
+      $stmtUpdate = $db->prepare('UPDATE live SET live_pos=? WHERE live_bib=? AND live_race=?');
+      $stmtUpdate->execute([$pos, $finisher['live_bib'], $raceId]);
       $pos++;
     }
   }

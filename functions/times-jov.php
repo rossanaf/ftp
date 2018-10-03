@@ -3,7 +3,7 @@
   $queryraces = $db->query("SELECT race_id, race_type FROM races");
   $races = $queryraces->fetchAll();
   foreach ($races as $race) {
-  	if (($race['race_type'] == 'jovem') || ($race['race_type'] == 'estJ')) {
+  	if (($race['race_type'] == 'jovem') || ($race['race_type'] == 'estJ') || ($race['race_type'] == 'jovemaq')) {
       // LEITURA E CALCULO DOS TEMPOS PARA PROVAS JOVENS
       // echo 'jovens <br>';
       $cat = array('BEN', 'INF', 'INI', 'JUV', 'BEN', 'INF', 'INI', 'JUV');
