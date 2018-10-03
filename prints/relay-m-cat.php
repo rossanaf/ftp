@@ -52,8 +52,8 @@ function Header()
     $this->SetX(110);
     $this->Cell(12,5,utf8_decode($rowrace['race_date']),0,0,'L',true);
     $this->SetX(190);
-    $this->Cell(10,5,$rowrace['race_gun'],0,0,'R',true);
-    // $this->Cell(10,5,$rowrace['race_gun'],0,0,'R',true);
+    $this->Cell(10,5,$rowrace['race_gun_m'],0,0,'R',true);
+    // $this->Cell(10,5,$rowrace['race_gun_m'],0,0,'R',true);
     
     $segment1 = ucwords($rowrace['race_segment1'])." - ".$rowrace['race_distsegment1'];
     $segment1 = ucwords($rowrace['race_segment1'])." - ".$rowrace['race_distsegment1'];
@@ -127,7 +127,7 @@ $pos = 1;
 $fill = false;
 //TEMPOS DOS GUNS
 $race_id = $_GET['race_id'];
-$querygun = $db->prepare("SELECT race_gun FROM races WHERE race_id = ? LIMIT 1");
+$querygun = $db->prepare("SELECT race_gun_m FROM races WHERE race_id = ? LIMIT 1");
 $querygun->execute([$race_id]);
 $rowrace = $querygun->fetch();
 $teams = array();
@@ -138,7 +138,7 @@ $athlete_category_extenso = array("Juvenis", "Cadetes", "Juniores", "Seniores", 
 // $athlete_category_extenso = array("Sub-23", "Seniores", "Veteranos 1", "Veterenos 2", "Veterenos 3", "Veterenos 4", "Veterenos 5");
 for($i=0;$i<count($athlete_category);$i++)
 {
-    $query = $db->prepare("SELECT athlete_team_id, athlete_bib FROM athletes WHERE athlete_started >= 4 AND athletes.athlete_race_id = ? AND athletes.athlete_sex = 'M' AND athlete_rly_gender = ? ORDER BY athlete_finishtime ASC");
+    $query = $db->prepare("SELECT athlete_team_id, athlete_bib FROM athletes WHERE athlete_started >= 4 AND athletes.athlete_race_id = ? AND athletes.athlete_sex = 'M' AND athlete_category = ? ORDER BY athlete_finishtime ASC");
     $query->execute([$race_id, $athlete_category[$i]]);
     $rows = $query->fetchAll();
     unset($teams);
@@ -199,7 +199,7 @@ for($i=0;$i<count($athlete_category);$i++)
     for($j=0;$j<count($penalty);$j++)
     {
         // echo $penalty[$j].' '.$athlete_category[$i].'<br>';
-        $query_pen = $db->prepare("SELECT athlete_team_id, athlete_bib FROM athletes WHERE athlete_finishtime = ? AND athlete_race_id = ? AND athlete_sex = 'M' AND athlete_bib LIKE '%C' AND athlete_rly_gender = ? ORDER BY athlete_finishtime ASC");
+        $query_pen = $db->prepare("SELECT athlete_team_id, athlete_bib FROM athletes WHERE athlete_finishtime = ? AND athlete_race_id = ? AND athlete_sex = 'M' AND athlete_bib LIKE '%C' AND athlete_category = ? ORDER BY athlete_finishtime ASC");
         $query_pen->execute([$penalty[$j], $race_id, $athlete_category[$i]]);
         $rows = $query_pen->fetchAll();
         foreach ($rows as $row) 

@@ -25,7 +25,7 @@
             foreach ($times as $timelap) {
               list($date, $time) = explode (" ", $timelap['ChipTime']);
               // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
-				      $time = gmdate('H:i:s', strtotime($time)-strtotime("02:00:00"));
+				      // $time = gmdate('H:i:s', strtotime($time)-strtotime("02:00:00"));
               $total = gmdate('H:i:s', strtotime($time)-strtotime($gun));
               $location = $timelap['Location']; 
               $started = $athlete['athlete_started'];

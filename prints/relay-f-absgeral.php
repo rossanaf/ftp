@@ -52,8 +52,8 @@ function Header()
     $this->SetX(110);
     $this->Cell(12,5,utf8_decode($rowrace['race_date']),0,0,'L',true);
     $this->SetX(190);
-    $this->Cell(10,5,$rowrace['race_gun'],0,0,'R',true);
-    // $this->Cell(10,5,$rowrace['race_gun'],0,0,'R',true);
+    $this->Cell(10,5,$rowrace['race_gun_f'],0,0,'R',true);
+    // $this->Cell(10,5,$rowrace['race_gun_f'],0,0,'R',true);
     
     $segment1 = ucwords($rowrace['race_segment1'])." - ".$rowrace['race_distsegment1'];
     $segment1 = ucwords($rowrace['race_segment1'])." - ".$rowrace['race_distsegment1'];
@@ -130,7 +130,7 @@ $fill = false;
 
 //TEMPOS DOS GUNS
 $race_id = $_GET['race_id'];
-$querygun = $db->prepare("SELECT race_gun FROM races WHERE race_id = ? LIMIT 1");
+$querygun = $db->prepare("SELECT race_gun_f FROM races WHERE race_id = ? LIMIT 1");
 $querygun->execute([$race_id]);
 $rowrace = $querygun->fetch();
 
