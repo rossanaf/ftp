@@ -116,11 +116,20 @@
       if (($time==="DNF") || ($time==="DSQ") || ($time==="LAP") || ($time==="DNS")) {
     		$has_times = 0;
     		$finishtime = $time;
-        if ($time === 'DNS') $started=0;
-        $stmt = $db->prepare('UPDATE athletes SET athlete_finishtime=?, athlete_pos=9999 WHERE athlete_bib=? AND athlete_race_id=?');
-        $stmt->execute([$time, $bib, $_POST["race"]]);
-        $stmtLive = $db->prepare('UPDATE live SET live_finishtime=?, live_pos=9999, live_started=? WHERE live_bib=? AND live_race=?');
-        $stmtLive->execute([$time, $started, $bib, $_POST["race"]]);
+        if ($time === 'DNS') {
+          $started=0;
+          $stmtLive = $db->prepare('UPDATE live SET live_t0=?, live_pos=9999, live_started=?, live_t1="time", live_t2="time", live_t3="time", live_t4="time", live_t5="time", live_finishtime="time" WHERE live_bib=? AND live_race=?');
+          $stmtLive->execute([$time, $started, $bib, $_POST["race"]]);
+          $stmt = $db->prepare('UPDATE athletes SET athlete_finishtime=?, athlete_pos=9999, athlete_t1="-", athlete_t2="-", athlete_t3="-", athlete_t4="-", athlete_t5="-" WHERE athlete_bib=? AND athlete_race_id=?');
+          $stmt->execute([$time, $bib, $_POST["race"]]);      
+        } else {
+          $stmtLive = $db->prepare('UPDATE live SET live_t0=?, live_pos=9999, live_started=? WHERE live_bib=? AND live_race=?');
+          $stmtLive->execute([$time, $started, $bib, $_POST["race"]]);
+          $stmtLive1 = $db->prepare('UPDATE live SET live_finishtime="time" WHERE live_bib=? AND live_race=? AND live_license=?');
+          $stmtLive1->execute([$bib, $_POST["race"], $curAthleteOrder]);
+          $stmt = $db->prepare('UPDATE athletes SET athlete_finishtime=?, athlete_pos=9999 WHERE athlete_bib=? AND athlete_race_id=?');
+          $stmt->execute([$time, $bib, $_POST["race"]]); 
+        }
     	} 
       if ($started !== 5) $pos = 9999;
       if ($has_times == 1) $time = '-';      
@@ -146,6 +155,7 @@
         ':raceId' => $_POST["race"]
       ));
       if ($race['race_live'] == 1) {
+        if (($time==="DNF") || ($time==="DSQ") || ($time==="LAP") || ($time==="DNS")) $finishtime = 'time';
         $stmtLive = $db->prepare("UPDATE live SET live_chip=:chip, live_bib=:dorsal, live_team_id=:clube, live_t1=:swim, live_t2=:t1, live_t3=:bike, live_t4=:t2, live_t5=:run, live_finishtime=:finishtime, live_started=:started, live_sex=:sex, live_license=:order WHERE live_id=:id AND live_race=:raceId"
         );
         $stmtLive->execute(array(

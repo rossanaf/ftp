@@ -185,7 +185,7 @@
     }
   }
 
-  function pdfHeaderItuMxRelay($page, $raceId, $gender, $scoreDescription) {
+  function pdfHeaderItuMxRelay($page, $raceId) {
     include($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
     $raceId = $_GET['race_id'];
     $queryrace = $db->prepare("SELECT * FROM races WHERE race_id = ? LIMIT 1");
@@ -221,8 +221,7 @@
       $page->SetX(110);
       $page->Cell(12,5,utf8_decode($rowRace['race_date']),0,0,'L',true);
       $page->SetX(190);
-      if ($gender === 'F') $page->Cell(10,5,utf8_decode($rowRace['race_gun_f']),0,0,'R',true);
-      elseif ($gender === 'M') $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
+      $page->Cell(10,5,utf8_decode($rowRace['race_gun_m']),0,0,'R',true);
       $segment1 = ucwords($rowRace['race_segment1'])." - ".$rowRace['race_distsegment1'];
       if ($rowRace['race_segment2'] !== 'n.a.') {
         $segment2 = ucwords($rowRace['race_segment2'])." - ".$rowRace['race_distsegment2'];
@@ -244,8 +243,7 @@
       $page->Ln(10);
     }
     $page->SetFont('Times','',14);
-    if (stripos($rowRace['race_name'],'estafeta') === false) $page->Cell(190,8,utf8_decode($scoreDescription),0,0,'C');
-    else $page->Cell(190,8,utf8_decode("Classificações Estafetas"),0,0,'C');
+    $page->Cell(190,8,utf8_decode($rowRace['race_name']).' RESULTS',0,0,'C');
     $page->Ln(10);
     $page->SetDrawColor(0);
     $page->SetFillColor(87,87,85);
@@ -254,7 +252,7 @@
     $page->SetFont('Times','',9);   
     // Header
     $page->SetX(10);
-    $w = array(6, 48, 14, 6, 20, 20, 20, 20, 20, 20); // menos 2+2+4+10+2 = 20
+    $w = array(8, 46, 14, 6, 20, 20, 20, 20, 20, 20); // menos 2+2+4+10+2 = 20
     $header = array('#','Team','Country', 'No.', 'Leg 1','Leg 2','Leg 3','Leg 4','Time','Diff.');
     for($i=0;$i<count($header);$i++)
       $page->Cell($w[$i],5,utf8_decode($header[$i]),1,0,'C',true);
