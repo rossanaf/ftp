@@ -11,23 +11,23 @@
   $stmtLive = $stmt->fetch();
   if ($stmtLive['race_live'] == 1) {
 ?>
-
 <div class="container-fluid" id="resultsContainer">
   <div class="col-md-12">
     <table class="table table-responsive table-bordered table-hover table-sm responsive" id="user_data">
       <thead>
         <tr>
-          <th class="dt-center" width="1%">POS</th>
-          <th class="dt-center" width="3%">No</th>
+          <th width="1%">POS</th>
           <th width="20%">Name</th>
           <th width="20%">Team</th>
-          <th class="dt-center" width="6%">Country</th>
-          <th class="dt-center" width="6%">Swim</th>
-          <th class="dt-center" width="6%">T1</th>
-          <th class="dt-center" width="6%">Bike</th>
-          <th class="dt-center" width="6%">T2</th>
-          <th class="dt-center" width="6%">Run</th>
-          <th class="dt-center" width="6%">Time</th>
+          <th width="6%">Country</th>
+          <th width="3%">Start No</th>
+          <th width="6%">Swim</th>
+          <th width="6%">T1</th>
+          <th width="6%">Bike</th>
+          <th width="6%">T2</th>
+          <th width="6%">Run</th>
+          <th width="6%">Time</th>
+          <th width="6%">Team Time</th>
         </tr>
       </thead>
     </table>
@@ -45,7 +45,7 @@
       "order": [],
       "columnDefs": [{
         "className": "dt-center", 
-        "targets": [0, 1, 3, 5, 6, 7, 8, 9, 10],
+        "targets": [0, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       }],
       "ajax":{
   			url:"fetch.php",

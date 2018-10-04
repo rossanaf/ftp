@@ -5,6 +5,24 @@ body, html {
    background: none;
  }
 
+ td.details-control {
+  background: url('../images/flags/POR.png');
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  cursor: pointer;
+ }
+
+ tr.shown td.details-control {
+  background: url('../images/flags/USA.png');
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  cursor: pointer;
+ }
+
+ div.slider {
+  display: none;
+ }
+
 /*#footer 
 {
     width: 1200px;

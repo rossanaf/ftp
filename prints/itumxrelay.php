@@ -1,14 +1,12 @@
 <?php
   include($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
   require('fpdf.php');
-
   class PDF extends FPDF {
     // Page header
     function Header() {
       include_once($_SERVER['DOCUMENT_ROOT']."/functions/PDFs/pdfHeader.php");
       pdfHeaderItuMxRelay($this, $_GET['race_id']);
     }
-
     // Page footer
     function Footer() {
       $this->SetDrawColor(255,214,0);
@@ -26,7 +24,6 @@
       $this->Cell(0,10,utf8_decode("Página ").$this->PageNo().'/{nb}',0,0,'R');
     }
   }
-
   // Instanciation of inherited class
   $pdf = new PDF('P','mm','A4');
   $pdf->AliasNbPages();
@@ -50,8 +47,8 @@
     if ($pos == 1) $timeFirst = $finisher['live_t0'];
     $pdf->SetX(10);
     $pdf->Cell(8,5,$pos,1,0,'C',$fill);
-    $pdf->Cell(46,5,utf8_decode($finisher['team_country']),1,0,'L',$fill);
-    $pdf->Cell(14,5,utf8_decode($finisher['team_name']),1,0,'C',$fill);
+    $pdf->Cell(46,5,utf8_decode($finisher['team_name']),1,0,'C',$fill);
+    $pdf->Cell(14,5,utf8_decode($finisher['team_country']),1,0,'C',$fill);
     $pdf->Cell(6,5,$bib,1,0,'C',$fill);
     $query = $db->prepare("SELECT live_finishtime FROM live WHERE live_bib=? AND live_race=? ORDER BY live_license ASC");
     $query->execute([$bib, $race_id]);
@@ -123,8 +120,8 @@
       $bib = $finisher['live_bib'];
       $pdf->SetX(10);
       $pdf->Cell(8,5,$finisher['live_t0'],1,0,'C',$fill);
-      $pdf->Cell(46,5,utf8_decode($finisher['team_country']),1,0,'L',$fill);
-      $pdf->Cell(14,5,utf8_decode($finisher['team_name']),1,0,'C',$fill);
+      $pdf->Cell(46,5,utf8_decode($finisher['team_name']),1,0,'C',$fill);
+      $pdf->Cell(14,5,utf8_decode($finisher['team_country']),1,0,'C',$fill);
       $pdf->Cell(6,5,$bib,1,0,'C',$fill);
       $query = $db->prepare("SELECT live_finishtime FROM live WHERE live_bib=? AND live_race=? ORDER BY live_license ASC");
       $query->execute([$bib, $race_id]);
