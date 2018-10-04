@@ -17,7 +17,7 @@
 	$filtered_rows = $stmt->rowCount();
 	foreach($result as $row) {   
     $sub_array = array();
-    // $live_t1 = $row["live_t1"];
+    $live_t1 = $row["live_t1"];
     // $live_t2 = $row["live_t2"];
     // $live_t3 = $row["live_t3"];
     // $live_t4 = $row["live_t4"];
@@ -25,7 +25,7 @@
     // $t0 = $row["live_t0"];
     // $live_finishtime = $row["live_finishtime"];
     $flag="<img src='/images/flags/".$row['team_country'].".png' width='18px'>";
-    // if (($row["live_t1"]) === ("time")) $live_t1 = "";
+    if (($row["live_t1"]) === ("time")) $live_t1 = "";
     // if (($row["live_t2"]) === ("time")) $live_t2 = "";
     // if (($row["live_t3"]) === ("time")) $live_t3 = "";
     // if (($row["live_t4"]) === ("time")) $live_t4 = "";
@@ -38,11 +38,12 @@
         $pos = $row["live_t0"];
     } else
       $pos = $row["live_pos"];
-    $sub_array['pos'] = $pos;
-    $sub_array['team'] = $row["team_name"];
-    $sub_array['country'] = $flag.' '.$row["team_country"];
-    $sub_array['bib'] = $row["live_bib"];
-    // $sub_array[] = $live_t1;
+    $sub_array[] = '<button title="Guns" type="button" name="guns" id="'.$row['live_bib'].'" class="guns"><img width="20px" src="../images/details_open.png"></button>';
+    $sub_array[] = $pos;
+    $sub_array[] = $row["team_name"];
+    $sub_array[] = $flag.' '.$row["team_country"];
+    $sub_array[] = $row["live_bib"];
+    $sub_array[] = $live_t1;
     // $sub_array[] = $live_t2;
     // $sub_array[] = $live_t3;
     // $sub_array[] = $live_t4;

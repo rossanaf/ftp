@@ -16,7 +16,7 @@
     <table class="table table-responsive table-bordered table-hover table-sm responsive" id="user_data">
       <thead>
         <tr>
-          <th class="details-control" width="1%"></th>
+          <th width="1%"></th>
           <th width="1%">POS</th>
           <th width="20%">Team</th>
           <th width="6%">Country</th>
@@ -32,37 +32,29 @@
     </table>
   </div>
 </div>
+<div class="modal fade gunModal bd-example-modal-lg" tabindex="-1" role="dialog" id="gunModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript" language="javascript" >   
-  function format(d) {
-    return 
-      '<table>'+
-        '<tr>'+
-          '<td>Full Name</td>'+
-          '<td>'+d.bib+'</td>'+
-        '</tr>'+
-      '</table>';
-  }
-
   $(document).ready(function() {    
     var dataTable = $('#user_data').DataTable({
       "dom": "ft",
-      "language": {
-        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json"
-      },
       "processing": true,
       "serverSide": true,
-      "columns": [
-        {
-          "className": "details-control",
-          "orderable": "false",
-          "data": null,
-          "defaultContent": ''  
-        },
-        { "className": "dt-center", "data": "pos" },
-        { "data": "team" },
-        { "className": "dt-center", "data": "country" },
-        { "className": "dt-center", "data": "bib" },
-      ],
+      "columnDefs": [{
+        "className": "dt-center",
+        "targets": [0,1,3,4]
+      }],
       "order": [],
       "ajax":{
   			url:"fetch.php",
@@ -70,22 +62,45 @@
         data:{raceId: <?php echo $raceId ?>}
 			}
 		});
-	}); 
-  $('#user_data tbody').on('click', 'details-control', function() {
-    alert('clicked');
-    // var tr = $(this).closest('tr');
-    // var row = table.row(tr);
-    // if(row.child.isShown()) {
-    //   $('div.slider', row.child()).slideUp(function() {
-    //     row.child.hide();
-    //     tr.removeClass('shown');
-    //   });
-    // } else {
-    //   row.child(format(row.data()), 'no-padding').show();
-    //   tr.addClass('shown');
-    //   $('div.slider', row.child()).slideDown();
-    // }
-  });   
+  }); 
+      //**** ATUALIZAR GUNSHOTS PROVAS ****//
+    $(document).on('click', '.guns', function(){
+      var gun_id = $(this).attr("id");
+      var infoModal = $('#gunModal');
+      $.ajax({
+        url:"fetchLeg.php",
+        method:"POST",
+        data:{raceId:gun_id},
+        dataType:"json",
+        success:function(data){
+          htmlData = '<table class="table table-responsive responsive">'+
+          '<thead><tr><th>Name</th>'+
+          '<th>Time</th>'+
+          '<th>Swim</th>'+
+          '<th>T1</th>'+
+          '<th>Bike</th>'+
+          '<th>T2</th>'+
+          '<th>Run</th>'+
+          '</tr></thead>'+
+          '<tbody><tr><td>'+data.name1+' '+data.lastname1+'</td>'+
+          '<td><b>'+data.leg1+'</b></td>'+
+          '<td>'+data.t11+'</td>'+
+          '<td>'+data.t12+'</td>'+
+          '<td>'+data.t13+'</td>'+
+          '<td>'+data.t14+'</td>'+
+          '<td>'+data.t15+'</td>'+
+          ' </tbody></table>';
+          infoModal.find('.modal-title').html(data.teamFlag);
+          infoModal.find('.modal-body').html(htmlData);
+          infoModal.modal('show');
+          // $('#pos').val(data.pos);
+          // $('#gunModal').modal('show');
+          // $('.modal-title').text("Inserir Horas dos GUNs");
+          // $('#action').val("Guardar Alterações");
+          // $('#operation').val("Edit");
+        }
+      })
+    });
 </script>
 <?php } ?>
 <?php include($_SERVER['DOCUMENT_ROOT']."/html/info.php"); ?>
