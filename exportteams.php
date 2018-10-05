@@ -1,5 +1,5 @@
 <?php 
-  include_once ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+  include_once ($_SERVER['DOCUMENT_ROOT']."/includes/db-lx.php");
   $teste = $db->prepare('SELECT live_pos, live_t0, team_name, team_country, live_bib, live_category, live_bib FROM live JOIN teams ON live_team_id=team_id WHERE live_license=? AND live_started=? AND live_category=? ORDER BY live_pos, live_started, live_bib, live_license');
   $teste->execute([4, 5, 'ELITE']);
   $results = $teste->fetchAll();

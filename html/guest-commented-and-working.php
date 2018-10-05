@@ -13,19 +13,36 @@
   $liveRaces = $live_stmt->fetchAll();
   $isLive = 0;
 ?>
-<!--   <div class="collapse" id="navbarToggleExternalContent">
+  <div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
-    	<div class="movedown">
       <a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">       
+        <ul class="navbar-nav mr-auto">
+		      <?php 
+            foreach ($liveRaces as $live) {
+          ?>          
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxelite/">Results ELITE</a>
+                <a class="nav-link" href="/resultsmxe/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name']?></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsmxjunior/">Results JUNIOR</a>
-            </li>
-  		</ul>
-  		</div>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
+            </li> -->
+          <?php 
+            }
+            if ($isLive === 1) {
+          ?>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="/live">Tempos LIVE</a>
+            </li> -->
+          <?php 
+        		} 
+      		?>
+		    </ul>
+		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
+		<!-- <ul class="navbar-nav justify-content-end">
+			<li class="nav-item">
+				<a class="nav-login" href="/html/login.php">Login</a>
+			</li>
+		</ul> -->
     </div>
   </div>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -34,18 +51,37 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">       
+        <ul class="navbar-nav mr-auto">
+          <?php 
+            foreach ($liveRaces as $live) {
+          ?>        
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxelite/">Results ELITE</a>
+                <a class="nav-link" href="/resultsmxe/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name']?></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsmxjunior/">Results JUNIOR</a>
-            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Fem' ?></a>
+            </li> -->
+          <?php 
+            }
+            if ($isLive === 1) {
+          ?>
+    		    <!-- <li class="nav-item">
+    		        <a class="nav-link" href="/live">Tempos LIVE</a>
+    		    </li> -->
+          <?php 
+      			} 
+      		?>
   		</ul>
+		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end">
+		<ul class="navbar-nav justify-content-end">
+			<li class="nav-item">
+				<a class="nav-login" href="/html/login.php">Login</a>
+			</li>
+		</ul> -->
 	</div>
-  </nav> -->
+  </nav>
 
-<div id="carouselExampleIndicators" class="carousel slide d-none d-lg-block" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide08.jpg" alt="Second slide">
@@ -99,10 +135,6 @@
 			<img class="d-block w-100" src="/images/slider/slide07.jpg" alt="Second slide">
 		</div>
 	</div>
-</div>
-<div id="mainPage">
-	<a href="/resultsmxelite/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">Results ELITE Mixed Relay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
-	<a href="/resultsmxjunior/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">Results JUNIOR Mixed Relay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
 </div>
 <?php	
 	include($_SERVER['DOCUMENT_ROOT']."/html/footer.php"); 

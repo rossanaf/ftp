@@ -1,5 +1,5 @@
 <?php
-	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+	include ($_SERVER['DOCUMENT_ROOT']."/includes/db-lx.php");
   $output = array();
 	$stmt = $db->prepare('SELECT * FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_bib=? AND live_category="ELITE" ORDER BY live_license');
 	$stmt->execute([$_POST['raceId']]);

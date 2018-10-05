@@ -1,7 +1,7 @@
 <?php
-	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+	include ($_SERVER['DOCUMENT_ROOT']."/includes/db-lx.php");
 	function get_total_all_records() {
-		include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+		include ($_SERVER['DOCUMENT_ROOT']."/includes/db-lx.php");
 		$stmt = $db->query('SELECT * FROM live WHERE live_category="JUNIOR"');
 		$result = $stmt->fetchAll();
 		return $stmt->rowCount();

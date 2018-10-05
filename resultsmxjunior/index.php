@@ -8,6 +8,7 @@
 ?>
 <div class="container-fluid" id="resultsContainer">
   <div class="col-md-12">
+    <h3><center>JUNIOR</center></h3>
     <table class="table table-responsive table-bordered table-hover table-sm responsive" id="user_data">
       <thead>
         <tr>

@@ -1,5 +1,5 @@
 <?php 
-  include_once ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+  include_once ($_SERVER['DOCUMENT_ROOT']."/includes/db-lx.php");
   $teste = $db->query('SELECT live_bib, live_license, live_firstname, live_lastname, live_t1, live_t2, live_t3, live_t4, live_t5, live_finishtime, team_name, team_country, live_category FROM live JOIN teams ON live_team_id=team_id ORDER BY live_race, live_bib, live_license');
   $results = $teste->fetchAll();
   $jsonData = array(); 

@@ -142,19 +142,6 @@ body, html {
     color: black;
 }
 
-/*a 
-{
-    color: #449D44;
-}*/
-
-/*a:link 
-{
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-decoration: none;
-}*/
-
 .navbar-dark .nav-link 
 {
     color: whitesmoke !important;
@@ -207,102 +194,6 @@ body, html {
     display: inline;
 }
 
-/*#importStartlistAquatlo
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistAquatlo input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistCREquipas
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistCREquipas input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistCRIndividual
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistCRIndividual input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistEstafetas
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistEstafetas input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistEstafetas
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistEstafetas input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlist
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlist input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistJovens
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistJovens input[type=file] 
-{
-    display: inline;
-}
-
-#importStartlistETU
-{
-    margin-bottom: 5px;
-    margin-top: 20px;
-    display: none;
-}
-
-#importStartlistETU input[type=file] 
-{
-    display: inline;
-}
-*/
 #importFTPAthletes {
     margin-bottom: 5px;
     margin-top: 20px;
@@ -324,4 +215,12 @@ th.dt-center, td.dt-center
     background: white;
     color: black;
     width: 100% !important;
+}
+
+#mainPage {
+    text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+    .movedown { padding-top: 60px; }
 }

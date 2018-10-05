@@ -14,7 +14,7 @@
 
 <div class="container-fluid" id="resultsContainer">
     <div class="col-md-12">
-        <table class="table table-responsive table-bordered table-hover table-sm" id="user_data">
+        <table class="table table-responsive table-bordered table-hover table-md" id="user_data">
             <thead>
                 <tr>
                     <th class="dt-center" width="1%">#</th>
