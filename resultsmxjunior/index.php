@@ -17,11 +17,11 @@
           <th width="30%">Team</th>
           <th width="6%">Country</th>
           <th width="1%">Start No</th>
+          <th width="6%">Time</th>
           <th width="6%">Leg 1</th>
           <th width="6%">Leg 2</th>
           <th width="6%">Leg 3</th>
           <th width="6%">Leg 4</th>
-          <th width="6%">Time</th>
         </tr>
       </thead>
     </table>

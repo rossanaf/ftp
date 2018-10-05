@@ -50,11 +50,11 @@
     $sub_array[] = $row["team_name"];
     $sub_array[] = $flag.' '.$row["team_country"];
     $sub_array[] = $row["live_bib"];
+    $sub_array[] = '<b>'.$t0.'</b>';
     $sub_array[] = $leg1;
     $sub_array[] = $leg2;
     $sub_array[] = $leg3;
     $sub_array[] = $leg4;
-    $sub_array[] = '<b>'.$t0.'</b>';
     $data[] = $sub_array;
   }
   $output = array(
