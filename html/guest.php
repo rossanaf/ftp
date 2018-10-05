@@ -52,42 +52,15 @@
 		</div>
 		<div class="carousel-item active">
 			<img class="d-block w-100" src="/images/slider/slide01.jpg" alt="First slide">
-			<div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 80px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
-			    	<?php
-			    		echo $race["race_namepdf"]."<br>";
-			    	?>
-		  	</div>
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide02.jpg" alt="Second slide">
-			<div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 60px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
-			    	<?php
-			    		echo $race["race_ranking"]."<br>";
-			    	?>
-		  	</div>
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide03.jpg" alt="Second slide">
-			<div class="carousel-caption d-none d-md-block" style="line-height: 60px; letter-spacing: 2px; font-size: 40px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
-			    	<?php
-			    		echo $race["race_segment1"]." ".$race["race_distsegment1"]."<br>";
-			    		echo $race["race_segment2"]." ".$race["race_distsegment2"]."<br>";
-			    		echo $race["race_segment3"]." ".$race["race_distsegment3"]."<br>";
-			    	?>
-			    	<!-- <?php
-			    		echo "Swim ".$race["race_distsegment1"]."<br>";
-			    		echo "Bike ".$race["race_distsegment2"]."<br>";
-			    		echo "Run ".$race["race_distsegment3"]."<br>";
-			    	?> -->
-		  	</div>
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide04.jpg" alt="Second slide">
-			<div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 60px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
-			    	<?php
-			    		echo "<br>";
-			    	?>
-		  	</div>
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide05.jpg" alt="Second slide">
@@ -101,9 +74,6 @@
 	</div>
 </div>
 <div id="mainPage">
-	<a href="/resultsmxelite/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">Results ELITE Mixed Relay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
-	<a href="/resultsmxjunior/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">Results JUNIOR Mixed Relay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
+	<a href="/resultsmxelite/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">ELITE MxRelay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
+	<a href="/resultsmxjunior/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">JUNIOR MxRelay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
 </div>
-<?php	
-	include($_SERVER['DOCUMENT_ROOT']."/html/footer.php"); 
-?>
