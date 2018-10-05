@@ -1,14 +1,13 @@
 <?php
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
-	function get_total_all_records($raceId) {
+	function get_total_all_records() {
 		include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
-		$stmt = $db->prepare('SELECT * FROM live WHERE live_race=?');
-		$stmt->execute([$raceId]);
+		$stmt = $db->query('SELECT * FROM live WHERE live_category="JUNIOR"');
 		$result = $stmt->fetchAll();
 		return $stmt->rowCount();
 	}
   $output = array();
-  $query = 'SELECT * FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_race='.$_POST['raceId'].' AND live_license=4 ';
+  $query = 'SELECT * FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_category="JUNIOR" AND live_license=4 ';
    $query .= 'ORDER BY live_started DESC, live_pos, live_finishtime, live_t4, live_t3, live_t2, live_t1,LENGTH(live_bib), live_bib ';
 	$stmt = $db->prepare($query);
 	$stmt->execute();
@@ -17,28 +16,29 @@
 	$filtered_rows = $stmt->rowCount();
 	foreach($result as $row) {
     $i = 1;
-    $stmtLegs = $db->prepare('SELECT live_finishtime FROM live WHERE live_bib=?');
+    $stmtLegs = $db->prepare('SELECT live_finishtime FROM live WHERE live_bib=? AND live_category="JUNIOR"');
     $stmtLegs->execute([$row['live_bib']]);
     $legs = $stmtLegs->fetchAll();
     foreach ($legs as $leg) {
       if ($i == 1) {
         $leg1 = $leg['live_finishtime']; 
-        if (($row['live_finishtime']) === ('time')) $leg1 = '';
+        if (($leg['live_finishtime']) === ('time')) $leg1 = '';
       } elseif ($i == 2) {
         $leg2 = $leg['live_finishtime']; 
-        if (($row['live_finishtime']) === ('time')) $leg2 = '';
+        if (($leg['live_finishtime']) === ('time')) $leg2 = '';
       } elseif ($i == 3) {
         $leg3 = $leg['live_finishtime']; 
-        if (($row['live_finishtime']) === ('time')) $leg3 = '';
+        if (($leg['live_finishtime']) === ('time')) $leg3 = '';
       } elseif ($i == 4) {
         $leg4 = $leg['live_finishtime']; 
-        if (($row['live_finishtime']) === ('time')) $leg4 = '';
+        if (($leg['live_finishtime']) === ('time')) $leg4 = '';
       }
       $i++;
     }
     $sub_array = array();
-    $t0 = $row["live_t0"];
     $flag="<img src='/images/flags/".$row['team_country'].".png' width='18px'>";
+    $t0 = $row["live_t0"];
+    if ($row["live_t0"] === 'time') $t0 = '';
     if ($row["live_pos"] == 9999) {
       $pos = "";
       if ($row["live_t0"] !== 'time')
@@ -60,7 +60,7 @@
   $output = array(
     "draw"              =>  intval($_POST["draw"]),
     "recordsTotal"      =>  $filtered_rows,
-    "recordsFiltered"   =>  get_total_all_records($_POST['raceId']),
+    "recordsFiltered"   =>  get_total_all_records(),
     "data"              =>  $data
   );
     // echo $output();

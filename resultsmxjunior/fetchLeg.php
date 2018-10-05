@@ -1,0 +1,107 @@
+<?php
+	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+  $output = array();
+	$stmt = $db->prepare('SELECT * FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_bib=? AND live_category="JUNIOR" ORDER BY live_license');
+	$stmt->execute([$_POST['raceId']]);
+	$result = $stmt->fetchAll();
+	$data = array();
+  $i = 1;
+	foreach($result as $row) {
+		if ($i == 1) {
+			$no1 = $row["live_license"];
+			$name1 = $row['live_firstname'].' '.$row['live_lastname'];
+    	$t11 = $row["live_t1"];
+	    $t21 = $row["live_t2"];
+	    $t31 = $row["live_t3"];
+	    $t41 = $row["live_t4"];
+	    $t51 = $row["live_t5"];
+	    if (($row["live_t1"]) === ("time")) $t11 = "";
+    	if (($row["live_t2"]) === ("time")) $t21 = "";
+    	if (($row["live_t3"]) === ("time")) $t31 = "";
+    	if (($row["live_t4"]) === ("time")) $t41 = "";
+    	if (($row["live_t5"]) === ("time")) $t51 = "";
+	    $finishtime1 = $row["live_finishtime"];   
+	    if (($row["live_finishtime"]) === ("time")) $finishtime1 = "";
+		} elseif ($i == 2) {
+			$no2 = $row["live_license"];
+			$name2 = $row['live_firstname'].' '.$row['live_lastname'];
+    	$t12 = $row["live_t1"];
+	    $t22 = $row["live_t2"];
+	    $t32 = $row["live_t3"];
+	    $t42 = $row["live_t4"];
+	    $t52 = $row["live_t5"];
+	    if (($row["live_t1"]) === ("time")) $t12 = "";
+    	if (($row["live_t2"]) === ("time")) $t22 = "";
+    	if (($row["live_t3"]) === ("time")) $t32 = "";
+    	if (($row["live_t4"]) === ("time")) $t42 = "";
+    	if (($row["live_t5"]) === ("time")) $t52 = "";
+	    $finishtime2 = $row["live_finishtime"];   
+	    if (($row["live_finishtime"]) === ("time")) $finishtime2 = "";
+		} elseif ($i == 3) {
+			$no3 = $row["live_license"];
+			$name3 = $row['live_firstname'].' '.$row['live_lastname'];
+    	$t13 = $row["live_t1"];
+	    $t23 = $row["live_t2"];
+	    $t33 = $row["live_t3"];
+	    $t43 = $row["live_t4"];
+	    $t53 = $row["live_t5"];
+	    if (($row["live_t1"]) === ("time")) $t13 = "";
+    	if (($row["live_t2"]) === ("time")) $t23 = "";
+    	if (($row["live_t3"]) === ("time")) $t33 = "";
+    	if (($row["live_t4"]) === ("time")) $t43 = "";
+    	if (($row["live_t5"]) === ("time")) $t53 = "";
+	    $finishtime3 = $row["live_finishtime"];   
+	    if (($row["live_finishtime"]) === ("time")) $finishtime3 = "";
+		} elseif ($i == 4) {
+			$no4 = $row["live_license"];
+			$name4 = $row['live_firstname'].' '.$row['live_lastname'];
+    	$t14 = $row["live_t1"];
+	    $t24 = $row["live_t2"];
+	    $t34 = $row["live_t3"];
+	    $t44 = $row["live_t4"];
+	    $t54 = $row["live_t5"];
+	    if (($row["live_t1"]) === ("time")) $t14 = "";
+    	if (($row["live_t2"]) === ("time")) $t24 = "";
+    	if (($row["live_t3"]) === ("time")) $t34 = "";
+    	if (($row["live_t4"]) === ("time")) $t44 = "";
+    	if (($row["live_t5"]) === ("time")) $t54 = "";
+	    $finishtime4 = $row["live_finishtime"];   
+	    if (($row["live_finishtime"]) === ("time")) $finishtime4 = "";
+		}
+    $i++;
+  }
+  $output['name1'] = $name1;
+  $output['no1'] = $no1;
+  $output['t11'] = $t11;
+  $output['t21'] = $t21;
+  $output['t31'] = $t31;
+  $output['t41'] = $t41;
+  $output['t51'] = $t51;
+  $output['leg1'] = $finishtime1;
+  $output['name2'] = $name2;
+  $output['no2'] = $no2;
+  $output['t12'] = $t12;
+  $output['t22'] = $t22;
+  $output['t32'] = $t32;
+  $output['t42'] = $t42;
+  $output['t52'] = $t52;
+  $output['leg2'] = $finishtime2;
+  $output['name3'] = $name3;
+  $output['no3'] = $no3;
+  $output['t13'] = $t13;
+  $output['t23'] = $t23;
+  $output['t33'] = $t33;
+  $output['t43'] = $t43;
+  $output['t53'] = $t53;
+  $output['leg3'] = $finishtime3;
+  $output['name4'] = $name4;
+  $output['no4'] = $no4;
+  $output['t14'] = $t14;
+  $output['t24'] = $t24;
+  $output['t34'] = $t34;
+  $output['t44'] = $t44;
+  $output['t54'] = $t54;
+  $output['leg4'] = $finishtime4;
+  $output['teamFlag'] = "<img src='/images/flags/".$row['team_country'].".png' width='18px'> ".$row['team_country']."/".$row['team_name'];
+  echo json_encode($output);
+?>
