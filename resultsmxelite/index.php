@@ -130,6 +130,6 @@
     });
 </script>
 <?php 
-// include($_SERVER['DOCUMENT_ROOT']."/html/info.php");
+  include($_SERVER['DOCUMENT_ROOT']."/html/info.php");
   include($_SERVER['DOCUMENT_ROOT']."/html/footer.php"); 
 ?>
