@@ -74,23 +74,25 @@
 		}
 	} elseif ($rowrace['race_type'] == 'iturelay') {
     $output = fopen("php://output", "w");
-    fputcsv($output, array('Team', 'Country', 'Start No','Leg 1', 'Leg 2', 'Leg 3', 'Leg 4', 'Leg 5', 'Position', 'Total Time'));
+    fputcsv($output, array('Team', 'Country', 'Start No','Leg 1', 'Leg 2', 'Leg 3', 'Leg 4', 'Position', 'Total Time'));
     $stmt = $db->prepare("SELECT * FROM live JOIN teams ON live_team_id=team_id WHERE live_race=? AND live_license=4 ORDER BY live_t0, live_started DESC, live_finishtime");
     $stmt->execute([$race_id]);
-    $result = $stmt->fetchAll();
+    $resul,t = $stmt->fetchAll();
+    $pos=1
     foreach ($result as $row) {
-      $stmtLegs = $db->prepare('SELECT * FROM live WHERE live_race=? AND live_bib+? ORDER BY live_license');
+      $stmtLegs = $db->prepare('SELECT * FROM live WHERE live_race=? AND live_bib=? ORDER BY live_license');
       $stmtLegs->execute([$race_id, $row['live_bib']]);
       $legs = $stmtLegs->fetchAll();
       $legsTime = array();
       $i = 0;
       foreach ($legs as $leg) {
-        $finishTime = $row['live_finishtime'];
-        if ($row['live_finishtime'] == 'time') $finishTime = '00:00:00';
+      	$finishTime = $leg['live_finishtime'];
+        if ($leg['live_finishtime'] == 'time') $finishTime = '00:00:00';
         $legsTime[$i] = $finishTime;
         $i++;
       }
-      $line = array($row['team_name'], $row['team_country'], $row['live_bib'], $legsTime[0], $legsTime[1], $legsTime[2], $legsTime[3], $row['live_t0']);
+      $line = array($row['team_name'], $row['team_country'], $row['live_bib'], $legsTime[0], $legsTime[1], $legsTime[2], $legsTime[3], $pos, $row['live_t0']);
+      $pos++;
       fputcsv($output, $line);
     }
   }

@@ -24,7 +24,7 @@
           if (($athlete['athlete_sex'] === 'F') && ($race['race_relay'] === 'Y')) $gun = $race['race_gun_f'];
           elseif (($athlete['athlete_sex'] === 'M') && ($race['race_relay'] === 'Y')) $gun = $race['race_gun_m'];
           // SUBTRAIR 2 HORAS AO TEMPO ENVIADO PELO MYLAPS
-          // $time = gmdate('H:i:s', strtotime($time)-strtotime('02:00:00'));
+          $time = gmdate('H:i:s', strtotime($time)-strtotime('01:00:00'));
           // TEMPO DA ESTAFETA #A
           if ($posat === 'A') {
             if ($athlete['athlete_t5'] === '-') {

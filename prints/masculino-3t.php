@@ -65,7 +65,7 @@
     $pdf->Cell(50,4,utf8_decode($row['athlete_name']),1,0,'L',$fill);
     $pdf->Cell(10,4,$row['athlete_category'],1,0,'C',$fill);
     $pdf->Cell(66,4,utf8_decode($row['team_name']),1,0,'L',$fill);
-    if ($rowrace['race_type'] == 'crind') $racegun = $row['athlete_t0'];
+    if ($rowrace['race_type'] == 'crind' || $rowrace['race_relay'] === 'X') $racegun = $row['athlete_t0'];
     else $racegun = $rowrace['race_gun_m'];
     if($row['athlete_t1']=="-") $pdf->Cell(20,4,"-",1,0,'C',$fill);
     else $pdf->Cell(20,4,utf8_decode(gmdate('H:i:s',strtotime($row['athlete_t1']) - strtotime($racegun))),1,0,'C',$fill);

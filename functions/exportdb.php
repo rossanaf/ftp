@@ -40,7 +40,7 @@
 	$stmt->execute();
 	$result = $stmt->fetchAll();
 	foreach ($result as $row) {
-		$line = array(3, $row['team_id'], $row['team_name']);
+		$line = array(3, $row['team_id'], $row['team_name'], $row['team_country']);
 		fputcsv($output, $line);
 	}
 	//BACKUP TABELA YOUTHRACES

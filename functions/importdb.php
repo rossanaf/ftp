@@ -1,5 +1,6 @@
 <?php
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+  ini_set('max_execution_time', 0);
   if(!empty($_FILES['file']['name'])) {
     if(is_uploaded_file($_FILES['file']['tmp_name'])) {
   	  $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
@@ -17,8 +18,8 @@
           $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3, race_date, race_location, race_gun_f, race_gun_m, race_type, race_relay, race_live) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
           $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16], $line[17]]);
         } elseif ($line[0] == 3) {
-          $stmt = $db->prepare("INSERT INTO teams(team_id,team_name) VALUES (?,?)");
-          $stmt->execute([$line[1], $line[2]]);
+          $stmt = $db->prepare("INSERT INTO teams(team_id,team_name,team_country) VALUES (?,?,?)");
+          $stmt->execute([$line[1], $line[2], $line[3]]);
         } elseif ($line[0] == 4) {
           $stmt = $db->prepare("INSERT INTO youthraces(youthrace_race_id, youthrace_name, youthrace_namepdf, youthrace_ranking, youthrace_s1_ben, youthrace_d1_ben, youthrace_s2_ben, youthrace_d2_ben, youthrace_s3_ben, youthrace_d3_ben, youthrace_s1_inf, youthrace_d1_inf, youthrace_s2_inf, youthrace_d2_inf, youthrace_s3_inf, youthrace_d3_inf, youthrace_s1_ini, youthrace_d1_ini, youthrace_s2_ini, youthrace_d2_ini, youthrace_s3_ini, youthrace_d3_ini, youthrace_s1_juv, youthrace_d1_juv, youthrace_s2_juv, youthrace_d2_juv, youthrace_s3_juv, youthrace_d3_juv, youthrace_date, youthrace_location) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
           $stmt->execute([$line[1], $line[2], $line[3], $line[4], $line[5], $line[6], $line[7], $line[8], $line[9], $line[10], $line[11], $line[12], $line[13], $line[14], $line[15], $line[16], $line[17], $line[18], $line[19], $line[20], $line[21], $line[22], $line[23], $line[24], $line[25], $line[26], $line[27], $line[28], $line[29], $line[30]]);

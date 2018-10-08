@@ -110,24 +110,26 @@
           // **** Tempo T1 ****//  
           if($location === 'TimeT1' && $t1 === '-') {
             $stmtTimes = $db->prepare('
-              UPDATE athletes 
-              SET athlete_t1=:chipTime
-              WHERE athlete_chip=:chip
+              UPDATE athletes, live 
+              SET athlete_t1=:chipTime, live_t1=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
             ');
             $stmtTimes->execute(array(
               ':chipTime' => $chipTime, 
+              ':total' => $total,
               ':chip' => $athlete['Chip']
             ));
             $t1 = $chipTime;
             if($athlete['athlete_started'] == 0) {
               $started = 1;
               $stmtTimes = $db->prepare('
-                UPDATE athletes 
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
+                UPDATE athletes, live 
+                SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+                WHERE athlete_chip=:chip AND live_chip=:chip
               ');
               $stmtTimes->execute(array(
                 ':started' => $started,
+                ':total' => $total,
                 ':chip' => $athlete['Chip'],
                 ':emProva' => '-'
               ));
@@ -144,12 +146,13 @@
             if($started <= 1) {
               $started = 2;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
+                UPDATE athletes, live 
+                SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+                WHERE athlete_chip=:chip AND live_chip=:chip
               ');
               $stmtTimes->execute(array(
                 ':started' => $started,
+                ':total' => $total,
                 ':chip' => $athlete['Chip'],
                 ':emProva' => '-'
               ));
@@ -163,12 +166,13 @@
             if($started <= 2) {
               $started = 3;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
+                UPDATE athletes, live 
+                SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+                WHERE athlete_chip=:chip AND live_chip=:chip
               ');
               $stmtTimes->execute(array(
                 ':started' => $started,
+                ':total' => $total,
                 ':chip' => $athlete['Chip'],
                 ':emProva' => '-'
               ));
@@ -182,12 +186,13 @@
             if($started <= 3) {
               $started = 4;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
+                UPDATE athletes, live 
+                SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+                WHERE athlete_chip=:chip AND live_chip=:chip
               ');
               $stmtTimes->execute(array(
                 ':started' => $started,
+                ':total' => $total,
                 ':chip' => $athlete['Chip'],
                 ':emProva' => '-'
               ));
@@ -195,10 +200,11 @@
           }
           //**** Tempo T5 / Meta ****//
           if($location === "TimeT5" && $t5 === "-") {
+            print_r('aqui');
             $stmtTimes = $db->prepare("
-              UPDATE athletes
-              SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total
-              WHERE athlete_chip = :chip
+              UPDATE athletes, live
+              SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total, live_started=:started, live_finishtime=:total 
+              WHERE athlete_chip = :chip AND live_chip=:chip
             ");
             $stmtTimes->execute(array(
               ':chipTime' => $chipTime,
