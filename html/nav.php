@@ -35,10 +35,10 @@
 	          <!------------------------------------------------------>
             <a class="dropdown-item" href="/startlist" >Startlist</a>
             <!-- ADICIONAR NOVOS CLUBES NA JANELA DE ADICIONAR NOVA INSCRICAO -->
-	          <!-- <a class="dropdown-item" href="/teams">Clubes</a> -->
-	          <div class="dropdown-divider"></div>
-	        <?php } ?>
+            <div class="dropdown-divider"></div>
+          <?php } ?>
           <a class="dropdown-item" href="/races">Provas</a>
+          <a class="dropdown-item" href="/teams">Clubes</a>
           <a class="dropdown-item" href="/times">Tempos</a>
           <!-- <a class="dropdown-item" href="javascript:void(0);" onclick="$('#importcheckin').slideToggle();">Importar Check-In</a> -->
           <a class="dropdown-item" href="/functions/chkindns.php">Aplicar DNS e DNF</a>

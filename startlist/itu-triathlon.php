@@ -1,82 +1,101 @@
-<?php
-
-    //load the database configuration file
-    //header('Content-Type: text/html; charset=UTF-8');
-
-    include_once ($_SERVER['DOCUMENT_ROOT']."/html/header.php");
-    include($_SERVER['DOCUMENT_ROOT']."/functions/PHPExcel/IOFactory.php");
-
-    $stmt = $db->prepare("TRUNCATE athletes; TRUNCATE chips; TRUNCATE cjovem; TRUNCATE gunshots; TRUNCATE races; TRUNCATE results; TRUNCATE times; TRUNCATE youthraces; TRUNCATE live;");
-    $stmt->execute();
-
-    if(isset($_POST['prova_id']))
-    {
-
-        //Use whatever path to an Excel file you need.
-        $inputFileName = $_FILES['file']['tmp_name'];
-        $race_index = 1;
-        $i = 0;
-        try 
-        {
-            $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
-            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-            $objPHPExcel = $objReader->load($inputFileName);
-            foreach ($objPHPExcel->getAllSheets() as $sheet) 
-            {
-                $sheet = $objPHPExcel->getSheet($i);
-                if (stripos($sheet->getTitle(),'women') > -1) 
-                {
-                    $gender = 'F';
-                } else {
-                    $gender = 'M';
-                }
-                $highestRow = $sheet->getHighestRow();
-                $highestColumn = $sheet->getHighestColumn();
-                // echo $sheet->getTitle()."-".$highestRow.'-'.$highestColumn.'<br>';
-                $race_id = "Prova".$race_index;
-                for ($row = 2; $row <= $highestRow; $row++) 
-                {
-                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, null, true, false);
-                    $query = "INSERT INTO athletes (athlete_chip, athlete_category, athlete_bib, athlete_name, athlete_sex, athlete_race_id) VALUES (:chip, :cat, :bib, :name, :sex, :race)";
-                    $stmt = $db->prepare($query);
-                    $stmt->execute(
-                        array(
-                            ':chip' => $rowData[0][1], 
-                            ':cat' => $rowData[0][4],
-                            ':bib' => $rowData[0][0],
-                            ':name' => $rowData[0][2].' '.$rowData[0][3],
-                            ':sex' => $gender,
-                            ':race' => $race_id
-                            // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
-                            // ':dob' => $UNIX_DATE
-                        ));
-                    $stmt = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_lastname, live_sex, live_category, live_race) VALUES (:chip, :bib, :firstname, :lastname, :sex, :category, :race)");
-                    $stmt->execute(
-                        array(
-                            ':chip' => $rowData[0][1], 
-                            ':bib' => $rowData[0][0],
-                            ':firstname' => $rowData[0][2],
-                            ':lastname' => $rowData[0][3],
-                            ':sex' => $gender,
-                            ':category' => $rowData[0][4],
-                            ':race' => $race_id
-                        ));
-                    // echo $rowData[0][0].'<br>';
-                }
-                $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_gender) VALUES (:id, :name, :type, :gender)");
-                $stmt->execute(
-                    array(
-                        ':id' => $race_id, 
-                        ':name' => $sheet->getTitle(),
-                        ':type' => $_POST['prova_id'],
-                        ':gender' => $gender
-                        ));
-                $race_index++;
-                $i++;
-            }
-        } catch (Exception $e) {
-            die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . 
-            $e->getMessage());
+<?php 
+  include($_SERVER['DOCUMENT_ROOT']."/functions/PHPExcel/IOFactory.php");
+  include_once($_SERVER['DOCUMENT_ROOT']."/html/header.php");
+  include($_SERVER['DOCUMENT_ROOT'].'/functions/getTeams.php');
+  if (isset($_POST['prova_id'])) {
+    $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+    if ($extension === 'xls' || $extension === 'xlsx') {
+      $fileName = $_FILES['file']['tmp_name'];
+      try {
+        $fileType = PHPExcel_IOFactory::identify($fileName);
+        $objReader = PHPExcel_IOFactory::createReader($fileType);
+        $objPHPExcel = $objReader->load($fileName);
+      } catch (Exception $e) {
+        print_r('error loading file');
+      }
+      $races = array();
+      // VALIDAR SE A TABELA RACES TEM DADOS
+      // LER ID DA ULTIMA PROVA E CONTINUAR SEQUENCIALMENTE
+      $stmt = $db->prepare("SELECT race_id FROM races ORDER BY race_id DESC LIMIT 1");
+      $stmt->execute();
+      $row = $stmt->fetch();
+      if ($row) {
+        $raceIndex = $row['race_id'] + 1;
+      } else {
+        $raceIndex = 1;
+        // ELIMINAR TEMPOS DE PROVAS ANTERIORES
+        $stmt = $db->prepare("TRUNCATE chips; TRUNCATE times; TRUNCATE results; TRUNCATE markers;");
+        $stmt->execute();
+      }
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
+      $highestColumn = $sheet->getHighestColumn();
+      $teams = getTeams();
+      $teamIndex = count($teams)+1;
+      for ($row = 2; $row <= $highestRow; $row++) {
+        $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, null, true, false);
+        // GET TEAM      
+        if (!in_array(strtolower($rowData[0][6]), $teams)) {
+          $teams[$teamIndex] = strtolower($rowData[0][6]);
+          $teamId = $teamIndex;
+          $stmt = $db->prepare("INSERT INTO teams(team_id, team_name, team_country) VALUES (:id, :name, :country)");
+          $stmt->execute(array(
+            ':id' => $teamId, 
+            ':name' => $rowData[0][6],
+            ':country' => $rowData[0][7]
+          )); 
+          $teamIndex++;
+        } else {
+          $teamId = array_search(strtolower($rowData[0][6]), $teams);
         }
+        // GET RACE
+        if (!in_array($rowData[0][8], $races)) {
+          $races[$raceIndex] = $rowData[0][8];
+          $raceId = $raceIndex;
+          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_relay, race_live) VALUES (:id, :name, :type, :relay, 1)");
+          $stmt->execute(array(
+            ':id' => $raceId, 
+            ':name' => $raceName,
+            ':type' => $raceType,
+            ':relay' => $raceRelay
+          ));
+          $raceIndex++;
+        } else {
+          $raceId = array_search($rowData[0][8], $races);
+        }
+        // USAR CAMPO ATHLETE_ARRIVE_ORDER PARA COLOCAR A ORDEM DE CADA ATLETA NA EQUIPA
+        $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_name, athlete_sex, athlete_team_id, athlete_race_id) VALUES (:chip, :bib, :teamOrder, :name, :sex, :team, :race)";
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(
+          ':chip' => $rowData[0][0], 
+          ':bib' => $rowData[0][1],
+          ':name' => $rowData[0][3].' '.$rowData[0][4],
+          ':sex' => $rowData[0][5],
+          ':team' => $teamId,
+          ':race' => $raceId
+          // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
+          // ':dob' => $UNIX_DATE
+        ));
+        // USE FIELD LIVE_LICENSE FOR ATHLETE TEAM ORDER
+        $stmt = $db->prepare("
+          INSERT INTO live (live_chip, live_bib, live_license, live_firstname, live_lastname, live_sex, live_team_id, live_race, live_category) 
+          VALUES (:chip, :bib, :teamOrder, :firstname, :lastname, :sex, :team, :race, :category)
+        ");
+        $stmt->execute(array(
+          ':chip' => $rowData[0][0], 
+          ':bib' => $rowData[0][1],
+          ':teamOrder' => $rowData[0][2],
+          ':firstname' => $rowData[0][3],
+          ':lastname' => $rowData[0][4],
+          ':sex' => $rowData[0][5],
+          ':team' => $teamId,
+          ':race' => $raceId,
+          ':category' => $rowData[0][8]
+        ));
+      }
+      print_r('continuar leitura do ficheiro excel, race = '.$raceIndex); 
+    } else {
+      print_r('not an excel file');
     }
+  }
 ?>

@@ -1,7 +1,7 @@
 <?php 
 	include($_SERVER['DOCUMENT_ROOT']."/html/header.php");
 	include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
-	include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
+	// include($_SERVER['DOCUMENT_ROOT']."/functions/times.php");
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
 ?>
 
