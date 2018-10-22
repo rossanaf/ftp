@@ -35,7 +35,7 @@
   $pdf->SetFillColor(244,244,244);
   //TEMPOS DOS GUNS
   $race_id = $_GET['race_id'];
-  $querygun = $db->prepare("SELECT race_type, race_gun_m, race_relay FROM races WHERE race_id = ? LIMIT 1");
+  $querygun = $db->prepare("SELECT race_type, race_gun_f, race_relay FROM races WHERE race_id = ? LIMIT 1");
   $querygun->execute([$race_id]);
   $rowrace = $querygun->fetch();
   //**** TEMPOS DE QUEM TERMINOU ****//
