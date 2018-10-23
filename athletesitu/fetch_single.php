@@ -1,5 +1,6 @@
 <?php
 	include ($_SERVER['DOCUMENT_ROOT']."/includes/db.php");
+
 	if(isset($_POST["user_id"])) {
 		$output = array();
 		$stmt = $db->prepare(
@@ -7,10 +8,16 @@
 		);
 		$stmt->execute();
 		$rowAthlete = $stmt->fetch();
-    $stmtGun = $db->prepare('SELECT race_gun_m FROM races WHERE race_id=?');
+    $stmtGun = $db->prepare('SELECT race_gun_m, race_gun_f FROM races WHERE race_id=?');
     $stmtGun->execute([$rowAthlete['athlete_race_id']]);
     $rowGun = $stmtGun->fetch();
-    if ($rowGun['race_gun_m'] === '-') {
+    if ($rowAthlete['athlete_sex'] === 'F' && $rowGun['race_gun_f'] === '-') {
+      $t1 = 0;
+      $t2 = 0;
+      $t3 = 0;
+      $t4 = 0;
+      $t5 = 0;
+    } elseif ($rowAthlete['athlete_sex'] === 'M' && $rowGun['race_gun_m'] === '-') {
       $t1 = 0;
       $t2 = 0;
       $t3 = 0;
@@ -25,9 +32,10 @@
     }
 	  $output["chip"] = $rowAthlete["athlete_chip"];
 		$output["bib"] = $rowAthlete["athlete_bib"];
-		$output["ordem"] = $rowAthlete["athlete_arrive_order"];
+		$output["license"] = $rowAthlete["athlete_license"];
 		$output["name"] = $rowAthlete["athlete_name"];
 		$output["sex"] = $rowAthlete["athlete_sex"];
+		$output["category"] = $rowAthlete["athlete_category"];
 		$output["team"] = $rowAthlete["team_id"];
 		$output["race"] = $rowAthlete["athlete_race_id"];
 		$output["t1"] = $t1;

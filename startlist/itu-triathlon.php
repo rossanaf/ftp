@@ -68,7 +68,7 @@
           ':chip' => $rowData[0][0], 
           ':bib' => $rowData[0][1],
           ':name' => $rowData[0][2].' '.$rowData[0][3],
-          ':sex' => $rowData[0][5],
+          ':sex' => $rowData[0][4],
           ':team' => $teamId,
           ':race' => $raceId,
           ':cat' => $rowData[0][6]
