@@ -35,62 +35,60 @@
       for ($row = 2; $row <= $highestRow; $row++) {
         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, null, true, false);
         // GET TEAM      
-        if (!in_array(strtolower($rowData[0][6]), $teams)) {
-          $teams[$teamIndex] = strtolower($rowData[0][6]);
+        if (!in_array(strtolower($rowData[0][5]), $teams)) {
+          $teams[$teamIndex] = strtolower($rowData[0][5]);
           $teamId = $teamIndex;
-          $stmt = $db->prepare("INSERT INTO teams(team_id, team_name, team_country) VALUES (:id, :name, :country)");
+          $stmt = $db->prepare("INSERT INTO teams(team_id, team_country) VALUES (:id, :country)");
           $stmt->execute(array(
             ':id' => $teamId, 
-            ':name' => $rowData[0][6],
-            ':country' => $rowData[0][7]
+            ':country' => $rowData[0][5]
           )); 
           $teamIndex++;
         } else {
-          $teamId = array_search(strtolower($rowData[0][6]), $teams);
+          $teamId = array_search(strtolower($rowData[0][5]), $teams);
         }
         // GET RACE
-        if (!in_array($rowData[0][8], $races)) {
-          $races[$raceIndex] = $rowData[0][8];
+        if (!in_array($rowData[0][6], $races)) {
+          $races[$raceIndex] = $rowData[0][6];
           $raceId = $raceIndex;
-          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_relay, race_live) VALUES (:id, :name, :type, :relay, 1)");
+          $stmt = $db->prepare("INSERT INTO races(race_id, race_name, race_type, race_live) VALUES (:id, :name, :type, 1)");
           $stmt->execute(array(
             ':id' => $raceId, 
-            ':name' => $raceName,
-            ':type' => $raceType,
-            ':relay' => $raceRelay
+            ':name' => $rowData[0][6],
+            ':type' => 'itu'
           ));
           $raceIndex++;
         } else {
-          $raceId = array_search($rowData[0][8], $races);
+          $raceId = array_search($rowData[0][6], $races);
         }
         // USAR CAMPO ATHLETE_ARRIVE_ORDER PARA COLOCAR A ORDEM DE CADA ATLETA NA EQUIPA
-        $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_name, athlete_sex, athlete_team_id, athlete_race_id) VALUES (:chip, :bib, :teamOrder, :name, :sex, :team, :race)";
+        $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_name, athlete_sex, athlete_team_id, athlete_race_id, athlete_category) VALUES (:chip, :bib, :name, :sex, :team, :race, :cat)";
         $stmt = $db->prepare($query);
         $stmt->execute(array(
           ':chip' => $rowData[0][0], 
           ':bib' => $rowData[0][1],
-          ':name' => $rowData[0][3].' '.$rowData[0][4],
+          ':name' => $rowData[0][2].' '.$rowData[0][3],
           ':sex' => $rowData[0][5],
           ':team' => $teamId,
-          ':race' => $raceId
+          ':race' => $raceId,
+          ':cat' => $rowData[0][6]
           // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
           // ':dob' => $UNIX_DATE
         ));
         // USE FIELD LIVE_LICENSE FOR ATHLETE TEAM ORDER
         $stmt = $db->prepare("
-          INSERT INTO live (live_chip, live_bib, live_license, live_firstname, live_lastname, live_sex, live_team_id, live_race, live_category) 
-          VALUES (:chip, :bib, :teamOrder, :firstname, :lastname, :sex, :team, :race, :category)
+          INSERT INTO live (live_chip, live_bib, live_firstname, live_lastname, live_sex, live_team_id, live_race, live_category) 
+          VALUES (:chip, :bib, :firstname, :lastname, :sex, :team, :race, :cat)
         ");
         $stmt->execute(array(
           ':chip' => $rowData[0][0], 
           ':bib' => $rowData[0][1],
-          ':teamOrder' => $rowData[0][2],
-          ':firstname' => $rowData[0][3],
-          ':lastname' => $rowData[0][4],
-          ':sex' => $rowData[0][5],
+          ':firstname' => $rowData[0][2],
+          ':lastname' => $rowData[0][3],
+          ':sex' => $rowData[0][4],
           ':team' => $teamId,
           ':race' => $raceId,
-          ':category' => $rowData[0][8]
+          ':cat' => $rowData[0][6]
         ));
       }
       print_r('continuar leitura do ficheiro excel, race = '.$raceIndex); 

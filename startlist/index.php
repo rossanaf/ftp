@@ -120,8 +120,8 @@
           	<td>Duatlo / Triatlo</td>
           	<td><center>
           		<form id="formulario" method="post" enctype="multipart/form-data">
-            		<input type="file" name="file" id="fileitu" />
-            		<button type="button" name="update" id="itu" class="btn btn-success btn-xs ituTri">Upload</button>
+            		<input type="file" name="file" id="fileItuTri" />
+            		<button type="button" name="update" id="ituTri" class="btn btn-success btn-xs ituTri">Upload</button>
             	</form>
           	</center></td>
         	</tr>
@@ -254,8 +254,8 @@
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
         success:function(data){
-          alert('Startlist importada com sucesso!');
-          location.reload();
+          // alert('Startlist importada com sucesso!');
+          // location.reload();
         }
       });
     });
