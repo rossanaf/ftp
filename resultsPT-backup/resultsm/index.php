@@ -17,17 +17,17 @@
     <table class="table table-responsive table-bordered table-hover table-sm responsive" id="user_data">
       <thead>
         <tr>
-          <th width="2%">POS</th>
-          <th width="15%">Firstname</th>
-          <th width="15%">Lastname</th>
-          <th width="4%">Country</th>
-          <th width="4%">Start Number</th>
-          <th width="10%">Time</th>
-          <th width="10%">Swim</th>
-          <th width="10%">T1</th>
-          <th width="10%">Bike</th>
-          <th width="10%">T2</th>
-          <th width="10%">Run</th>
+          <th class="dt-center" width="1%">POS</th>
+          <th class="dt-center" width="3%">Num</th>
+          <th width="20%">Nome</th>
+          <th class="dt-center" width="6%">Esc.</th>
+          <th width="20%">Clube</th>
+          <th class="dt-center" width="6%">Natação</th>
+          <th class="dt-center" width="6%">T1</th>
+          <th class="dt-center" width="6%">Ciclismo</th>
+          <th class="dt-center" width="6%">T2</th>
+          <th class="dt-center" width="6%">Corrida</th>
+          <th class="dt-center" width="6%">Total</th>
         </tr>
       </thead>
     </table>
@@ -45,7 +45,7 @@
       "order": [],
       "columnDefs": [{
         "className": "dt-center", 
-        "targets": [0, 4, 3, 5, 6, 7, 8, 9, 10],
+        "targets": [0, 1, 3, 5, 6, 7, 8, 9, 10],
       }],
       "ajax":{
   			url:"fetch.php",

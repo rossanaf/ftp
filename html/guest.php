@@ -5,27 +5,44 @@
 		include_once ($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
 		exit();
 	}
-	$stmt = $db->prepare("SELECT race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3 FROM races LIMIT 1");
-	$stmt->execute();
-	$race = $stmt->fetch();
+	// $stmt = $db->prepare("SELECT race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3 FROM races LIMIT 1");
+	// $stmt->execute();
+	// $race = $stmt->fetch();
   $live_stmt = $db->prepare('SELECT race_name, race_id FROM races WHERE race_live = "1"');
   $live_stmt->execute();
   $liveRaces = $live_stmt->fetchAll();
   $isLive = 0;
 ?>
-<!--   <div class="collapse" id="navbarToggleExternalContent">
+  <div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
-    	<div class="movedown">
       <a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">       
+        <ul class="navbar-nav mr-auto">
+		      <?php 
+            foreach ($liveRaces as $live) {
+          ?>          
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxelite/">Results ELITE</a>
+                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxjunior/">Results JUNIOR</a>
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
             </li>
-  		</ul>
-  		</div>
+          <?php 
+            }
+            if ($isLive === 1) {
+          ?>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="/live">Tempos LIVE</a>
+            </li> -->
+          <?php 
+        		} 
+      		?>
+		    </ul>
+		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
+		<!-- <ul class="navbar-nav justify-content-end">
+			<li class="nav-item">
+				<a class="nav-login" href="/html/login.php">Login</a>
+			</li>
+		</ul> -->
     </div>
   </div>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -34,33 +51,79 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">       
+        <ul class="navbar-nav mr-auto">
+          <?php 
+            foreach ($liveRaces as $live) {
+          ?>        
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxelite/">Results ELITE</a>
+                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/resultsmxjunior/">Results JUNIOR</a>
+                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
             </li>
+          <?php 
+            }
+            if ($isLive === 1) {
+          ?>
+    		    <!-- <li class="nav-item">
+    		        <a class="nav-link" href="/live">Tempos LIVE</a>
+    		    </li> -->
+          <?php 
+      			} 
+      		?>
   		</ul>
+		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end">
+		<ul class="navbar-nav justify-content-end">
+			<li class="nav-item">
+				<a class="nav-login" href="/html/login.php">Login</a>
+			</li>
+		</ul> -->
 	</div>
-  </nav> -->
+  </nav>
 
-<div id="carouselExampleIndicators" class="carousel slide d-none d-lg-block" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide08.jpg" alt="Second slide">
 		</div>
 		<div class="carousel-item active">
 			<img class="d-block w-100" src="/images/slider/slide01.jpg" alt="First slide">
+			<!-- <div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 80px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
+			    	<?php
+			    		echo $race["race_namepdf"]."<br>";
+			    	?>
+		  	</div> -->
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide02.jpg" alt="Second slide">
+			<!-- <div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 60px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
+			    	<?php
+			    		echo $race["race_ranking"]."<br>";
+			    	?>
+		  	</div> -->
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide03.jpg" alt="Second slide">
+			<!-- <div class="carousel-caption d-none d-md-block" style="line-height: 60px; letter-spacing: 2px; font-size: 40px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
+			    	<?php
+			    		echo $race["race_segment1"]." ".$race["race_distsegment1"]."<br>";
+			    		echo $race["race_segment2"]." ".$race["race_distsegment2"]."<br>";
+			    		echo $race["race_segment3"]." ".$race["race_distsegment3"]."<br>";
+			    	?>
+			    	<?php
+			    		echo "Swim ".$race["race_distsegment1"]."<br>";
+			    		echo "Bike ".$race["race_distsegment2"]."<br>";
+			    		echo "Run ".$race["race_distsegment3"]."<br>";
+			    	?>
+		  	</div> -->
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide04.jpg" alt="Second slide">
+			<div class="carousel-caption d-none d-md-block" style="line-height: 80px; letter-spacing: 2px; font-size: 60px; text-color: #F0F8FF; text-shadow: 3px 3px 6px #073E64;">
+			    	<?php
+			    		echo "<br>";
+			    	?>
+		  	</div>
 		</div>
 		<div class="carousel-item">
 			<img class="d-block w-100" src="/images/slider/slide05.jpg" alt="Second slide">
@@ -73,7 +136,6 @@
 		</div>
 	</div>
 </div>
-<div id="mainPage">
-	<a href="/resultsmxelite/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">ELITE MxRelay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
-	<a href="/resultsmxjunior/" class="btn btn btn-outline-success btn-lg btn-block" role="button" aria-pressed="true">JUNIOR MxRelay Triathlon Lisbon <img width="24px" src="/images/refresh.png"/></a>
-</div>
+<?php	
+	include($_SERVER['DOCUMENT_ROOT']."/html/footer.php"); 
+?>
