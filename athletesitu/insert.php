@@ -27,16 +27,16 @@
 			PROCURAR O NOME DA EQUIPA E VER SE É CONTRARRELOGIO
 			SE FOR CONTRARRELOGIO TEM DE COLOCAR STARTED = -1
 			****************************** */
-			// $stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_team, live_sex, live_category) VALUES (:chip, :bib, :firstname, :team, :sex, :category)
-			// ");
-			// $stmt_live->execute(array(
-			// 	':chip'	=>	$_POST["chip"],
-			// 	':bib'	=>	$_POST["dorsal"],
-			// 	':firstname'		=>	$_POST["name"],
-			// 	':team'		=>	$team['team_name'],
-			// 	':sex' => $_POST["sexo"],
-			// 	':category'		=>	$_POST["escalao"]
-			// ));
+			$stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_team, live_sex, live_category) VALUES (:chip, :bib, :firstname, :team, :sex, :category)
+			");
+			$stmt_live->execute(array(
+				':chip'	=>	$_POST["chip"],
+				':bib'	=>	$_POST["dorsal"],
+				':firstname'		=>	$_POST["name"],
+				':team'		=>	$team['team_name'],
+				':sex' => $_POST["sexo"],
+				':category'		=>	$_POST["escalao"]
+			));
 		}
 		if($_POST["operation"] === "Edit") {
 			if (($race['race_type'] === 'relay') || ($race['race_type'] === 'jEstf')) {
@@ -473,13 +473,9 @@
             ':started'    =>  $started,
             ':id' =>  $_POST["user_id"]
           ));
-          if ($race['race_type'] === 'triatlo' && $race['race_live'] == 1) {
-            // .
-            // .
-            // .
-            // .
-            // include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
-            // processLiveTimes($_POST["chip"], $swim, $t1, $bike, $t2, $run, $chipTime, $db);
+          if (($race['race_type'] === 'triatlo' || $race['race_type'] === 'itu') && $race['race_live'] == 1) {
+            include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
+            processLiveTimes($_POST["chip"], $swim, $t1, $bike, $t2, $run, $db);
             // O ID SERÁ SEMPRE O MESMO PORQUE É FEITO O TRUNCATE ANTES DE IMPORTAR TABELAS, A PRIMEIRA VEZ, FORCAR NO IMPORT
             $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
             );
@@ -500,22 +496,23 @@
               ':pos' => $pos
 						));
 			    }
-				  // if(!empty($result)) echo 'Dados do atleta atualizados!';
+				  if(!empty($result)) echo 'Dados do atleta atualizados!';
         }
 			}
 		}
   }
-  if ($run !== '-') {
-		//**** atualizar coluna 'pos' conforme tempo total, para validar com registo de meta
-	  $pos = 1;
-    $queryathletes = $db->query("SELECT athlete_chip FROM athletes WHERE athlete_started = 5 ORDER BY athlete_t5");
-    $athletes = $queryathletes->fetchAll(); 
-    foreach ($athletes as $athlete) {
-      $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos = ? WHERE athlete_chip = ?");
-      $updateathletes->execute([$pos, $athlete['athlete_chip']]);
-      $pos++;
-    }
+  // if ($run !== '-') {
+		// //**** atualizar coluna 'pos' conforme tempo total, para validar com registo de meta
+	 //  $pos = 1;
+  //   $queryathletes = $db->query("SELECT athlete_chip FROM athletes WHERE athlete_started = 5 ORDER BY athlete_t5");
+  //   $athletes = $queryathletes->fetchAll(); 
+  //   foreach ($athletes as $athlete) {
+  //     $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos = ? WHERE athlete_chip = ?");
+  //     $updateathletes->execute([$pos, $athlete['athlete_chip']]);
+  //     $pos++;
+  //   }
+  	include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
     processLivePositions($_POST["sexo"], $race['race_id'], $db);
-	}
+	// }
 ?>

@@ -110,27 +110,29 @@
           // **** Tempo T1 ****//  
           if($location === 'TimeT1' && $t1 === '-') {
             $stmtTimes = $db->prepare('
-              UPDATE athletes 
-              SET athlete_t1=:chipTime
-              WHERE athlete_chip=:chip
+            UPDATE athletes, live 
+            SET athlete_t1=:chipTime, live_t1=:total
+            WHERE athlete_chip=:chip AND live_chip=:chip
+          ');
+          $stmtTimes->execute(array(
+            ':chipTime' => $chipTime, 
+            ':total' => $total,
+            ':chip' => $athlete['Chip']
+          ));
+          $t1 = $chipTime;
+          if($athlete['athlete_started'] == 0) {
+            $started = 1;
+            $stmtTimes = $db->prepare('
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
             ');
             $stmtTimes->execute(array(
-              ':chipTime' => $chipTime, 
-              ':chip' => $athlete['Chip']
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
             ));
-            $t1 = $chipTime;
-            if($athlete['athlete_started'] == 0) {
-              $started = 1;
-              $stmtTimes = $db->prepare('
-                UPDATE athletes 
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
-              ');
-              $stmtTimes->execute(array(
-                ':started' => $started,
-                ':chip' => $athlete['Chip'],
-                ':emProva' => '-'
-              ));
             }
             // if ($raceType == 'crind') {
             //   $chipTime = gmdate('H:i:s', strtotime($chipTime)-strtotime($athlete['athlete_t0']));
@@ -144,15 +146,16 @@
             if($started <= 1) {
               $started = 2;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
-              ');
-              $stmtTimes->execute(array(
-                ':started' => $started,
-                ':chip' => $athlete['Chip'],
-                ':emProva' => '-'
-              ));
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
             }
           }
           // **** Tempo T3 ****//
@@ -163,15 +166,16 @@
             if($started <= 2) {
               $started = 3;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
-              ');
-              $stmtTimes->execute(array(
-                ':started' => $started,
-                ':chip' => $athlete['Chip'],
-                ':emProva' => '-'
-              ));
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
             }
           }
           // **** Tempo T4 ****//
@@ -182,30 +186,31 @@
             if($started <= 3) {
               $started = 4;
               $stmtTimes = $db->prepare('
-                UPDATE athletes
-                SET athlete_started=:started, athlete_finishtime=:emProva
-                WHERE athlete_chip=:chip
-              ');
-              $stmtTimes->execute(array(
-                ':started' => $started,
-                ':chip' => $athlete['Chip'],
-                ':emProva' => '-'
-              ));
+              UPDATE athletes, live 
+              SET athlete_started=:started, athlete_finishtime=:emProva , live_started=:started, live_finishtime=:total
+              WHERE athlete_chip=:chip AND live_chip=:chip
+            ');
+            $stmtTimes->execute(array(
+              ':started' => $started,
+              ':total' => $total,
+              ':chip' => $athlete['Chip'],
+              ':emProva' => '-'
+            ));
             }
           }
           //**** Tempo T5 / Meta ****//
           if($location === "TimeT5" && $t5 === "-") {
             $stmtTimes = $db->prepare("
-              UPDATE athletes
-              SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total
-              WHERE athlete_chip = :chip
-            ");
-            $stmtTimes->execute(array(
-              ':chipTime' => $chipTime,
-              ':started' => 5, 
-              ':chip' => $athlete['Chip'],
-              ':total' => $total
-            ));
+            UPDATE athletes, live
+            SET athlete_t5=:chipTime, athlete_finishtime=:chipTime, athlete_started=:started, athlete_totaltime=:total, live_started=:started, live_finishtime=:total 
+            WHERE athlete_chip = :chip AND live_chip=:chip
+          ");
+          $stmtTimes->execute(array(
+            ':chipTime' => $chipTime,
+            ':started' => 5, 
+            ':chip' => $athlete['Chip'],
+            ':total' => $total
+          ));
             $t5 = $chipTime;            
           }
           // ELIMINAR TEMPO DA TABELA TIMES, MOVER PARA UMA TABELA PARALELA
@@ -319,7 +324,7 @@
         $started = $athlete['athlete_started'];
         list($date, $chipTime) = explode (" ", $athlete['ChipTime']);
         // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
-        // $chipTime = gmdate('H:i:s', strtotime($chipTime)+strtotime('01:00:00'));
+        $chipTime = gmdate('H:i:s', strtotime($chipTime)-strtotime('01:00:00'));
         $stmtT0 = $db->prepare('SELECT athlete_t0 FROM athletes WHERE athlete_chip=? LIMIT 1');
         $stmtT0->execute([$athlete['Chip']]);
         $t0 = $stmtT0->fetch();

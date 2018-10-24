@@ -3,8 +3,6 @@
   include($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
   include($_SERVER['DOCUMENT_ROOT']."/functions/times-tri.php");
   ////////////////////////////////////////////////////////////////
-  include($_SERVER['DOCUMENT_ROOT']."/functions/times-jov.php");
-  include($_SERVER['DOCUMENT_ROOT']."/functions/times-rly.php");
   ////////////////////////////////////////////////////////////////
   include($_SERVER['DOCUMENT_ROOT']."/functions/times-all.php");
   $stmtteams = $db->query("SELECT team_id, team_country FROM teams ORDER BY team_country");
@@ -100,7 +98,10 @@
                 <option selected disabled value=""> -- Escalões -- </option>
                 <option value="ELITE">ELITE</option>
                 <option value="JUNIOR">JUNIOR</option>
+                <option value="PTS2">PTWC</option>
                 <option value="PTS2">PTS2</option>
+                <option value="PTS2">PTS3</option>
+                <option value="PTS2">PTS4</option>
                 <option value="PTS5">PTS5</option>
                 <option value="PTVI">PTVI</option>                          
               </select>

@@ -101,19 +101,19 @@
           // ':dob' => gmdate("d-m-Y", $UNIX_DATE)
           // ':dob' => $UNIX_DATE
         ));
-        // $stmt = $db->prepare("
-        //   INSERT INTO live (live_chip, live_bib, live_firstname, live_sex, live_category, live_team_id, live_race) 
-        //   VALUES (:chip, :bib, :name, :sex, :category, :team, :race)
-        // ");
-        // $stmt->execute(array(
-        //   ':chip' => $rowData[0][3], 
-        //   ':bib' => $rowData[0][1],
-        //   ':name' => $rowData[0][4],
-        //   ':sex' => $rowData[0][6],
-        //   ':category' => $rowData[0][2],
-        //   ':team' => $teamId,
-        //   ':race' => $raceId
-        // ));
+        $stmt = $db->prepare("
+          INSERT INTO live (live_chip, live_bib, live_firstname, live_sex, live_category, live_team_id, live_race) 
+          VALUES (:chip, :bib, :name, :sex, :category, :team, :race)
+        ");
+        $stmt->execute(array(
+          ':chip' => $rowData[0][3], 
+          ':bib' => $rowData[0][1],
+          ':name' => $rowData[0][4],
+          ':sex' => $rowData[0][6],
+          ':category' => $rowData[0][2],
+          ':team' => $teamId,
+          ':race' => $raceId
+        ));
         //-----------------------------------
         // COL |  ID  |     DESCRIPTION     |
         //-----|------|---------------------|

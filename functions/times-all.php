@@ -2,7 +2,7 @@
   ini_set('max_execution_time', 0);
 	// APLICA-SE A TODAS AS PROVAS, COLOCAR A POSIÇÃO DE CHEGADA À META POR TEMPO DECRESCENTE
   $pos = 1;
-  $queryathletes = $db->query("SELECT athlete_id FROM athletes WHERE athlete_started = 5 ORDER BY athlete_t5");
+  $queryathletes = $db->query("SELECT athlete_id FROM athletes WHERE athlete_started=5 ORDER BY athlete_t5");
   $athletes = $queryathletes->fetchAll();
   foreach ($athletes as $athlete) {
     $updateathletes = $db->prepare("UPDATE athletes SET athlete_pos = ? WHERE athlete_id = ?");
