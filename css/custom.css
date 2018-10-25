@@ -20,13 +20,20 @@ body, html {
    height:160px;
 }*/
 
- .navbar-dark
- {
-     padding:0 !important;
-     margin:0 !important;
-     height: 38px !important;
-     background-color: #073E64 !important;
- }
+.navbar-dark
+{
+   padding:0 !important;
+   margin:0 !important;
+   height: 38px !important;
+   background-color: #073E64 !important;
+}
+
+#container-timer {
+    text-align:center;
+    margin: auto;
+    font-family: Tahoma, Geneva, sans-serif;
+    /*color: #015289;*/
+}}
 
 #importsAll 
 {

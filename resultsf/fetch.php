@@ -13,7 +13,9 @@
   if (strlen($_POST["search"]["value"]) > 0) {
     $query .= 'AND (';
     $query .= 'LOWER (live_firstname) LIKE "%'.$_POST["search"]["value"].'%" ';
-    $query .= 'OR LOWER (team_name) LIKE "%'.$_POST["search"]["value"].'%" ';
+    $query .= 'OR LOWER (team_country) LIKE "%'.$_POST["search"]["value"].'%" ';
+    $query .= 'OR LOWER (live_lastname) LIKE "%'.$_POST["search"]["value"].'%" ';
+    $query .= 'OR LOWER (live_lastname) LIKE "%'.$_POST["search"]["value"].'%" ';
     $query .= ') ';
 	} 
   if(isset($_POST["order"])) {

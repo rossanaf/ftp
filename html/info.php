@@ -1,10 +1,16 @@
 <div class='container' id='footer'>
-			<div class='row'>
-				<div class='col-xs-6 col-sm-6 col-md-6'>
-					<img width='40%' src="/images/ftp.png" />
+			<div class='row'">
+				<div class='col-xs-3 col-sm-3 col-md-3'>
+					<img width='30%' src="/images/ftp.png" />
 				</div>
-				<div class='col-xs-6 col-sm-6 col-md-6'>
+				<div class='col-xs-3 col-sm-3 col-md-3'>
 					<img width='50%' src="/images/etu.png" />
+				</div>
+				<div class='col-xs-3 col-sm-3 col-md-3'>
+					<img width='60%' src="/images/paratriathlon.png" />
+				</div>
+				<div class='col-xs-3 col-sm-3 col-md-3'>
+					<img width='50%' src="/images/madeira.png" />
 				</div>
 			</div>
 			<!-- <footer class="footer">

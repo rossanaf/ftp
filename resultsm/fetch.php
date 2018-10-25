@@ -11,6 +11,7 @@
   $output = array();
   $query = 'SELECT *, teams.team_country FROM live LEFT JOIN teams ON live.live_team_id=teams.team_id WHERE live_sex="M" AND live_race='.$_POST['raceId'].' ';
   if (strlen($_POST["search"]["value"]) > 0) {
+    $query .= 'OR LOWER (live_lastname) LIKE "%'.$_POST["search"]["value"].'%" ';
     $query .= 'AND (';
     $query .= 'LOWER (live_firstname) LIKE "%'.$_POST["search"]["value"].'%" ';
     $query .= 'OR LOWER (team_name) LIKE "%'.$_POST["search"]["value"].'%" ';
