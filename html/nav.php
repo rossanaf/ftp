@@ -158,7 +158,7 @@
               <a class="nav-link" href="/prints/cre-masc-cat.php?race_id=<?=$race['race_id']?>" target="_blank">Abs Escalões</a>
           </div>
           <?php
-            } elseif (($race['race_type'] == "triatlo") || ($race['race_type'] == "aquathlon") || ($race['race_type'] === 'itu')) {
+            } elseif (($race['race_type'] == "triatlo") || ($race['race_type'] == "aquathlon")) {
           ?>
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?=$race['race_name']?></a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
