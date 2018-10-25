@@ -428,7 +428,7 @@
                 <option selected disabled value=""> StartTime </option>
                 <?php foreach ($guns as $gun): 
                   list($date, $gunShot) = explode (" ", $gun['MarkerTime']);
-                  $gunShot = gmdate('H:i:s', strtotime($gunShot)-strtotime('01:00:00'));
+                  // $gunShot = gmdate('H:i:s', strtotime($gunShot)-strtotime('01:00:00'));
                 ?>
                   <option value="<?=$gunShot?>"><?=$gunShot?></option>
                 <?php endforeach ?>
