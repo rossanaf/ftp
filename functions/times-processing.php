@@ -56,7 +56,7 @@
     $athletes = $queryathletes->fetchAll();
     foreach ($athletes as $athlete) {
       // PARA AS PARTIDAS POR VAGAS, MESMO QUE HAJA GUN NA TABELA RACES, TEM DE HAVER T0 PARA CADA ATLETA
-      if($athlete['athlete_t0'] !== '-') {
+      // if($athlete['athlete_t0'] !== '-') {
         if (($athlete['athlete_finishtime'] !== 'LAP') && ($athlete['athlete_finishtime'] !== 'DNS') && ($athlete['athlete_finishtime'] !== 'DSQ') && ($athlete['athlete_finishtime'] !== 'DNF')) {
           if($athlete['Chip'] !== $thisAthlete) {
             if($thisAthlete !== 'A1' && $live == 1) {
@@ -71,7 +71,7 @@
           $started = $athlete['athlete_started'];
           list($date, $chipTime) = explode (" ", $athlete['ChipTime']);
           // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
-          $chipTime = date('H:i:s', strtotime($chipTime)-strtotime('01:00:00'));
+          // $chipTime = date('H:i:s', strtotime($chipTime)-strtotime('01:00:00'));
           if ($raceType === 'crind' || $raceRelay === 'X') {
             $total = date('H:i:s', strtotime($chipTime)-strtotime($athlete['athlete_t0']));
           } else {
@@ -229,7 +229,8 @@
       //   }
         }
         $thisAthlete = $athlete['Chip']; 
-      }
+      // VAGAS DISABLED
+      // }
     }
     if ($live == 1) {
       if ($thisAthlete !== 'A1') {
