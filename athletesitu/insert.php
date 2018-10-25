@@ -343,7 +343,7 @@
             ':started'    =>  $started,
             ':id' =>  $_POST["user_id"]
           ));
-          if ($race['race_type'] === 'triatlo' && $race['race_live'] == 1) {
+          if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre') || ($race['race_relay'] === 'X')) {
             $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
             );
             $stmt_live->execute(array(
