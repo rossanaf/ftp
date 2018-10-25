@@ -21,9 +21,9 @@
     <ul class="navbar-nav mr-auto">
       <!-- Provas Nacionais -->
       <li class="nav-item dropdown">
-	      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Base de Dados</a>
-	      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	      	<?php if ($_COOKIE['userid'] < 4) { ?>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Base de Dados</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <?php if ($_COOKIE['userid'] < 4) { ?>
             <!------------------------------------------------------>
             <!-- Backup / Restore depende se ha provas carregadas -->
             <?php if (count($races) === 0) { ?>
@@ -31,8 +31,8 @@
               <a class="dropdown-item" href="javascript:void(0);" onclick="$('#importFTPAthletes').slideToggle();">Atletas Federados</a>
             <?php } else { ?>
               <a class="dropdown-item" href="/functions/exportdb.php" >Backup Evento</a>
-            <?php } ?>	
-	          <!------------------------------------------------------>
+            <?php } ?>  
+            <!------------------------------------------------------>
             <a class="dropdown-item" href="/startlist" >Startlist</a>
             <!-- ADICIONAR NOVOS CLUBES NA JANELA DE ADICIONAR NOVA INSCRICAO -->
             <div class="dropdown-divider"></div>
@@ -45,7 +45,7 @@
           <a class="dropdown-item" href="/prints/podiums.php" target="_blank">Pódios</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" data-toggle="modal" href="#myModal">Acerca do FTP Scoring</a>
-	      </div>
+        </div>
       </li>
       <?php 
         foreach ($races as $race):
@@ -168,7 +168,7 @@
             <a class="nav-link" href="/prints/feminino-1t.php?race_id=<?=$race['race_id']?>" target="_blank">1 Tempo</a>
             <a class="nav-link" href="/prints/feminino-3t.php?race_id=<?=$race['race_id']?>" target="_blank">3 Tempos</a>
               <?php
-                  if ($race['race_type'] == "triatlo" || $race['race_type'] === 'itu') {
+                  if ($race['race_type'] == "triatlo") {
               ?>
               <a class="nav-link" href="/prints/feminino-5t.php?race_id=<?=$race['race_id']?>" target="_blank">5 Tempos</a>
               <?php
@@ -180,7 +180,7 @@
               <a class="nav-link" href="/prints/masculino-1t.php?race_id=<?=$race['race_id']?>" target="_blank">1 Tempo</a>
               <a class="nav-link" href="/prints/masculino-3t.php?race_id=<?=$race['race_id']?>" target="_blank">3 Tempos</a>
               <?php
-                  if ($race['race_type'] == "triatlo" || $race['race_type'] === 'itu') {
+                  if ($race['race_type'] == "triatlo") {
               ?>
               <a class="nav-link" href="/prints/masculino-5t.php?race_id=<?=$race['race_id']?>" target="_blank">5 Tempos</a>
               <?php
@@ -190,7 +190,15 @@
               <a class="nav-link" href="/prints/masculino-escaloes.php?race_id=<?=$race['race_id']?>" target="_blank">Escalões</a>
           </div>
           <?php
-            } elseif ($race['race_type'] === "iturelay") {
+            } elseif ($race['race_type'] === "itu") {
+          ?>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?=$race['race_name']?></a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="nav-link" href="/prints/men.php?race_id=<?=$race['race_id']?>" target="_blank">Men</a>
+            <a class="nav-link" href="/prints/women.php?race_id=<?=$race['race_id']?>" target="_blank">Women</a> 
+          </div>
+          <?php
+              } elseif ($race['race_type'] === "iturelay") {
           ?>
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?=$race['race_name']?></a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -199,6 +207,7 @@
           </div>
           <?php
               }
+          ?>
           ?>
       </li>
         <?php 
@@ -212,11 +221,11 @@
     </ul>
     <ul class="navbar-nav justify-content-end">
       <li>
-      	<a href="/html/logout.php">
-      		<button class="btn btn-outline-success" type="submit">
-      			<?php echo "Logout ".$_SESSION['username']; ?>
-      		</button>
-      	</a>
+        <a href="/html/logout.php">
+          <button class="btn btn-outline-success" type="submit">
+            <?php echo "Logout ".$_SESSION['username']; ?>
+          </button>
+        </a>
       </li>
     </ul>
   </div>
