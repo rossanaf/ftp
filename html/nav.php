@@ -208,7 +208,6 @@
           <?php
               }
           ?>
-          ?>
       </li>
         <?php 
             endforeach 
