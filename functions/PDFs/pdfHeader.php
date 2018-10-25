@@ -74,6 +74,9 @@
     } elseif (stripos($scoreDescription,'equipas') > 0) {
       $w = array(6, 14, 12, 40, 10, 52, 19, 19, 18); // menos 2+2+4+10+2 = 20
       $header = array('#','Lic.','Dors.','Nome','Esc.','Equipa','T.Ind','T.Equipa','Diff.');
+    } elseif ($rowRace['race_type'] === 'itu') {
+      $w = array(6, 42, 10, 6, 18, 18, 18, 18, 18, 18, 18); // menos 2+2+4+10+2 = 20
+      $header = array('#','Name','Ctry.','No','Swim','T1','Bike','T2','Run','Time','Diff.');
     } else {
       $w = array(8, 14, 10, 44, 6, 10, 58, 20, 20); // menos 2+2+4+10+2 = 20
       $header = array('#','Lic.','Dors.','Nome','Gen','Esc.','Equipa','T.Total', 'Diff.');
