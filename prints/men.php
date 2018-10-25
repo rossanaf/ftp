@@ -86,11 +86,43 @@
   // **** PENALIZAÇÕES, time = DSQ / DNF / DNS / LAP
   $penalty = array('LAP','DSQ','DNF','DNS');
   for($i=0;$i<count($penalty);$i++) {
-    $stmtnNonFinishers = $db->prepare('SELECT live_bib,team_country,live_t1,live_t2,live_t3,live_t4,live_t5, live_finishtime,live_firstname,live_lastname FROM live LEFT JOIN teams ON live_team_id=team_id WHERE live_race=? AND live_sex=? AND live_finistime=? ORDER BY live_started DESC, live_finishtime ASC');
-    $stmtNonFinishers->execute([$race_id,'M',$penalty[$i]]);
-    $nonFinishers = $stmtNonFinishers->fetchAll();
-    foreach ($nonFinishers as $nonFinisher) {
-      echo "aqui";
+    $stmtFinishers = $db->prepare('SELECT live_bib,team_country,live_t1,live_t2,live_t3,live_t4,live_t5, live_finishtime,live_firstname,live_lastname FROM live LEFT JOIN teams ON live_team_id=team_id WHERE live_race=? AND live_sex=? AND live_finishtime=? ORDER BY live_started DESC, live_t5 DESC, live_t4 DESC, live_t3 DESC, live_t2 DESC, live_t1 DESC');
+    $stmtFinishers->execute([$race_id,'M',$penalty[$i]]);
+    $finishers = $stmtFinishers->fetchAll();
+    foreach ($finishers as $finisher) {
+      $pdf->SetFont('Times','',9);
+      $pdf->SetX(10);
+      $bib = $finisher['live_bib'];
+      $pdf->SetFont('Times','B',8);
+      $pdf->Cell(6,6,$finisher['live_finishtime'],1,0,'C',$fill);
+      $pdf->SetFont('Times','',9);
+      $pdf->Cell(42,6,utf8_decode($finisher['live_firstname'].' '.$finisher['live_lastname']),1,0,'L',$fill);
+      $pdf->Cell(10,6,utf8_decode($finisher['team_country']),1,0,'C',$fill);
+      $pdf->Cell(6,6,$bib,1,0,'C',$fill);
+      if($finisher['live_t1'] === 'time') 
+        $t1 = '00:00:00';
+      else $t1 = $finisher['live_t1'];
+      $pdf->Cell(18,6,$t1,1,0,'C',$fill);
+      if($finisher['live_t2'] === 'time') 
+        $t2 = '00:00:00';
+      else $t2 = $finisher['live_t2'];
+      $pdf->Cell(18,6,$t2,1,0,'C',$fill);
+      if($finisher['live_t3'] === 'time') 
+        $t3 = '00:00:00';
+      else $t3 = $finisher['live_t3'];
+      $pdf->Cell(18,6,$t3,1,0,'C',$fill);
+      if($finisher['live_t4'] === 'time') 
+        $t4 = '00:00:00';
+      else $t4 = $finisher['live_t4'];
+      $pdf->Cell(18,6,$t4,1,0,'C',$fill);
+      if($finisher['live_t5'] === 'time') 
+        $t5 = '00:00:00';
+      else $t5 = $finisher['live_t5'];
+      $pdf->Cell(18,6,$t5,1,0,'C',$fill);
+      $pdf->SetFont('Times','B',9);
+      $pdf->Cell(18,6,$finisher['live_finishtime'],1,1,'C',$fill);
+      $pdf->SetFont('Times','',9);
+      $fill = !$fill;
     }
   }
   $pdf->Output();
