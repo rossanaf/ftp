@@ -417,7 +417,7 @@
                 <?php foreach ($guns as $gun): 
                   list($date, $gunShot) = explode (" ", $gun['MarkerTime']);
                   // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
-                  // $gunShot = date('H:i:s', strtotime($gunShot)-strtotime('01:00:00'));
+                  $gunShot = date('H:i:s', strtotime($gunShot)-strtotime('01:00:00'));
                 ?>
                   <option value="<?=$gunShot?>"><?=$gunShot?></option>
                 <?php endforeach ?>

@@ -71,7 +71,7 @@
           $started = $athlete['athlete_started'];
           list($date, $chipTime) = explode (" ", $athlete['ChipTime']);
           // SUBTRAIR UMA HORA AO TEMPO ENVIADO PELO MYLAPS
-          // $chipTime = date('H:i:s', strtotime($chipTime)-strtotime('01:00:00'));
+          $chipTime = date('H:i:s', strtotime($chipTime)-strtotime('02:00:00'));
           if ($raceType === 'crind' || $raceRelay === 'X') {
             $total = date('H:i:s', strtotime($chipTime)-strtotime($athlete['athlete_t0']));
           } else {

@@ -140,9 +140,6 @@
 	<div id='container-timer'>
 		<p style="font-size:340%">FUNCHAL/2018</p>
 		<hr>
-		<h1>ETU Sprint Triathlon European Cup Final</h1>
-		<p id="timer1" style="font-size:400%"></p>
-		<br>
 		<h1>ITU Paratriathlon World Cup</h1>
 		<p id="timer2" style="font-size:400%"></p>
 		<hr>
