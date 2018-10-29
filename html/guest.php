@@ -16,27 +16,27 @@
   <div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
       <a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">
-		      <?php 
-            foreach ($liveRaces as $live) {
-          ?>          
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
-            </li>
-          <?php 
-            }
-            if ($isLive === 1) {
-          ?>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="/live">Tempos LIVE</a>
-            </li> -->
-          <?php 
-        		} 
-      		?>
-		    </ul>
+      <!-- <ul class="navbar-nav mr-auto">
+	      <?php 
+	        foreach ($liveRaces as $live) {
+	      ?>        
+	        <li class="nav-item">
+	            <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
+	        </li>
+	        <li class="nav-item">
+	            <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
+	        </li>
+	      <?php 
+	        }
+	        if ($isLive === 1) {
+	      ?>
+		    <li class="nav-item">
+	        <a class="nav-link" href="/live">Tempos LIVE</a>
+		    </li>
+	      <?php 
+	  			} 
+	  		?>
+  		</ul> -->
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
 		<!-- <ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
@@ -51,27 +51,27 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-        <ul class="navbar-nav mr-auto">
-          <?php 
-            foreach ($liveRaces as $live) {
-          ?>        
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
-            </li>
-          <?php 
-            }
-            if ($isLive === 1) {
-          ?>
-    		    <!-- <li class="nav-item">
-    		        <a class="nav-link" href="/live">Tempos LIVE</a>
-    		    </li> -->
-          <?php 
-      			} 
-      		?>
-  		</ul>
+	    <!-- <ul class="navbar-nav mr-auto">
+	      <?php 
+	        foreach ($liveRaces as $live) {
+	      ?>        
+	        <li class="nav-item">
+	            <a class="nav-link" href="/resultsm/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Men'?></a>
+	        </li>
+	        <li class="nav-item">
+	            <a class="nav-link" href="/resultsf/index.php?raceId=<?=$live['race_id']?>"><?php echo $live['race_name'].' Women' ?></a>
+	        </li>
+	      <?php 
+	        }
+	        if ($isLive === 1) {
+	      ?>
+		    <li class="nav-item">
+	        <a class="nav-link" href="/live">Tempos LIVE</a>
+		    </li>
+	      <?php 
+	  			} 
+	  		?>
+  		</ul> -->
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end">
 		<ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
@@ -138,9 +138,15 @@
 </div>
 <div class='container'>
 	<div id='container-timer'>
-		<p style="font-size:340%">FUNCHAL/2018</p>
+		<p style="font-size:340%">IX AZORES ISLANDS TRIATHLON</p>
 		<hr>
-		<h1>ITU Paratriathlon World Cup</h1>
+		<h1>
+			Campeonato Ibérico de Triatlo de Longa Distância
+			<br>
+			Campeonato Nacional de Clubes de Triatlo Longo
+			<br>
+			Open Triatlo Sprint
+		</h1>
 		<p id="timer2" style="font-size:400%"></p>
 		<hr>
 	</div>
@@ -174,7 +180,7 @@
 		  }
 	}, 1000);
 	// Set the date we're counting down to
-	var countDownDate2 = new Date("October 28, 2018 10:30:00").getTime();
+	var countDownDate2 = new Date("November 03, 2018 08:00:00").getTime();
 	// Update the count down every 1 second
 	var x2 = setInterval(function() {
 	  // Get todays date and time
