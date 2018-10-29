@@ -70,14 +70,7 @@
         </button>
       </div>
       <form method="POST" id="user_form" enctype="multipart/form-data">
-        <div class="modal-body">      
-          <div class="form-group row">
-            <label for="licenca" class="col-sm-2 col-form-label">Licenca:</label>
-            <div class="col-sm-10">
-              <input type="text" name="licenca" id="licenca" class="form-control" placeholder="Licenca"/>
-              <button type="button" name="licenca_id" id="licenca_id" class="btn btn-info">Pesquisar Atleta Federado</button>
-            </div>
-          </div>
+        <div class="modal-body">
           <div class="form-group row">
             <label for="name" class="col-sm-2 control-label">Name:</label>
             <div class="col-sm-10">
@@ -98,20 +91,20 @@
                 <option selected disabled value=""> -- Escalões -- </option>
                 <option value="ELITE">ELITE</option>
                 <option value="JUNIOR">JUNIOR</option>
-                <option value="PTS2">PTWC</option>
+                <option value="PTWC">PTWC</option>
                 <option value="PTS2">PTS2</option>
-                <option value="PTS2">PTS3</option>
-                <option value="PTS2">PTS4</option>
+                <option value="PTS3">PTS3</option>
+                <option value="PTS4">PTS4</option>
                 <option value="PTS5">PTS5</option>
                 <option value="PTVI">PTVI</option>                          
               </select>
             </div>
           </div>
           <div class="form-group row">    
-            <label for="clube" class="col-sm-2 control-label">Clube:</label>
+            <label for="clube" class="col-sm-2 control-label">Nacionalidade:</label>
             <div class="col-sm-10">
               <select class="form-control" id="clube" name="clube" required>
-                <option value="ADICIONAR"> -- Lista de Clubes -- </option>
+                <option value="ADICIONAR"> -- País -- </option>
                 <?php foreach ($teams as $team): ?>
                   <option value="<?=$team['team_id']?>"><?=$team['team_country']?></option>
                 <?php endforeach ?>
