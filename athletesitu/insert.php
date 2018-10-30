@@ -52,14 +52,15 @@
         $t0 = '-';
         $started=0;
         $pos=9999;
-        $stmt = $db->prepare("UPDATE athletes SET athlete_chip=:chip, athlete_pos=:pos, athlete_bib=:dorsal, athlete_name=:name, athlete_license=:licenca, athlete_sex=:sexo, athlete_category=:escalao, athlete_team_id=:clube, athlete_t0=:t0, athlete_t1=:swim, athlete_t2=:t1, athlete_t3=:bike, athlete_t4=:t2, athlete_t5=:run, athlete_race_id=:race, athlete_finishtime=:time, athlete_started=:started, athlete_totaltime='-' WHERE athlete_id=:id"
+        $stmt = $db->prepare("UPDATE athletes SET athlete_chip=:chip, athlete_pos=:pos, athlete_bib=:dorsal, athlete_name=:name, athlete_firstname = :firstname, athlete_lastname = :lastname, athlete_sex=:sexo, athlete_category=:escalao, athlete_team_id=:clube, athlete_t0=:t0, athlete_t1=:swim, athlete_t2=:t1, athlete_t3=:bike, athlete_t4=:t2, athlete_t5=:run, athlete_race_id=:race, athlete_finishtime=:time, athlete_started=:started, athlete_totaltime='-' WHERE athlete_id=:id"
         );
         $result = $stmt->execute(array(
           ':pos'  =>  $pos,
           ':chip' => $_POST["chip"],
           ':dorsal' =>  $_POST["dorsal"],
-          ':name'   =>  $_POST["name"],
-          ':licenca'    =>  $_POST["licenca"],
+          ':name'   =>  $_POST["name"].' '.$_POST['lastname'],
+          ':firstname'    =>  $_POST["name"],
+          ':lastname' => $_POST['lastname'],
           ':sexo'   =>  $_POST["sexo"],
           ':escalao'    =>  $_POST["escalao"],
           ':clube'    =>  $_POST["clube"],
@@ -75,13 +76,14 @@
           ':id' =>  $_POST["user_id"]
         ));
         if (($race['race_type'] === 'crind') || ($race['race_type'] === 'cre') || ($race['race_relay'] === 'X')) {
-          $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
+          $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_lastname = :lastname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
           );
           $stmt_live->execute(array(
             ':id' =>  $_POST["user_id"],
             ':chip' => $_POST["chip"],
             ':dorsal' =>  $_POST["dorsal"],
             ':firstname'    =>  $_POST["name"],
+            ':lastname' => $_POST['lastname'],
             ':clube'    =>  $_POST["clube"],
             ':swim'   =>  $live_swim,
             ':t1'   =>  $live_t1,
@@ -134,11 +136,7 @@
           if ($bike !== "-") $live_t2 = gmdate('H:i:s', strtotime($_POST['t2']) - strtotime($_POST['bike']));
         }
         $run = isTime($_POST['run']);
-        // $total = isTime($_POST['totaltime']);
-        // if (($run !== "-") && ($time !== "DNF") && ($time !== "DSQ"))
         if (($time==="DNF") || ($time==="DNS") || ($time==="chkin") || ($time==="DSQ") || ($time==="LAP")) {
-        	// $time = $time;
-      		// $has_times = 0;
           $run = "-"; 
           $total = '-';
         } else {
@@ -152,24 +150,22 @@
         if (($time==="DNF") || ($time==="DSQ") || ($time==="LAP")) {
       		$has_times = 0;
       		$finishtime = $time;
-      		// ELIMINA, CASO EXISTA, O TEMPO T5 DA TABELA TIMES
-      		// $del_t5 = $db->prepare("DELETE FROM times WHERE Chip=? AND Location='TimeT5'");
-      		// $del_t5->execute([$_POST["chip"]]);
       	}
         if($started!==5) $pos = 9999;
-        if ($has_times == 1) $time = '-';
-        // if ($run !== '-') $time = $run;    
+        if ($has_times == 1) $time = '-'; 
         if ($race['race_type'] === 'triatlo' && $race['race_relay'] === '-') {
           $t0 = '-';
         }      
-        $stmt = $db->prepare("UPDATE athletes SET athlete_chip = :chip, athlete_pos = :pos, athlete_bib = :dorsal, athlete_name = :name, athlete_license = :licenca, athlete_sex = :sexo, athlete_category = :escalao, athlete_team_id = :clube, athlete_t0 = :t0, athlete_t1 = :swim, athlete_t2 = :t1, athlete_t3 = :bike, athlete_t4 = :t2, athlete_t5 = :run, athlete_race_id = :race, athlete_finishtime = :time, athlete_started = :started, athlete_totaltime = '-' WHERE athlete_id = :id"
+        echo 't1 '.$live_swim.' / t2 '.$live_t1.' / t3 '.$live_bike.' / t4 '.$live_t2.' / t5 '.$live_run;
+        $stmt = $db->prepare("UPDATE athletes SET athlete_chip=:chip, athlete_pos=:pos, athlete_bib=:dorsal, athlete_name=:name, athlete_firstname = :firstname, athlete_lastname = :lastname, athlete_sex=:sexo, athlete_category=:escalao, athlete_team_id=:clube, athlete_t0=:t0, athlete_t1=:swim, athlete_t2=:t1, athlete_t3=:bike, athlete_t4=:t2, athlete_t5=:run, athlete_race_id=:race, athlete_finishtime=:time, athlete_started=:started, athlete_totaltime='-' WHERE athlete_id=:id"
         );
         $result = $stmt->execute(array(
           ':pos'  =>  $pos,
           ':chip' => $_POST["chip"],
           ':dorsal' =>  $_POST["dorsal"],
-          ':name'   =>  $_POST["name"],
-          ':licenca'    =>  $_POST["licenca"],
+          ':name'   =>  $_POST["name"].' '.$_POST['lastname'],
+          ':firstname'    =>  $_POST["name"],
+          ':lastname' => $_POST['lastname'],
           ':sexo'   =>  $_POST["sexo"],
           ':escalao'    =>  $_POST["escalao"],
           ':clube'    =>  $_POST["clube"],
@@ -188,25 +184,25 @@
           include_once($_SERVER['DOCUMENT_ROOT']."/functions/times-processing.php");
           processLiveTimes($_POST["chip"], $swim, $t1, $bike, $t2, $run, $db);
           // O ID SERÁ SEMPRE O MESMO PORQUE É FEITO O TRUNCATE ANTES DE IMPORTAR TABELAS, A PRIMEIRA VEZ, FORCAR NO IMPORT
-          $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos, live_race=:race WHERE live_id = :id"
+          $stmt_live = $db->prepare("UPDATE live SET live_chip = :chip, live_bib = :dorsal, live_firstname = :firstname, live_lastname = :lastname, live_team_id = :clube, live_t1 = :swim, live_t2 = :t1, live_t3 = :bike, live_t4 = :t2, live_t5 = :run, live_finishtime = :finishtime, live_started = :started, live_sex=:sex, live_pos=:pos WHERE live_id = :id"
           );
-	        $stmt_live->execute(array(
-						':id'	=>	$_POST["user_id"],
+          $stmt_live->execute(array(
+            ':id' =>  $_POST["user_id"],
             ':chip' => $_POST["chip"],
-						':dorsal'	=>	$_POST["dorsal"],
-						':firstname'		=>	$_POST["name"],
-            ':clube'		=>	$_POST["clube"],
-            ':swim'		=>	$live_swim,
-						':t1'		=>	$live_t1,
-						':bike'		=>	$live_bike,
-						':t2'		=>	$live_t2,
-						':run'		=>	$live_run,
-						':finishtime'		=>	$finishtime,
-						':started' => $started,
+            ':dorsal' =>  $_POST["dorsal"],
+            ':firstname'    =>  $_POST["name"],
+            ':lastname' => $_POST['lastname'],
+            ':clube'    =>  $_POST["clube"],
+            ':swim'   =>  $live_swim,
+            ':t1'   =>  $live_t1,
+            ':bike'   =>  $live_bike,
+            ':t2'   =>  $live_t2,
+            ':run'    =>  $live_run,
+            ':finishtime'   =>  $finishtime,
+            ':started' => $started,
             ':sex' => $_POST["sexo"],
-            ':pos' => $pos,
-            ':race'   =>  $_POST["race"]
-					));
+            ':pos' => $pos
+          ));
 		    }
 			  if(!empty($result)) echo 'Dados do atleta atualizados!';
       }

@@ -72,9 +72,13 @@
       <form method="POST" id="user_form" enctype="multipart/form-data">
         <div class="modal-body">
           <div class="form-group row">
-            <label for="name" class="col-sm-2 control-label">Name:</label>
-            <div class="col-sm-10">
+            <label for="name" class="col-sm-2 control-label">Nome:</label>
+            <div class="col-sm-4">
               <input type="text" name="name" id="name" class="form-control" placeholder="Nome" required/>
+            </div>
+            <label for="lastname" class="col-sm-2 control-label">Apelido:</label>
+            <div class="col-sm-4">
+              <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Apelido" required/>
             </div>
           </div>
           <div class="form-group row">    
@@ -249,6 +253,7 @@
           $('#userModal').modal('show');
           $('#chip').val(data.chip);
           $('#name').val(data.name);
+          $('#lastname').val(data.lastname);
           $('#dorsal').val(data.bib);
           $('#licenca').val(data.license);
           $('#sexo').val(data.sex);

@@ -62,12 +62,14 @@
           $raceId = array_search($rowData[0][6], $races);
         }
         // USAR CAMPO ATHLETE_ARRIVE_ORDER PARA COLOCAR A ORDEM DE CADA ATLETA NA EQUIPA
-        $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_name, athlete_sex, athlete_team_id, athlete_race_id, athlete_category) VALUES (:chip, :bib, :name, :sex, :team, :race, :cat)";
+        $query = "INSERT INTO athletes (athlete_chip, athlete_bib, athlete_name, athlete_firstname, athlete_lastname, athlete_sex, athlete_team_id, athlete_race_id, athlete_category) VALUES (:chip, :bib, :name, :sex, :team, :race, :cat)";
         $stmt = $db->prepare($query);
         $stmt->execute(array(
           ':chip' => $rowData[0][0], 
           ':bib' => $rowData[0][1],
           ':name' => $rowData[0][2].' '.$rowData[0][3],
+          ':firstname' => $rowData[0][2],
+          ':lastname' => $rowData[0][3],
           ':sex' => $rowData[0][4],
           ':team' => $teamId,
           ':race' => $raceId,

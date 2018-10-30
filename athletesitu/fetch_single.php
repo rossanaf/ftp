@@ -33,7 +33,8 @@
 	  $output["chip"] = $rowAthlete["athlete_chip"];
 		$output["bib"] = $rowAthlete["athlete_bib"];
 		$output["license"] = $rowAthlete["athlete_license"];
-		$output["name"] = $rowAthlete["athlete_name"];
+    $output["name"] = $rowAthlete["athlete_firstname"];
+    $output["lastname"] = $rowAthlete["athlete_lastname"];
 		$output["sex"] = $rowAthlete["athlete_sex"];
 		$output["category"] = $rowAthlete["athlete_category"];
 		$output["team"] = $rowAthlete["team_id"];
