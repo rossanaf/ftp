@@ -32,8 +32,8 @@
     fclose($output);
   } elseif ($resultGun['race_type'] === 'itu') {
     $output = fopen("php://output", "w");
-    fputcsv($output, array('First Name', 'Last Name', 'Country', 'Start No', 'Time', 'Swim', 'T1', 'Bike', 'T2', 'Run'));
-    $stmt = $db->prepare("SELECT * FROM live JOIN teams ON live_team_id=team_id WHERE live_race=? ORDER BY live_t0, live_started DESC, live_finishtime");
+    fputcsv($output, array('Gender', 'First Name', 'Last Name', 'Country', 'Start No', 'Time', 'Swim', 'T1', 'Bike', 'T2', 'Run'));
+    $stmt = $db->prepare("SELECT * FROM live JOIN teams ON live_team_id=team_id WHERE live_race=? ORDER BY live_sex,live_t0,live_started DESC,live_finishtime");
     $stmt->execute([$race_id]);
     $result = $stmt->fetchAll();
     foreach ($result as $row) {
@@ -49,7 +49,7 @@
      if ($row['live_t5'] == 'time') $t5 = '00:00:00';
      $finishTime = $row['live_finishtime'];
      if ($row['live_finishtime'] == 'time') $finishTime = '00:00:00';
-     $line = array($row['live_firstname'], $row['live_lastname'], $row['team_country'], $row['live_bib'], $finishTime, $t1, $t2, $t3, $t4, $t5);
+     $line = array($row['live_sex'], $row['live_firstname'], $row['live_lastname'], $row['team_country'], $row['live_bib'], $finishTime, $t1, $t2, $t3, $t4, $t5);
      fputcsv($output, $line);
     }
     fclose($output);
