@@ -11,28 +11,27 @@
 	$race = $stmt_race->fetch();
 	if(isset($_POST["operation"])) {
 		if($_POST["operation"] === "Add") {
-			$stmt = $db->prepare("INSERT INTO athletes (athlete_chip, athlete_license, athlete_bib, athlete_name, athlete_sex, athlete_category, athlete_team_id,  athlete_race_id) VALUES (:chip, :license, :bib, :name, :sex, :category, :team, :race)
+			$stmt = $db->prepare("INSERT INTO athletes (athlete_chip, athlete_license, athlete_bib, athlete_name, athlete_fisrtname, athlete_lastname, athlete_sex, athlete_category, athlete_team_id,  athlete_race_id) VALUES (:chip, :license, :bib, :name, :firstname, :lastname, :sex, :category, :team, :race)
 			");
 			$result = $stmt->execute(array(
 				':chip'	=>	$_POST["chip"],
 				':bib'	=>	$_POST["dorsal"],
-				':name'		=>	$_POST["name"],
+				':name'		=>	$_POST["name"].' '.$_POST['lastname'],
+        ':firstname' => $_POST['name'],
+        ':lastname' => $_POST['lastname'],
 				':license'		=>	$_POST["licenca"],
 				':sex'		=>	$_POST["sexo"],
 				':category'		=>	$_POST["escalao"],
 				':team'		=>	$_POST["clube"],
 				':race'		=>	$_POST["race"]
 			));
-			/* *****************************
-			PROCURAR O NOME DA EQUIPA E VER SE É CONTRARRELOGIO
-			SE FOR CONTRARRELOGIO TEM DE COLOCAR STARTED = -1
-			****************************** */
-			$stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_team, live_sex, live_category, live_race) VALUES (:chip, :bib, :firstname, :team, :sex, :category, :race)
+			$stmt_live = $db->prepare("INSERT INTO live (live_chip, live_bib, live_firstname, live_lastname, live_team, live_sex, live_category, live_race) VALUES (:chip, :bib, :firstname, :lastname, :team, :sex, :category, :race)
 			");
 			$stmt_live->execute(array(
 				':chip'	=>	$_POST["chip"],
 				':bib'	=>	$_POST["dorsal"],
-				':firstname'		=>	$_POST["name"],
+				':firstname' => $_POST['name'],
+        ':lastname' => $_POST['lastname'],
 				':team'		=>	$team['team_name'],
 				':sex' => $_POST["sexo"],
 				':category'		=>	$_POST["escalao"],

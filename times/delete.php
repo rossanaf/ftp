@@ -60,8 +60,7 @@
 			$stmt_live = $db->prepare($query_live);
 			$stmt_live->execute();
 		}
-		$query = "DELETE FROM times WHERE Location='Time".$timer."'";
-		//echo ($query);
+		// $query = "DELETE FROM times WHERE Location='Time".$timer."'";
 		$stmt = $db->prepare($query);
 		$stmt->execute();	
 

@@ -12,8 +12,7 @@
 	            //open uploaded csv file with read only mode
 	            $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
 	            //skip first line
-	            fgetcsv($csvFile);
-	            
+	            fgetcsv($csvFile);	            
 	            //parse data from csv file line by line
 	            while(($line = fgetcsv($csvFile)) !== FALSE)
 	            {
