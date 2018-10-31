@@ -285,7 +285,6 @@
     <form action="/functions/importdb.php" id="importdb" method="post" enctype="multipart/form-data">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <button><a href="#" onclick="alert('Ao restaurar um Evento guardado em disco, TODOS os dados da Base de Dados serão eliminados.')"> ALERTA: Ler antes de continuar! </a></button>
                 <input type="file" name="file" />
                 <input type="submit" class="btn btn-primary" name="importSubmit" value="IMPORTAR EVENTO">
             </div>
