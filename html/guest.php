@@ -5,9 +5,9 @@
 		include_once ($_SERVER['DOCUMENT_ROOT']."/html/nav.php");
 		exit();
 	}
-	// $stmt = $db->prepare("SELECT race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3 FROM races LIMIT 1");
-	// $stmt->execute();
-	// $race = $stmt->fetch();
+	$stmt = $db->prepare("SELECT race_namepdf, race_ranking, race_segment1, race_distsegment1, race_segment2, race_distsegment2, race_segment3, race_distsegment3 FROM races LIMIT 1");
+	$stmt->execute();
+	$race = $stmt->fetch();
   $live_stmt = $db->prepare('SELECT race_name, race_id FROM races WHERE race_live = "1"');
   $live_stmt->execute();
   $liveRaces = $live_stmt->fetchAll();
@@ -16,7 +16,7 @@
   <div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
       <a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-      <!-- <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto">
 	      <?php 
 	        foreach ($liveRaces as $live) {
 	      ?>        
@@ -36,7 +36,7 @@
 	      <?php 
 	  			} 
 	  		?>
-  		</ul> -->
+  		</ul>
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end"> -->
 		<!-- <ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
@@ -51,7 +51,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     	<a href="/"><img class="navbar-brand" src="/images/ftp_navbar.png" height="38px"></a>
-	    <!-- <ul class="navbar-nav mr-auto">
+	    <ul class="navbar-nav mr-auto">
 	      <?php 
 	        foreach ($liveRaces as $live) {
 	      ?>        
@@ -71,7 +71,7 @@
 	      <?php 
 	  			} 
 	  		?>
-  		</ul> -->
+  		</ul>
 		<!-- <ul class="collapse navbar-collapse navbar-nav justify-content-end">
 		<ul class="navbar-nav justify-content-end">
 			<li class="nav-item">
@@ -136,7 +136,7 @@
 		</div>
 	</div>
 </div>
-<div class='container'>
+<!-- <div class='container'>
 	<div id='container-timer'>
 		<p style="font-size:340%">IX AZORES ISLANDS TRIATHLON</p>
 		<hr>
@@ -150,9 +150,9 @@
 		<p id="timer2" style="font-size:400%"></p>
 		<hr>
 	</div>
-</div>
-<?php include($_SERVER['DOCUMENT_ROOT']."/html/info.php"); ?>
-<?php	
+</div> -->
+<!-- <?php include($_SERVER['DOCUMENT_ROOT']."/html/info.php"); ?>
+ --><?php	
 	include($_SERVER['DOCUMENT_ROOT']."/html/footer.php"); 
 ?>
 

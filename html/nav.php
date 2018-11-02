@@ -162,7 +162,7 @@
           ?>
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?=$race['race_name']?></a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="nav-link" href="#" target="_blank">Podios</a>
+            <a class="nav-link" href="/prints/podiums.php?race_id=<?=$race['race_id']?>" target="_blank">Podios</a>
             <a class="nav-link" href="/prints/absoluto.php?race_id=<?=$race['race_id']?>" target="_blank">Geral</a>
             <h6 class="alert alert-danger"><center>Femininos</center></h6>
             <a class="nav-link" href="/prints/feminino-1t.php?race_id=<?=$race['race_id']?>" target="_blank">1 Tempo</a>
